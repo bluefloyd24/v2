@@ -1,0 +1,56 @@
+{
+    "name": "𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥 UserBot",
+    "description": "𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥 Userbot Dibuat Untuk String Pyrogram Untuk ID 5 Pasti Aman.",
+    "logo": "https://telegra.ph/file/78fbd9d73e1f456857222.jpg",
+    "keywords": [
+        "Pyrogram",
+        "Userbot"
+    ],
+    "repository": "https://github.com/bluefloyd24/bfyd",
+    "success_url": "https://t.me/blque",
+    "stack": "container",
+    "env": {
+        "api_id": {
+            "description": "Get from my.telegram.org",
+            "required": true
+        },
+        "api_hash": {
+            "description": "Get from my.telegram.org",
+            "required": true
+        },
+        "session": {
+            "description": "Session use Pyrogram V2",
+            "required": true
+        },
+        "mongo_uri": {
+            "description": "Get mongo from MongoDB. Ask @blque first",
+            "required": true
+        },
+        "db_name": {
+            "description": "Fill : MixDB",
+            "required": true
+        },
+        "heroku_api": {
+            "description": "Your heroku API",
+            "required": true
+        },
+        "heroku_app_name": {
+            "description": " Your heroku name, same with name above",
+            "required": true
+        }
+    },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    }
+  ],
+    "formation": {
+        "worker": {
+            "quantity": 1,
+            "size": "basic"
+        }
+    }
+}
