@@ -532,7 +532,6 @@ async def _(c, cq):
                     await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
                     return
 
-
 @ky.callback("^payment")
 async def payment_callback(c, cq):
     # Pesan yang muncul saat tombol Payment ditekan
