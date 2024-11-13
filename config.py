@@ -16,9 +16,9 @@ heroku_api = getenv("heroku_api")
 heroku_app_name = getenv("heroku_app_name")
 upstream_repo = getenv(
     "upstream_repo",
-    "https://github.com/bluefloyd24/bfyd",
+    "https://github.com/bluefloyd24/v2",
 )
-upstream_branch = getenv("upstream_branch", "final")
+upstream_branch = getenv("upstream_branch", "main")
 git_token = getenv("git_token", None)
 log_channel = getenv("log_channel", None)
 genius_api = getenv(
