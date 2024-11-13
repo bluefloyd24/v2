@@ -37,7 +37,7 @@ async def payment_command(c: nlx, m):
     )
 
     # Send the reply with the inline button
-    await m.reply(message_text, reply_markup=payment_button)
+    await m.reply_text(message_text, reply_markup=payment_button)
 
 @ky.ubot("set_payment")
 async def set_payment_command(c: nlx, m):
