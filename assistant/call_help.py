@@ -532,8 +532,10 @@ async def _(c, cq):
                     await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
                     return
 
+# Mengimpor semua yang dibutuhkan
+from Mix import PAYMENT_LINK  # Memastikan PAYMENT_LINK diimpor dengan benar
 
-
+# Callback untuk perintah 'payment'
 @ky.callback("^payment")
 async def _(c, cq):
     # Pesan yang muncul saat tombol Payment ditekan
