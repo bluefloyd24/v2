@@ -531,24 +531,23 @@ async def _(c, cq):
                 except FloodWait as e:
                     await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
                     return
-                 
-             
-         
-     
- 
+    except Exception as e:
+        print(f"Error in callback handler: {e}")
+
+
 @ky.callback("^payment")
 async def _(c, cq):
-    # Pesan yang muncul saat tombol Payment ditekan
-    msg = "Silakan lakukan pembayaran dengan menekan tombol di bawah ini."
+    try:
+        # Pesan yang muncul saat tombol Payment ditekan
+        msg = "Silakan lakukan pembayaran dengan menekan tombol di bawah ini."
 
-    # Membuat inline keyboard yang mengarah ke PAYMENT_LINK terbaru
-    kb = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("Payment", url=PAYMENT_LINK)]]
-    )
+        # Membuat inline keyboard yang mengarah ke PAYMENT_LINK terbaru
+        kb = InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Payment", url=PAYMENT_LINK)]]
+        )
+
+        # Mengedit pesan untuk menampilkan tombol Payment dengan link yang diperbarui
+        await cq.edit_message_text(text=msg, reply_markup=kb)
     
-    # Mengedit pesan untuk menampilkan tombol Payment dengan link yang diperbarui
-    await cq.edit_message_text(text=msg, reply_markup=kb)
-
- 
     except Exception as e:
         print(f"Error in callback handler: {e}")
