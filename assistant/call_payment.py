@@ -5,8 +5,6 @@ from pyrogram.helpers import ikb
 from pyrogram.types import *
 from Mix import *
 
-from modular.payment import payment_message  # Pastikan ini sesuai dengan lokasi file
-
 @ky.callback("payme.")
 async def _(c, cq):
     cmd = cq.data.split(".")[1]
