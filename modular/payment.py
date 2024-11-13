@@ -1,4 +1,5 @@
-# payment.py
+from pyrogram import *
+from pyrogram.errors import *
 from pyrogram.enums import *
 from pyrogram.types import *
 from Mix import *
