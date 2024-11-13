@@ -6,47 +6,32 @@ from pyrogram import *
 
 from Mix import *
 
-
-# Define the PAYMENT variable with a default link (can be updated with the .set_payment command)
-PAYMENT = "https://t.me/your_payment_channel"  # Replace with your actual default link
+# Ganti dengan link channel pembayaran kamu
+PAYMENT = "https://t.me/your_payment_channel"  # Link pembayaran default
 
 @ky.ubot("payment")
-async def payment_command(c: nlx, m):
-    # Extract the command arguments
-    args = m.text.split(maxsplit=1)[1] if len(m.text.split()) > 1 else None
-    if not args:
-        await m.reply("Please specify an amount and recipient, e.g., .payment 5k ganom usa.")
-        return
+async def payment_command(c, m):
+    # Teks konfirmasi pembayaran
+    message_text = "Klik tombol di bawah untuk melakukan pembayaran."
 
-    try:
-        # Split arguments into amount and recipient
-        amount, *recipient = args.split()
-        recipient = ' '.join(recipient)
-    except ValueError:
-        await m.reply("Incorrect format. Use: .payment <amount> <recipient>.")
-        return
-
-    # Format the reply message
-    message_text = f"Transaksi :\nItems: {recipient}\nHarga: {amount}\nKlik tombol di bawah untuk menuju ke channel pembayaran."
-
-    # Create an inline button that links to the payment channel specified in the PAYMENT variable
+    # Inline button menuju channel pembayaran
     payment_button = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("Payment", url=PAYMENT)]
+            [InlineKeyboardButton("Payment", url=PAYMENT)]  # Tombol Payment
         ]
     )
 
-    # Send the reply with the inline button
+    # Mengirim pesan dengan tombol Payment
     await m.reply_text(message_text, reply_markup=payment_button)
 
 @ky.ubot("set_payment")
-async def set_payment_command(c: nlx, m):
-    # Extract the link argument
+async def set_payment_command(c, m):
+    # Mengganti link channel pembayaran melalui command
     link = m.text.split(maxsplit=1)[1] if len(m.text.split()) > 1 else None
     if not link:
-        await m.reply("Please provide a payment link, e.g., .set_payment https://t.me/your_payment_channel.")
+        await m.reply("Silakan masukkan link pembayaran, contoh: .set_payment https://t.me/your_payment_channel")
         return
     
     global PAYMENT
     PAYMENT = link
-    await m.reply(f"Payment link updated to: {PAYMENT}")
+    await m.reply(f"Link pembayaran telah diperbarui menjadi: {PAYMENT}")
