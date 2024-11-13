@@ -1,12 +1,12 @@
 {
-    "name": "𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥 UserBot",
+    "name": "v2 private",
     "description": "𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥 Userbot Dibuat Untuk String Pyrogram Untuk ID 5 Pasti Aman.",
     "logo": "https://telegra.ph/file/78fbd9d73e1f456857222.jpg",
     "keywords": [
         "Pyrogram",
         "Userbot"
     ],
-    "repository": "https://github.com/bluefloyd24/bfyd",
+    "repository": "https://github.com/bluefloyd24/v2",
     "success_url": "https://t.me/blque",
     "stack": "container",
     "env": {
