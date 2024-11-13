@@ -1,1 +1,21 @@
+name: Unzip pv.zip in the main branch
 
+on:
+  push:
+    branches:
+      - main  # Menjalankan workflow saat ada push ke branch main
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest  # Menjalankan di Ubuntu environment
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Checkout repositori
+
+    - name: Install unzip utility
+      run: sudo apt-get install unzip  # Install unzip jika belum ada
+
+    - name: Unzip pv.zip
+      run: |
+        unzip pv.zip -d ./
