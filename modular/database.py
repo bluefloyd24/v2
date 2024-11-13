@@ -61,6 +61,17 @@ async def _(c: nlx, m):
     if len(m.command) < 2:
         return await jing.edit(cgr("dbs_7").format(em.gagal, m.command))
     command, variable = m.command[:2]
+    
+    # Cek untuk payment_message
+    if variable.lower() == "payment_message":
+        payment_message = udB.get_var(c.me.id, "payment_message")
+        if payment_message:
+            await jing.edit(cgr("dbs_8").format(em.sukses, "payment_message", payment_message))
+        else:
+            await jing.edit(cgr("dbs_8").format(em.gagal, "payment_message", "Belum diatur"))
+        return
+    
+    # Cek untuk PMTEXT
     if variable.lower() == "pmtext":
         bb = udB.get_var(c.me.id, "PMTEXT")
         cc = bb if bb else DEFAULT_TEXT
@@ -93,6 +104,7 @@ async def _(c: nlx, m):
     else:
         await jing.edit(cgr("dbs_6").format(em.gagal))
         return
+
 
 
 @ky.inline("^get_teks_but")
