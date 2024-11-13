@@ -11,14 +11,9 @@ async def _(c, cq):
     kb = ikb([[("Kembali", "bek.payme")]])
 
     if cmd == "butformat":
-        payment_message = udB.get_var(c.me.id, "payment_message")
-        print(f"Payment message retrieved: {payment_message}")  # Menampilkan nilai yang diambil
-
-        if not payment_message:
-            payment_message = "Silakan melakukan pembayaran."
-
+        puki = cgr("payme_3")
         await cq.edit_message_text(
-            text=payment_message, 
+            text=puki,
             reply_markup=kb, 
             parse_mode=ParseMode.HTML
         )
