@@ -27,7 +27,7 @@ async def payment_command(c: nlx, m):
         return
 
     # Format the reply message
-    message_text = f"Silahkan transfer {amount} untuk {recipient}. Klik tombol di bawah untuk menuju ke channel pembayaran."
+    message_text = f"Transaksi :\nItems: {recipient}\nHarga: {amount}\nKlik tombol di bawah untuk menuju ke channel pembayaran."
 
     # Create an inline button that links to the payment channel specified in the PAYMENT variable
     payment_button = InlineKeyboardMarkup(
