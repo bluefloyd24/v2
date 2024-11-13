@@ -531,8 +531,6 @@ async def _(c, cq):
                     await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
                     return
 
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-
 # Variabel global untuk menyimpan link pembayaran
 PAYMENT_LINK = "https://t.me/your_default_payment_channel"
 
