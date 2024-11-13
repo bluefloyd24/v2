@@ -537,17 +537,14 @@ async def _(c, cq):
 
 @ky.callback("^payment")
 async def _(c, cq):
-    try:
-        # Pesan yang muncul saat tombol Payment ditekan
-        msg = "Silakan lakukan pembayaran dengan menekan tombol di bawah ini."
+    # Membuat tombol inline untuk channel pembayaran
+    kb = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("Pembayaran", url=PAYMENT_LINK)]]
+    )
+    
+    # Mengedit pesan untuk menampilkan tombol Pembayaran dengan link yang diperbarui
+    await cq.edit_message_text(text="Silakan lakukan pembayaran dengan menekan tombol di bawah ini.", reply_markup=kb)
 
-        # Membuat inline keyboard yang mengarah ke PAYMENT_LINK terbaru
-        kb = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Payment", url=PAYMENT_LINK)]]
-        )
-
-        # Mengedit pesan untuk menampilkan tombol Payment dengan link yang diperbarui
-        await cq.edit_message_text(text=msg, reply_markup=kb)
     
     except Exception as e:
         print(f"Error in callback handler: {e}")
