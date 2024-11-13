@@ -25,6 +25,18 @@ async def _(c: nlx, m):
     if len(m.command) < 3:
         return await jing.edit(cgr("dbs_1").format(em.gagal, m.command))
     command, variable, value = m.command[:3]
+
+    # Menambahkan bagian untuk payment_message
+    if variable.lower() == "payment_message":
+        # Mengambil nilai pesan dari argumen perintah
+        if value:
+            udB.set_var(c.me.id, "payment_message", value)
+            await jing.edit(cgr("dbs_8").format(em.sukses, "payment_message", value))
+        else:
+            await jing.edit(cgr("dbs_1").format(em.gagal, m.command))
+        return
+    
+    # Pengaturan lainnya (tidak diubah)
     if variable.lower() == "pmpermit":
         if value.lower() == "on":
             udB.set_var(c.me.id, "PMPERMIT", True)
@@ -51,6 +63,7 @@ async def _(c: nlx, m):
     else:
         await jing.edit(cgr("dbs_6").format(em.gagal))
         return
+
 
 
 @ky.ubot("getdb")
