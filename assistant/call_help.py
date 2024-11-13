@@ -26,7 +26,7 @@ from pyrogram.types import *
 from Mix import *
 from Mix.core.waktu import get_time, start_time
 from modular.pmpermit import *
-from Mix import PAYMENT_LINK
+from modular.payment import PAYMENT_LINK
 
 tekhelp = """
 ```Commands
@@ -531,11 +531,11 @@ async def _(c, cq):
                 except FloodWait as e:
                     await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
                     return
-
-# Mengimpor semua yang dibutuhkan
-# Memastikan PAYMENT_LINK diimpor dengan benar
-
-# Callback untuk perintah 'payment'
+                 
+             
+         
+     
+ 
 @ky.callback("^payment")
 async def _(c, cq):
     # Pesan yang muncul saat tombol Payment ditekan
