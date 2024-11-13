@@ -1,5 +1,12 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+import asyncio
+
+from pyrogram import *
+
+from Mix import *
+
+
 # Define the PAYMENT variable with a default link (can be updated with the .set_payment command)
 PAYMENT = "https://t.me/your_payment_channel"  # Replace with your actual default link
 
