@@ -7,7 +7,7 @@ __modles__ = "Payment"
 __help__ = get_cgr("help_payme")
 
 
-@ky.ubot("markdown")
+@ky.ubot("payment")
 async def _(c: nlx, m):
     try:
         xi = await c.get_inline_bot_results(bot.me.username, "pay_in")
