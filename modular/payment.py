@@ -6,32 +6,31 @@ from pyrogram import *
 
 from Mix import *
 
-# Ganti dengan link channel pembayaran kamu
-PAYMENT = "https://t.me/your_payment_channel"  # Link pembayaran default
+from Mix import bot, get_cgr, ky, nlx
+
+__modles__ = "Payment"
+__help__ = get_cgr("help_payment")
+
+# Link pembayaran (ganti dengan link channel pembayaran kamu)
+PAYMENT_LINK = "https://t.me/bbluepay" 
 
 @ky.ubot("payment")
-async def payment_command(c, m):
-    # Teks konfirmasi pembayaran
-    message_text = "Klik tombol di bawah untuk melakukan pembayaran."
+async def payment_command(c: nlx, m):
+    try:
+        # Mengambil hasil inline bot untuk payment
+        x = await c.get_inline_bot_results(bot.me.username, "payment")
+        await m.reply_inline_bot_result(x.query_id, x.results[0].id)
+    except Exception as error:
+        await m.reply(str(error))
 
-    # Inline button menuju channel pembayaran
+
+@ky.callback(("^payment_info"))
+async def payment_info_callback(c, cq):
+    # Mengirimkan teks informasi pembayaran dengan tombol pembayaran
+    txt = "Silakan klik tombol di bawah untuk menuju ke channel pembayaran."
     payment_button = InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("Payment", url=PAYMENT)]  # Tombol Payment
+            [InlineKeyboardButton("Payment", url=PAYMENT_LINK)]
         ]
     )
-
-    # Mengirim pesan dengan tombol Payment
-    await m.reply_text(message_text, reply_markup=payment_button)
-
-@ky.ubot("set_payment")
-async def set_payment_command(c, m):
-    # Mengganti link channel pembayaran melalui command
-    link = m.text.split(maxsplit=1)[1] if len(m.text.split()) > 1 else None
-    if not link:
-        await m.reply("Silakan masukkan link pembayaran, contoh: .set_payment https://t.me/your_payment_channel")
-        return
-    
-    global PAYMENT
-    PAYMENT = link
-    await m.reply(f"Link pembayaran telah diperbarui menjadi: {PAYMENT}")
+    await cq.edit_message_text(txt, reply_markup=payment_button)
