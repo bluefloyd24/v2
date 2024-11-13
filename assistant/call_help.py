@@ -535,7 +535,7 @@ async def _(c, cq):
 
 
 @ky.callback("^payment")
-async def payment_callback(c, cq):
+async def _(c, cq):
     # Pesan yang muncul saat tombol Payment ditekan
     msg = "Silakan lakukan pembayaran dengan menekan tombol di bawah ini."
 
