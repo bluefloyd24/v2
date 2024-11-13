@@ -26,7 +26,7 @@ from pyrogram.types import *
 from Mix import *
 from Mix.core.waktu import get_time, start_time
 from modular.pmpermit import *
-
+from modular.payment import PAYMENT_LINK
 tekhelp = """
 ```Commands
 Prefixes: {}
