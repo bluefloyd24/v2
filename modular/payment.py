@@ -7,21 +7,31 @@ __modles__ = "Payment"
 __help__ = get_cgr("help_payme")
 
 # Variabel untuk menyimpan pesan dinamis pengguna
-payment_message = "Ini adalah channel pembayaran default. Silakan atur pesan dengan .setcgrpay1"
-
 @ky.ubot("setcgrpay1")
-async def set_payment_message(c, m):
-    global payment_message
-    args = m.text.split(maxsplit=1)
-    
-    # Cek apakah pengguna memasukkan pesan
-    if len(args) < 2:
-        await m.reply("Harap masukkan pesan. Contoh: `.setcgrpay1 ini adalah channel pembayaran saya t.me/bbluepay`")
-        return
-    
-    # Atur pesan pembayaran dengan teks baru
-    payment_message = args[1]
-    await m.reply("Pesan pembayaran berhasil diatur.")
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    babi = await m.reply(cgr("proses").format(em.proses))
+    await asyncio.sleep(2)
+    user_id = c.me.id
+    direp = m.reply_to_message
+    args_txt = c.get_arg(m)
+
+    # Mengambil pesan dari pesan balasan atau argumen
+    if direp:
+        payment_msg = direp.text
+    else:
+        payment_msg = args_txt
+
+    # Jika tidak ada pesan yang diberikan, batalkan proses
+    if not payment_msg:
+        return await babi.edit(cgr("gcs_1").format(em.gagal))
+
+    # Menyimpan pesan ke database udB
+    udB.set_var(user_id, "payment_message", payment_msg)
+    await babi.edit(cgr("payme_2").format(em.sukses, payment_msg))
+    return
+
 
 @ky.ubot("payment")
 async def _(c: nlx, m):
