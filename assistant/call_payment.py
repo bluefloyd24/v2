@@ -12,7 +12,9 @@ async def _(c, cq):
     cmd = cq.data.split(".")[1]
     kb = ikb([[("Kembali", "bek.payme")]])
     if cmd == "butformat":
+        payment_message = udB.get_var(c.me.id, "payment_message", default="Silakan melakukan pembayaran.")
         await cq.edit_message_text(text=payment_message, reply_markup=kb, parse_mode=ParseMode.HTML)
+
 
 @ky.callback("bek")
 async def _(c, cq):
