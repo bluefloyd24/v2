@@ -30,6 +30,7 @@ prox_6: "{} <b>Perintah tidak valid.\nGunakan perintah `{}` [`http`|`socks4`|`so
 
 # payment
 payme_1: "**Silahkan pilih tombol dibawah untuk melihat payment yang tersedia!**"
+payme_2: "{} **Berhasil menyimpan teks payment.**"
 
 # tod
 tod_1: "{} **Tantangan :**\n\n `{}`"
