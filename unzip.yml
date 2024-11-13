@@ -1,0 +1,26 @@
+name: Unzip File on Push
+
+on:
+  push:
+    paths:
+      - 'path/to/your/pv.zip'  # Ganti dengan path file zip yang ingin di-unzip
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest  # Gunakan runner ubuntu
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Menyebarkan kode dari repositori
+
+      - name: Unzip the file
+        run: |
+          mkdir -p extracted  # Membuat folder untuk hasil ekstraksi
+          unzip path/to/your/file.zip -d extracted  # Ekstrak file zip ke folder 'extracted'
+          
+      - name: Commit extracted files (optional)
+        run: |
+          git add extracted
+          git commit -m "Unzipped the file"
+          git push
+        # Komit perubahan yang sudah di-extract, jika ingin file hasil ekstraksi disimpan
