@@ -29,8 +29,8 @@ async def _(c: nlx, m):
         return await babi.edit(cgr("gcs_1").format(em.gagal))
 
     # Menyimpan pesan ke database udB
-    udB.set_var(user_id, "payment_message", args_txt)
-    await babi.edit(cgr("payme_2").format(em.sukses, args_txt))
+    udB.set_var(user_id, "payment_message", payment_msg)
+    await babi.edit(cgr("payme_2").format(em.sukses, payment_msg))
     return
 
 
