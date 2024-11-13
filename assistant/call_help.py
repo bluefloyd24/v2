@@ -533,18 +533,3 @@ async def _(c, cq):
                     return
     except Exception as e:
         print(f"Error in callback handler: {e}")
-
-
-@ky.callback("^payment")
-async def _(c, cq):
-    # Membuat tombol inline untuk channel pembayaran
-    kb = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("Pembayaran", url=PAYMENT_LINK)]]
-    )
-    
-    # Mengedit pesan untuk menampilkan tombol Pembayaran dengan link yang diperbarui
-    await cq.edit_message_text(text="Silakan lakukan pembayaran dengan menekan tombol di bawah ini.", reply_markup=kb)
-
-    
-    except Exception as e:
-        print(f"Error in callback handler: {e}")
