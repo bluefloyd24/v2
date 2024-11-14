@@ -487,7 +487,7 @@ async def _(c, iq):
 async def _(c, iq):
     em = Emojik()
     em.initialize()
-    txt = f"{em.sukses} {cgr('payme_1')}"
+    txt = cgr("payme_1")
     ke = ikb([[("Payment", "payme.butformat")]])
     await c.answer_inline_query(
         iq.id,
