@@ -485,7 +485,7 @@ async def _(c, iq):
 
 @ky.inline("^payme_in")
 async def _(c, iq):
-    txt = "<b>Untuk melihat daftar payment, silahkan pilih tombol dibawah.</b>"
+    txt = cgr("payme_1")
     ke = ikb([[("Payment", "payme.butformat")]])
     await c.answer_inline_query(
         iq.id,
