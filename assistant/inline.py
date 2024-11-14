@@ -485,7 +485,9 @@ async def _(c, iq):
 
 @ky.inline("^payme_in")
 async def _(c, iq):
-    txt = cgr("payme_1")
+    em = Emojik()
+    em.initialize()
+    txt = f" {em.sukses} {cgr("payme_1")}
     ke = ikb([[("Payment", "payme.butformat")]])
     await c.answer_inline_query(
         iq.id,
