@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="[https://telegra.ph//file/19b336da463a05d7d8f8c.jpg](https://telegra.ph/file/78fbd9d73e1f456857222.jpg)" alt="Blue Logo">
+  <img src="[https://telegra.ph/file/78fbd9d73e1f456857222.jpg]" alt="Blue Logo">
 </p>
 <h1 align="center">
   <b>BLUEFLOYD Userbot</b>
@@ -118,7 +118,7 @@ Gunakan bot ini dengan risiko Anda sendiri, dan gunakan userbot ini dengan bijak
 
 
 ## Maintained By
-* [![Blue.](https://img.shields.io/static/v1?label=Ky&message=nan&color=critical)](https://t.me/blqu)
+* [![Blue.](https://img.shields.io/static/v1?label=Bl&message=ue&color=critical)](https://t.me/blqu)
 
 
 
