@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="[https://telegra.ph/file/78fbd9d73e1f456857222.jpg]" alt="Blue Logo">
+  <img src="https://telegra.ph/file/78fbd9d73e1f456857222.jpg" alt="Blue Logo">
 </p>
 <h1 align="center">
   <b>BLUEFLOYD Userbot</b>
@@ -14,7 +14,7 @@ Support Multi Language, If You want more language Contact Me On Telegram.</b>
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/bluefloyd24/v2)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-blue)](https://GitHub.com/bluefloyd24/v2/graphs/commit-activity)
 [![CodeQuality](https://img.shields.io/codacy/grade/a723cb464d5a4d25be3152b5d71de82d?color=blue&logo=codacy)](https://app.codacy.com/gh/bluefloyd24/v2/dashboard)
-[![GitHub Forks](https://img.shields.io/github/forks/naya1503/Mix-Userbot?&logo=github)](https://github.com/bluefloyd24/v2/fork)
+[![GitHub Forks](https://img.shields.io/github/forks/bluefloyd24/v2&logo=github)](https://github.com/bluefloyd24/v2/fork)
 [![GitHub Stars](https://img.shields.io/github/stars/bluefloyd24/v2?&logo=github)](https://github.com/bluefloyd24/v2/stargazers)
 ----
 
