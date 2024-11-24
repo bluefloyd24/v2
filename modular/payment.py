@@ -13,7 +13,7 @@ DEVS = [6878107336]
 async def _(c: nlx, m):
     user_id = m.from_user.id
     if user_id not in DEVS:
-        await m.reply("⚠️ Sorry, this command is restricted to developers only!")
+        await m.reply(cgr("payme_2").format(em.gagal))
         return
         
     em = Emojik()
