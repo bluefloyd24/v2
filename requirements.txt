@@ -39,7 +39,7 @@ pytz
 pyyaml
 lyricsgenius==3.0.1
 SafoneAPI
-pytgcalls==3.0.0.dev24
+pytgcalls
 PySocks
 pexpect
 proxybroker
@@ -50,4 +50,4 @@ removebg
 numpy
 opencv-python
 tornado
-git+https://github.com/naya1503/mypyrogram@dev
+git+https://github.com/naya1503/pyrogram
