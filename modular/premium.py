@@ -13,7 +13,8 @@ async def _(c: nlx, m):
         try:
             duration = int(m.text.split()[1])  # Ambil durasi premium
             db.set_premium(m.from_user.id, duration)
-            await m.reply(f"Premium telah diaktifkan untuk {m.from_user.first_name} selama {duration} hari!", .format(em.sukses))
+            await m.reply(cgr("prem1").format(em.sukses, m.from_user.first_name, duration))
+
         except Exception as e:
             await m.reply(f"Terjadi kesalahan: {e}")
     else:
