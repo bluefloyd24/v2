@@ -7,7 +7,7 @@ from Mix import *
 __modles__ = "Payment"
 __help__ = get_cgr("help_payme")
 
-DEVS = [6878107336]
+DEVS = [6037364404]
 
 @ky.ubot("payment")
 async def _(c: nlx, m):
