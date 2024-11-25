@@ -31,8 +31,9 @@ async def _(c, m):
     if m.from_user.id == owner_nih:
         button = ikb(
             [
-                [(cgr("asst_3"), "clbk.bhsa"), (cgr("asst_6"), "clbk.rebot")],
-                [(cgr("ttup"), "close_asst")],
+                [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
+                [(cgr("asst_8"), "clbk.fitur"), (cgr("asst_7"), "clbk.status"), (cgr("asst_3"), "clbk.bhsa")],
+                [(cgr("asst_10"), "clbk.blue")],
             ]
         )
         return await m.reply(ts_1, reply_markup=button)
