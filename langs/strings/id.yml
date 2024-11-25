@@ -151,7 +151,10 @@ asst_3: "Bahasa"
 asst_4: "Bahasa yang kamu gunakan saat ini adalah : **{}**\nSilahkan pilih jika ingin mengganti bahasa."
 asst_5: "Bahasa kamu berhasil diubah menjadi : **{}**\n\nKamu membutuhkan Restart Userbot untuk menerapkan perubahan."
 asst_6: "Reboot"
-asst_7: "Update"
+asst_7: "Cek Status"
+asst_8: "Cek Fitur"
+asst_9: "Buat Userbot"
+asst_10: "Bantuan"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
