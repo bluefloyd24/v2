@@ -54,6 +54,18 @@ async def _(c, cq):
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
 
 
+@ky.callback("clbk.status")
+async def _(c, cq):
+    if db.check_premium(cq.from_user.id):
+        premium_data = db.get_premium_info(cq.from_user.id)
+        end_time = premium_data["premium_end"]
+        time_left = end_time - datetime.utcnow()
+        await cq.edit_message_text(f"Status: Premium\nDurasi: {time_left.days} hari lagi")
+    else:
+        await cq.edit_message_text("Anda bukan pengguna premium.")
+
+
+
 @ky.callback("^set_(.*?)")
 async def _(c, cq):
     lang_code = cq.data.split("_")[1]
