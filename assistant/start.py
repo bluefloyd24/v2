@@ -42,7 +42,7 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots(None, human.pv)  # Tangkap semua pesan teks
+@ky.bots("text_handler", human.pv)  # Tangkap semua pesan teks
 async def handle_button_click(c, m):
     if m.text == cgr("asst_6"):
         await m.reply("Tombol 'asst_6' ditekan! Menjalankan aksi reboot.")
