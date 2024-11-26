@@ -55,26 +55,22 @@ async def _(c, cq):
         ts_1 = cgr("asst_1").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
     elif cmd == "fitur":
-        async def _(c: nlx, m):
+        # Menampilkan fitur dari help
+        await show_fitur(c, cq)
+    else:
+        await cq.answer("Perintah tidak dikenal.", show_alert=True)
+
+
+async def show_fitur(c, cq):
+    """Menangani callback untuk fitur"""
     em = Emojik()
     em.initialize()
-    if not c.get_arg(m):
-        try:
-            x = await c.get_inline_bot_results(bot.me.username, "help")
-            await m.reply_inline_bot_result(x.query_id, x.results[0].id)
-        except Exception as error:
-            await m.reply(error)
-    else:
-        nama = c.get_arg(m)
-        if c.get_arg(m) in CMD_HELP:
-            prefix = await c.get_prefix(c.me.id)
-            await m.reply(
-                CMD_HELP[c.get_arg(m)].__help__.format(next((p) for p in prefix))
-                + f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
-                quote=True,
-            )
-        else:
-            await m.reply(cgr("hlp_1").format(em.gagal, nama))
+
+    try:
+        x = await c.get_inline_bot_results(bot.me.username, "help")
+        await cq.message.reply_inline_bot_result(x.query_id, x.results[0].id)
+    except Exception as error:
+        await cq.answer(f"Gagal memuat fitur: {error}", show_alert=True)
 
 
 
