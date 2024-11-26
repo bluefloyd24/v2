@@ -45,6 +45,10 @@ async def _(c, cq):
         teks = cgr("asst_4").format(meki)
         await cq.edit_message_text(text=teks, reply_markup=st_lang())
     elif cmd == "rebot":
+        # Hanya pemilik bot yang dapat melakukan reboot
+        if cq.from_user.id != nlx.me.id:
+            await cq.answer("who are you?", True)
+            return
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
     elif cmd == "bek":
