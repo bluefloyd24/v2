@@ -42,7 +42,7 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots()
+@ky.bots(filters.text)
 async def handle_buttons(c, m):
       if m.text == "Bantuan":
         await m.reply("Tombol 'asst_8' ditekan!")
