@@ -19,7 +19,7 @@ from pyrogram.types import *
 from Mix import *
 
 
-@ky.bots("start")
+@ky.bots("start", human.pv)
 async def _(c, m):
     # Log pengguna
     udB.add_served_user(m.from_user.id)
@@ -29,12 +29,12 @@ async def _(c, m):
     user2 = f"<a href='tg://user?id={nlx.me.id}'>{nlx.me.first_name} {nlx.me.last_name or ''}</a>"
     ts_2 = cgr("asst_2").format(user_name, user2)
 
-        button = ikb(
-            [
-                [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
-                [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_3"), "clbk.bhsa")],
-                [(cgr("asst_10"), "clbk.bantuan")],
-            ]
-        )
-        return await m.reply(ts_2, reply_markup=button)
-    
+    # Membuat InlineKeyboardButton
+    button = ikb(
+        [
+            [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
+            [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_3"), "clbk.bhsa")],
+            [(cgr("asst_10"), "clbk.bantuan")],
+        ]
+    )
+    await m.reply(ts_2, reply_markup=button)
