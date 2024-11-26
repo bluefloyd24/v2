@@ -33,7 +33,7 @@ async def _(c, m):
     # Membuat InlineKeyboardMarkup
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text=cgr("asst_6"))],  
+            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text="asst_6")],  
             [KeyboardButton(text=cgr("asst_8")), KeyboardButton(text=cgr("asst_7")), KeyboardButton(text=cgr("asst_3"))],
             [KeyboardButton(text=cgr("asst_10"))]
         ],
@@ -45,7 +45,7 @@ async def _(c, m):
 
 @ky.bots("asst_6")
 async def asst_6(message: types.Message):
-    if message.text == cgr("asst_6"):
+    if message.text == "asst_6":
         if message.from_user.id != nlx.me.id:
             await message.reply("Perintah ini hanya untuk pengguna Bluefloyd Userbot.")
             return
