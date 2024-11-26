@@ -43,6 +43,9 @@ async def _(c, m):
     await m.reply(ts_2, reply_markup=keyboard)
 
 
-@ky.bots(F.text == cgr("asst_9"))
-async def handle_asst_9(c, m):
-    await m.reply("Tombol 'asst_9' ditekan!")
+@ky.bots(None, human.pv)  # Tidak spesifik perintah, menangkap semua teks
+async def handle_button_click(c, m):
+    if m.text == cgr("asst_6"):
+        await m.reply("Tombol 'asst_6' ditekan! Menjalankan aksi reboot.")
+        os.execl(sys.executable, sys.executable, "-m", "Mix")
+ 
