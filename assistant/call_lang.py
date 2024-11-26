@@ -54,40 +54,7 @@ async def _(c, cq):
     elif cmd == "bek":
         ts_1 = cgr("asst_1").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
-    elif cmd == "fitur":
-        # Menampilkan fitur dari help
-        await show_fitur(c, cq)
-    else:
-        await cq.answer("Perintah tidak dikenal.", show_alert=True)
-
-
-async def show_fitur(c, cq):
-    user_id = iq.from_user.id
-    emut = await nlx.get_prefix(user_id)
-    msg = (
-        "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
-            " ".join(emut), len(CMD_HELP)
-        )
-    )
-    await c.answer_inline_query(
-        iq.id,
-        cache_time=0,
-        results=[
-            (
-                InlineQueryResultArticle(
-                    title="Help Menu!",
-                    description=f"Menu Bantuan",
-                    thumb_url="https://telegra.ph//file/57376cf2486052ffae0ad.jpg",
-                    reply_markup=InlineKeyboardMarkup(
-                        paginate_modules(0, CMD_HELP, "help")
-                    ),
-                    input_message_content=InputTextMessageContent(msg),
-                )
-            )
-        ],
-    )
-
-
+    
 
 @ky.callback("clbk.status")
 async def _(c, cq):
@@ -98,7 +65,6 @@ async def _(c, cq):
         await cq.edit_message_text(f"Status: Premium\nDurasi: {time_left.days} hari lagi")
     else:
         await cq.edit_message_text("Anda bukan pengguna premium.")
-
 
 
 @ky.callback("^set_(.*?)")
@@ -115,3 +81,27 @@ async def _(c, cq):
     else:
         LOGGER.error(f"Language with code '{lang_code}' not found.")
      
+@ky.callback("clbk.fitur")
+async def _(c, cq):
+    user_id = cq.from_user.id
+    prefix = await nlx.get_prefix(user_id)
+    msg = (
+        "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
+            " ".join(prefix), len(CMD_HELP)
+        )
+    )
+
+    # Tombol kategori fitur
+    buttons = InlineKeyboardMarkup(
+        paginate_modules(0, CMD_HELP, "help")
+    )
+
+    try:
+        await cq.edit_message_text(
+            text=msg,
+            reply_markup=buttons,
+            disable_web_page_preview=True,
+        )
+    except FloodWait as e:
+        await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
+        return
