@@ -84,4 +84,14 @@ async def _(c, cq):
         )
     else:
         LOGGER.error(f"Language with code '{lang_code}' not found.")
-     
+
+@ky.callback("^clbk.balek$")
+async def kembali_handler(c, cq):
+    # Panggil kembali handler `/start` untuk menampilkan menu awal
+    await start_handler(c, cq.message)
+
+
+@ky.callback("^clbk.clos$")
+async def close_handler(c, cq):
+    # Menghapus pesan ketika tombol "Close" ditekan
+    await cq.message.delete()
