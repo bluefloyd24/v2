@@ -31,22 +31,19 @@ async def _(c, m):
     ts_2 = cgr("asst_2").format(user_name, user2)
 
     # Membuat InlineKeyboardMarkup
-    keyboard = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(cgr("asst_9"), callback_data="clbk.buat"),
-                InlineKeyboardButton(cgr("asst_6"), callback_data="clbk.rebot"),
-            ],
-            [
-                InlineKeyboardButton(cgr("asst_8"), callback_data="clbk.fitur"),
-                InlineKeyboardButton(cgr("asst_7"), callback_data="clbk.status"),
-                InlineKeyboardButton(cgr("asst_3"), callback_data="clbk.bhsa"),
-            ],
-            [
-                InlineKeyboardButton(cgr("asst_10"), callback_data="clbk.blue"),
-            ],
-        ]
-    )
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(cgr("asst_9"), callback_data="clbk.buat")],
+            [KeyboardButton(cgr("asst_6"), callback_data="clbk.rebot")],
+            
+            [KeyboardButton(cgr("asst_8"), callback_data="clbk.fitur")],
+            [KeyboardButton(cgr("asst_7"), callback_data="clbk.status")],
+            [KeyboardButton(cgr("asst_3"), callback_data="clbk.bhsa")],
+         
+            [KeyboardButton(cgr("asst_10"), callback_data="clbk.blue")]
+        ],
+        resize_keyboard=True
+    )      
 
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
