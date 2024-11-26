@@ -43,12 +43,13 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots(F.text == "asst_6")
+@ky.bots(F.text == cgr("asst_6"))
 async def asst_6(message: types.Message):
- if cq.from_user.id != nlx.me.id:
-            await cq.answer("who are you?", True)
-            return
-        await cq.edit_message_text(cgr("reboot_1"))
-        os.execl(sys.executable, sys.executable, "-m", "Mix")
+    # Cek jika bukan pengguna yang sah
+    if message.from_user.id != nlx.me.id:
+        await message.reply("Hanya pengguna BLUEFLOYD-Userbot yang bisa menggunakan perintah ini!.")
+        return
 
- 
+    # Kirim pesan reboot dan restart bot
+    await message.reply(cgr("reboot_1"))
+    os.execl(sys.executable, sys.executable, "-m", "Mix")
