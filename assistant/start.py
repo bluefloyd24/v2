@@ -22,7 +22,7 @@ from Mix import *
 
 @ky.bots("start", human.pv)
 async def _(c, m):
-    # Log pengguna yang menggunakan bot
+    # Log pengguna
     udB.add_served_user(m.from_user.id)
 
     # Format nama pengguna dan pesan
@@ -31,7 +31,7 @@ async def _(c, m):
     ts_2 = cgr("asst_2").format(user_name, user2)
 
     # Membuat InlineKeyboardMarkup
-    buttons = InlineKeyboardMarkup(
+    keyboard = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(cgr("asst_9"), callback_data="clbk.buat"),
@@ -48,5 +48,5 @@ async def _(c, m):
         ]
     )
 
-    # Kirim pesan dengan InlineKeyboardMarkup
-    return await m.reply(ts_2, reply_markup=buttons)
+    # Kirim pesan menggunakan InlineKeyboardMarkup
+    await m.reply(ts_2, reply_markup=keyboard)
