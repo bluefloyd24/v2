@@ -33,13 +33,8 @@ async def _(c, m):
     # Membuat InlineKeyboardMarkup
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=cgr("asst_9"))],
-            [KeyboardButton(text=cgr("asst_6"))],
-            
-            [KeyboardButton(text=cgr("asst_8"))],
-            [KeyboardButton(text=cgr("asst_7"))],
-            [KeyboardButton(text=cgr("asst_3"))],
-         
+            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text=cgr("asst_6"))],  
+            [KeyboardButton(text=cgr("asst_8")), KeyboardButton(text=cgr("asst_7")), KeyboardButton(text=cgr("asst_3"))],
             [KeyboardButton(text=cgr("asst_10"))]
         ],
         resize_keyboard=True
