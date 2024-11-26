@@ -23,7 +23,7 @@ def st_lang():
     keyboard = ikb(
         [[(f"{lang['natively']}", f"set_{lang['code']}") for lang in languages]]
     )
-    keb = ikb([[("Back", "clbk.bek"), ("Close", "close_asst")]])
+    keb = ikb([[("Back", "clbk.balek"), ("Close", "clbk.clos")]])
     for row in keb.inline_keyboard:
         keyboard.inline_keyboard.append(row)
     return keyboard
