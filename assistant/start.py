@@ -29,19 +29,12 @@ async def _(c, m):
     user2 = f"<a href='tg://user?id={nlx.me.id}'>{nlx.me.first_name} {nlx.me.last_name or ''}</a>"
     ts_2 = cgr("asst_2").format(user_name, user2)
 
-    # Membuat InlineKeyboardMarkup
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text=cgr("asst_6"))],  
-            [KeyboardButton(text=cgr("asst_8")), KeyboardButton(text=cgr("asst_7")), KeyboardButton(text=cgr("asst_3"))],
-            [KeyboardButton(text="Bantuan")]
-        ],
-        resize_keyboard=True
-    )      
-
-    # Kirim pesan menggunakan InlineKeyboardMarkup
-    await m.reply(ts_2, reply_markup=keyboard)
-
-@ky.bots("Bantuan")
-async def bantuan_handler(client, message: Message):
-    await message.reply("Jika Anda membutuhkan bantuan, hubungi admin.")
+        button = ikb(
+            [
+                [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
+                [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_3"), "clbk.bhsa")],
+                [(cgr("asst_10"), "clbk.bantuan")],
+            ]
+        )
+        return await m.reply(ts_2, reply_markup=button)
+    
