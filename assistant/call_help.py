@@ -418,44 +418,77 @@ async def _(c, cq):
             return
 
 
+# Callback untuk tombol "cls_hlp"
 @ky.callback("^cls_hlp")
-async def _(_, cq):
-    unPacked = unpacked2(cq.inline_message_id)
+async def cls_hlp_callback(_, cq):
+    # Pastikan inline_message_id ada
+    if not cq.inline_message_id:
+        await cq.answer("Pesan ini bukan pesan inline.", show_alert=True)
+        return
+
+    # Decode inline_message_id menggunakan fungsi unpacked2
+    try:
+        unPacked = unpacked2(cq.inline_message_id)
+    except Exception as e:
+        await cq.answer("Terjadi kesalahan dalam memproses pesan.", show_alert=True)
+        print(f"Error in unpacked2: {e}")  # Logging untuk debugging
+        return
+
+    # Hanya user yang sesuai yang dapat menghapus
     if cq.from_user.id == nlx.me.id:
         await nlx.delete_messages(unPacked.chat_id, unPacked.message_id)
     else:
-        await cq.answer(
-            f"Jangan Di Pencet.",
-            True,
-        )
+        await cq.answer("Jangan Di Pencet.", show_alert=True)
+
+
+# Callback untuk tombol "close"
+@ky.callback("^close")
+async def close_callback(_, cq):
+    # Pastikan inline_message_id ada
+    if not cq.inline_message_id:
+        await cq.answer("Pesan ini bukan pesan inline.", show_alert=True)
         return
 
+    # Decode inline_message_id menggunakan fungsi unpacked2
+    try:
+        unPacked = unpacked2(cq.inline_message_id)
+    except Exception as e:
+        await cq.answer("Terjadi kesalahan dalam memproses pesan.", show_alert=True)
+        print(f"Error in unpacked2: {e}")  # Logging untuk debugging
+        return
 
-def unpacked2(inline_message_id: str):
-    dc_id, message_id, chat_id, query_id = unpack(
-        "<iiiq",
-        urlsafe_b64decode(
-            inline_message_id + "=" * (len(inline_message_id) % 4),
-        ),
-    )
-    temp = {
-        "dc_id": dc_id,
-        "message_id": message_id,
-        "chat_id": int(str(chat_id).replace("-", "-100")),
-        "query_id": query_id,
-        "inline_message_id": inline_message_id,
-    }
-    return Atr(temp)
-
-
-@ky.callback("^close")
-async def _(_, cq):
-    unPacked = unpacked2(cq.inline_message_id)
-    # if cq.from_user.id == nlx.me.id:
+    # Hapus pesan tanpa pengecekan user
     await nlx.delete_messages(unPacked.chat_id, unPacked.message_id)
-    # else:
-    # await cq.answer(f"Jangan Di Pencet Anjeng.", True)
-    # return
+
+
+# Fungsi untuk memproses inline_message_id
+def unpacked2(inline_message_id: str):
+    try:
+        dc_id, message_id, chat_id, query_id = unpack(
+            "<iiiq",
+            urlsafe_b64decode(
+                inline_message_id + "=" * (len(inline_message_id) % 4),
+            ),
+        )
+        temp = {
+            "dc_id": dc_id,
+            "message_id": message_id,
+            "chat_id": int(str(chat_id).replace("-", "-100")),
+            "query_id": query_id,
+            "inline_message_id": inline_message_id,
+        }
+        print("Unpacked data:", temp)  # Debugging log
+        return Atr(temp)
+    except Exception as e:
+        print(f"Error in unpacked2: {e}")
+        raise  # Raise error untuk ditangani di level atas
+
+
+# Class Atr untuk mengakses dictionary seperti atribut
+class Atr:
+    def __init__(self, dictionary):
+        self.__dict__.update(dictionary)
+
 
 
 def cb_tespeed():
