@@ -35,7 +35,6 @@ async def _(c, cq):
 
 
 @ky.callback("clbk.")
-@ky.callback("clbk.")
 async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
