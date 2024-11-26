@@ -145,8 +145,8 @@ webs_1: "{} **Gunakan format: `{}` [link].**"
 webs_2: "{} **Gagal mendapatkan gambar!**"
 
 # assisten
-asst_1: "Halo 👋 {} !! Saya adalah asisten bot Anda.\n\nPengaturan apa yang ingin kamu ubah ?"
-asst_2: "Halo 👋 {} !! Saya adalah asisten milik {}\nApa yang kamu cari ?"
+asst_1: " {} !! Saya adalah asisten bot Anda.\n\nPengaturan apa yang ingin kamu ubah ?"
+asst_2: "**残酷 ──I.** 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.\nHalo **{}.**\nBluefloyd Userbot adalah bot yang dapat memudahkan klean untuk menggunakan Telegram.\nBerbasin Pyrogram yang pasti worot buat anuan di Telegram!."
 asst_3: "Bahasa"
 asst_4: "Bahasa yang kamu gunakan saat ini adalah : **{}**\nSilahkan pilih jika ingin mengganti bahasa."
 asst_5: "Bahasa kamu berhasil diubah menjadi : **{}**\n\nKamu membutuhkan Restart Userbot untuk menerapkan perubahan."
