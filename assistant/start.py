@@ -43,7 +43,7 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots()
+@ky.bots("asst_6")
 async def asst_6(message: types.Message):
     if message.text == cgr("asst_6"):
         if message.from_user.id != nlx.me.id:
