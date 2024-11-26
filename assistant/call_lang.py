@@ -31,7 +31,7 @@ def st_lang():
 
 @ky.callback("close_asst")
 async def _(c, cq):
-    await cq.message.delete()
+    await cq.edit_message_text(cgr("asstcls"))
 
 
 @ky.callback("clbk.")
