@@ -35,11 +35,12 @@ async def _(c, cq):
 
 
 @ky.callback("clbk.")
+@ky.callback("clbk.")
 async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
-    
+
     if cmd == "bhsa":
         meki = f"{op[0]['natively']}"
         teks = cgr("asst_4").format(meki)
@@ -54,6 +55,35 @@ async def _(c, cq):
     elif cmd == "bek":
         ts_1 = cgr("asst_1").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
+    elif cmd == "fitur":
+        em = Emojik()
+        em.initialize()
+        if not c.get_arg(cq):  # Jika tidak ada argumen yang diberikan
+            try:
+                x = await c.get_inline_bot_results(bot.me.username, "help")
+                await cq.edit_message_text(
+                    f"<b>{x.results[0].title}</b>\n\n{x.results[0].description}",
+                    reply_markup=st_lang()
+                )
+            except Exception as error:
+                await cq.edit_message_text(
+                    f"Terjadi kesalahan: {error}",
+                    reply_markup=st_lang()
+                )
+        else:  # Jika ada argumen
+            nama = c.get_arg(cq)
+            if nama in CMD_HELP:
+                prefix = await c.get_prefix(c.me.id)
+                await cq.edit_message_text(
+                    CMD_HELP[nama].__help__.format(next((p) for p in prefix)) +
+                    f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
+                    reply_markup=st_lang()
+                )
+            else:
+                await cq.edit_message_text(
+                    cgr("hlp_1").format(em.gagal, nama),
+                    reply_markup=st_lang()
+                )
 
 
 
@@ -82,35 +112,4 @@ async def _(c, cq):
         )
     else:
         LOGGER.error(f"Language with code '{lang_code}' not found.")
-
-
-@ky.callback("clbk.fitur")
-async def fitur_handler(c, cq):
-    em = Emojik()
-    em.initialize()
-    # Cek apakah ada argumen yang diberikan
-    if not c.get_arg(cq):
-        try:
-            # Menampilkan hasil dari 'help' menggunakan inline bot results
-            x = await c.get_inline_bot_results(bot.me.username, "help")
-            await cq.edit_message_text(
-                f"<b>{x.results[0].title}</b>\n\n{x.results[0].description}",
-                reply_markup=st_lang()
-            )
-        except Exception as error:
-            # Menangani jika ada error
-            await cq.edit_message_text(f"Terjadi kesalahan: {error}", reply_markup=st_lang())
-    else:
-        nama = c.get_arg(cq)
-        if nama in CMD_HELP:
-            # Menampilkan informasi terkait command
-            prefix = await c.get_prefix(c.me.id)
-            await cq.edit_message_text(
-                CMD_HELP[nama].__help__.format(next((p) for p in prefix)) +
-                f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
-                reply_markup=st_lang()
-            )
-        else:
-            # Jika command tidak ditemukan dalam CMD_HELP
-            await cq.edit_message_text(cgr("hlp_1").format(em.gagal, nama), reply_markup=st_lang())
-
+     
