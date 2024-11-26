@@ -34,7 +34,7 @@ async def _(c, m):
         keyboard=[
             [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text=cgr("asst_6"))],  
             [KeyboardButton(text=cgr("asst_8")), KeyboardButton(text=cgr("asst_7")), KeyboardButton(text=cgr("asst_3"))],
-            [KeyboardButton(text=cgr("asst_10"))]
+            [KeyboardButton(text="Bantuan")]
         ],
         resize_keyboard=True
     )      
@@ -42,13 +42,8 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots("text_handler", human.pv)  # Tangkap semua pesan teks
-async def handle_button_click(c, m):
-    if m.text == cgr("asst_6"):
-        await m.reply("Tombol 'asst_6' ditekan! Menjalankan aksi reboot.")
-        os.execl(sys.executable, sys.executable, "-m", "Mix")
-    elif m.text == cgr("asst_9"):
-        await m.reply("Tombol 'asst_9' ditekan!")
-    elif m.text == cgr("asst_8"):
+@ky.bots()
+async def handle_buttons(c, m):
+      if m.text == "Bantuan":
         await m.reply("Tombol 'asst_8' ditekan!")
 
