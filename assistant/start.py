@@ -43,7 +43,6 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-from aiogram import F
 
 @ky.bots(F.text == cgr("asst_6"))  # Gunakan F.text untuk memfilter teks
 async def asst_6(message: types.Message):
