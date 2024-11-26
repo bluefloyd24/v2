@@ -156,6 +156,7 @@ asst_8: "Cek Fitur"
 asst_9: "Buat Userbot"
 asst_10: "Bantuan"
 asst_11: "Untuk bantuan atau pertanyaan, bisa langsung ke @zAvril!"
+asstcls: "Terimakasih telah menggunakan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
