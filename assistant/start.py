@@ -42,7 +42,7 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots("Bantua")
+@ky.bots("Bantuan")
 async def bantuan_handler(client, message):
     # Verifikasi jika user bukan admin
     if message.from_user.id != nlx.me.id:
