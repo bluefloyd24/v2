@@ -52,8 +52,12 @@ async def _(c, cq):
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
     elif cmd == "bek":
-        ts_1 = cgr("asst_1").format(user_name)
+        ts_1 = cgr("asst_2").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
+    elif cmd == "bantuan":
+        await cq.edit_message_text(cgr("asst_11"))
+
+     
     
 
 @ky.callback("clbk.status")
@@ -81,27 +85,3 @@ async def _(c, cq):
     else:
         LOGGER.error(f"Language with code '{lang_code}' not found.")
      
-@ky.callback("clbk.fitur")
-async def _(c, cq):
-    user_id = cq.from_user.id
-    prefix = await nlx.get_prefix(user_id)
-    msg = (
-        "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
-            " ".join(prefix), len(CMD_HELP)
-        )
-    )
-
-    # Tombol kategori fitur
-    buttons = InlineKeyboardMarkup(
-        paginate_modules(0, CMD_HELP, "help")
-    )
-
-    try:
-        await cq.edit_message_text(
-            text=msg,
-            reply_markup=buttons,
-            disable_web_page_preview=True,
-        )
-    except FloodWait as e:
-        await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-        return
