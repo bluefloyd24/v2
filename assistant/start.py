@@ -19,7 +19,7 @@ from pyrogram.types import *
 from Mix import *
 
 
-@ky.bots("start", human.pv)
+@ky.bots("start")
 async def _(c, m):
     # Log pengguna
     udB.add_served_user(m.from_user.id)
@@ -42,13 +42,6 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.callback("Bantuan")
-async def bantuan_handler(client, message):
-    # Verifikasi jika user bukan admin
-    if message.from_user.id != nlx.me.id:
-        await message.reply("Who are you?")
-        return
-
-    # Kirim pesan reboot dan restart bot
-    await message.reply(cgr("reboot_1"))
-    os.execl(sys.executable, sys.executable, "-m", "Mix")
+@ky.bots("Bantuan")
+async def bantuan_handler(client, message: Message):
+    await message.reply("Jika Anda membutuhkan bantuan, hubungi admin.")
