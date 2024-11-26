@@ -33,14 +33,14 @@ async def _(c, m):
     # Membuat InlineKeyboardMarkup
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=cgr("asst_9"), callback_data="clbk.buat")],
-            [KeyboardButton(text=cgr("asst_6"), callback_data="clbk.rebot")],
+            [KeyboardButton(text=cgr("asst_9")],
+            [KeyboardButton(text=cgr("asst_6")],
             
-            [KeyboardButton(text=cgr("asst_8"), callback_data="clbk.fitur")],
-            [KeyboardButton(text=cgr("asst_7"), callback_data="clbk.status")],
-            [KeyboardButton(text=cgr("asst_3"), callback_data="clbk.bhsa")],
+            [KeyboardButton(text=cgr("asst_8")],
+            [KeyboardButton(text=cgr("asst_7")],
+            [KeyboardButton(text=cgr("asst_3")],
          
-            [KeyboardButton(text=cgr("asst_10"), callback_data="clbk.blue")]
+            [KeyboardButton(text=cgr("asst_10")]
         ],
         resize_keyboard=True
     )      
