@@ -55,34 +55,26 @@ async def _(c, cq):
         ts_1 = cgr("asst_1").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
     elif cmd == "fitur":
-        em = Emojik()
-        em.initialize()
-        if not c.get_arg(cq):  # Jika tidak ada argumen yang diberikan
-            try:
-                x = await c.get_inline_bot_results(bot.me.username, "help")
-                await cq.edit_message_text(
-                    f"<b>{x.results[0].title}</b>\n\n{x.results[0].description}",
-                    reply_markup=st_lang()
-                )
-            except Exception as error:
-                await cq.edit_message_text(
-                    f"Terjadi kesalahan: {error}",
-                    reply_markup=st_lang()
-                )
-        else:  # Jika ada argumen
-            nama = c.get_arg(cq)
-            if nama in CMD_HELP:
-                prefix = await c.get_prefix(c.me.id)
-                await cq.edit_message_text(
-                    CMD_HELP[nama].__help__.format(next((p) for p in prefix)) +
-                    f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
-                    reply_markup=st_lang()
-                )
-            else:
-                await cq.edit_message_text(
-                    cgr("hlp_1").format(em.gagal, nama),
-                    reply_markup=st_lang()
-                )
+        async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    if not c.get_arg(m):
+        try:
+            x = await c.get_inline_bot_results(bot.me.username, "help")
+            await m.reply_inline_bot_result(x.query_id, x.results[0].id)
+        except Exception as error:
+            await m.reply(error)
+    else:
+        nama = c.get_arg(m)
+        if c.get_arg(m) in CMD_HELP:
+            prefix = await c.get_prefix(c.me.id)
+            await m.reply(
+                CMD_HELP[c.get_arg(m)].__help__.format(next((p) for p in prefix))
+                + f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
+                quote=True,
+            )
+        else:
+            await m.reply(cgr("hlp_1").format(em.gagal, nama))
 
 
 
