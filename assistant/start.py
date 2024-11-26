@@ -16,8 +16,6 @@ from pyrogram.raw.functions.messages import *
 from pyrogram.raw.functions.stickers import *
 from pyrogram.raw.types import *
 from pyrogram.types import *
-from aiogram.filters import Text
-
 from Mix import *
 
 
