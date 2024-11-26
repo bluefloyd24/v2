@@ -26,14 +26,27 @@ async def _(c, m):
     user_name = f"<a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name} {m.from_user.last_name or ''}</a>"
     user2 = f"<a href='tg://user?id={nlx.me.id}'>{nlx.me.first_name} {nlx.me.last_name or ''}</a>"
     ts_2 = cgr("asst_2").format(user_name, user2)
-        button = ikb(
-            [
-                [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
-                [(cgr("asst_8"), "clbk.fitur"), (cgr("asst_7"), "clbk.status"), (cgr("asst_3"), "clbk.bhsa")],
-                [(cgr("asst_10"), "clbk.blue")],
-            ]
-        )
-        return await m.reply(ts_1, reply_markup=button)
-    else:
-        tt = ikb([[(cgr("ttup"), "close_asst")]])
-        return await m.reply(ts_2, reply_markup=tt)
+
+    # Tombol InlineKeyboard
+    button = ikb(
+        [
+            [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
+            [(cgr("asst_8"), "clbk.fitur"), (cgr("asst_7"), "clbk.status"), (cgr("asst_3"), "clbk.bhsa")],
+            [(cgr("asst_10"), "clbk.blue")],
+        ]
+    )
+
+    # Semua pengguna melihat tombol
+    return await m.reply(ts_2, reply_markup=button)
+
+
+# Callback handler untuk "Buat Userbot"
+@ky.callback("clbk.buat")
+async def _(c, cq):
+    # Cek apakah pengguna adalah pengguna premium
+    if not db.check_premium(cq.from_user.id):
+        await cq.answer("Anda belum menjadi pengguna premium. Silakan berlangganan untuk mengakses fitur ini.", show_alert=True)
+        return
+
+    # Jika premium, lanjutkan ke langkah selanjutnya
+    await cq.edit_message_text("Silakan masukkan nomor telepon Anda (tanpa kode negara):")
