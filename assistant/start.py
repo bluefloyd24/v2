@@ -43,7 +43,13 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots(F.text == cgr("asst_9"))
-async def handle_asst_9(c, m):
-    await m.reply("Tombol 'asst_9' ditekan!")
+@ky.bots(None, human.pv)  # Tangkap semua pesan teks
+async def handle_button_click(c, m):
+    if m.text == cgr("asst_6"):
+        await m.reply("Tombol 'asst_6' ditekan! Menjalankan aksi reboot.")
+        os.execl(sys.executable, sys.executable, "-m", "Mix")
+    elif m.text == cgr("asst_9"):
+        await m.reply("Tombol 'asst_9' ditekan!")
+    elif m.text == cgr("asst_8"):
+        await m.reply("Tombol 'asst_8' ditekan!")
 
