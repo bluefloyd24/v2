@@ -16,6 +16,7 @@ from pyrogram.raw.functions.messages import *
 from pyrogram.raw.functions.stickers import *
 from pyrogram.raw.types import *
 from pyrogram.types import *
+from aiogram.filters import text
 
 from Mix import *
 
@@ -33,7 +34,7 @@ async def _(c, m):
     # Membuat InlineKeyboardMarkup
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text="asst_6")],  
+            [KeyboardButton(text=cgr("asst_9")), KeyboardButton(text=cgr("asst_6"))],  
             [KeyboardButton(text=cgr("asst_8")), KeyboardButton(text=cgr("asst_7")), KeyboardButton(text=cgr("asst_3"))],
             [KeyboardButton(text=cgr("asst_10"))]
         ],
@@ -43,12 +44,11 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots("asst_6")
+@ky.bots(Text(cgr("asst_6")))
 async def asst_6(message: types.Message):
-    if message.text == "asst_6":
-        if message.from_user.id != nlx.me.id:
-            await message.reply("Perintah ini hanya untuk pengguna Bluefloyd Userbot.")
-            return
+    if message.from_user.id != nlx.me.id:
+        await message.reply("Kamu bukan pengguna Bluefloyd-userbot")
+        return
 
-        await message.reply(cgr("reboot_1"))
-        os.execl(sys.executable, sys.executable, "-m", "Mix")
+    await message.reply(cgr("reboot_1"))
+    os.execl(sys.executable, sys.executable, "-m", "Mix")
