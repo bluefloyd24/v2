@@ -36,12 +36,10 @@ async def _(c, cq):
 
 @ky.callback("clbk.")
 async def _(c, cq):
-    if cq.from_user.id != nlx.me.id:
-        await cq.answer("who are you?", True)
-        return
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
+    
     if cmd == "bhsa":
         meki = f"{op[0]['natively']}"
         teks = cgr("asst_4").format(meki)
@@ -52,6 +50,7 @@ async def _(c, cq):
     elif cmd == "bek":
         ts_1 = cgr("asst_1").format(user_name)
         await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
+
 
 
 @ky.callback("clbk.status")
