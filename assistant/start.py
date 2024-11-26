@@ -16,6 +16,7 @@ from pyrogram.raw.functions.messages import *
 from pyrogram.raw.functions.stickers import *
 from pyrogram.raw.types import *
 from pyrogram.types import *
+from aiogram import F
 from Mix import *
 
 
@@ -42,10 +43,12 @@ async def _(c, m):
     # Kirim pesan menggunakan InlineKeyboardMarkup
     await m.reply(ts_2, reply_markup=keyboard)
 
-@ky.bots(Text(cgr("asst_6")))
+from aiogram import F
+
+@ky.bots(F.text == cgr("asst_6"))  # Gunakan F.text untuk memfilter teks
 async def asst_6(message: types.Message):
     if message.from_user.id != nlx.me.id:
-        await message.reply("Kamu bukan pengguna Bluefloyd-userbot")
+        await message.reply("Who are you?", quote=True)
         return
 
     await message.reply(cgr("reboot_1"))
