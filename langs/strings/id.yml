@@ -155,6 +155,7 @@ asst_7: "Cek Status"
 asst_8: "Cek Fitur"
 asst_9: "Buat Userbot"
 asst_10: "Bantuan"
+asst_11: "Untuk bantuan atau pertanyaan, bisa langsung ke @zAvril!"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
