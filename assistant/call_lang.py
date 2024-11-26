@@ -62,15 +62,30 @@ async def _(c, cq):
 
 
 async def show_fitur(c, cq):
-    """Menangani callback untuk fitur"""
-    em = Emojik()
-    em.initialize()
-
-    try:
-        x = await c.get_inline_bot_results(bot.me.username, "help")
-        await cq.message.reply_inline_bot_result(x.query_id, x.results[0].id)
-    except Exception as error:
-        await cq.answer(f"Gagal memuat fitur: {error}", show_alert=True)
+    user_id = iq.from_user.id
+    emut = await nlx.get_prefix(user_id)
+    msg = (
+        "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
+            " ".join(emut), len(CMD_HELP)
+        )
+    )
+    await c.answer_inline_query(
+        iq.id,
+        cache_time=0,
+        results=[
+            (
+                InlineQueryResultArticle(
+                    title="Help Menu!",
+                    description=f"Menu Bantuan",
+                    thumb_url="https://telegra.ph//file/57376cf2486052ffae0ad.jpg",
+                    reply_markup=InlineKeyboardMarkup(
+                        paginate_modules(0, CMD_HELP, "help")
+                    ),
+                    input_message_content=InputTextMessageContent(msg),
+                )
+            )
+        ],
+    )
 
 
 
