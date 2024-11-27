@@ -14,8 +14,8 @@ from pyrogram.errors import *
 
 from Mix import *
 
-__modles__ = "Animasi"
-__help__ = "Animasi"
+#__modles__ = "Animasi"
+#__help__ = "Animasi"
 
 
 @ky.ubot("love")
