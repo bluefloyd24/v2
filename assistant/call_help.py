@@ -37,7 +37,7 @@ User: {}
 
 
 def clbk_stasm():
-    return ikb([[(cgr("ttup"), "cls_hlp")]])
+    return ikb([[(cgr("ttup"), "clbk.clos")]])
 
 
 @ky.callback("^pm_")
@@ -512,7 +512,7 @@ def cb_tespeed():
 async def _(c, cq):
     if cq.from_user.id != nlx.me.id:
         return await cq.answer("who are you?", True)
-    kb = ikb([[(f"{cgr('ttup')}", "cls_hlp")]])
+    kb = ikb([[(f"{cgr('ttup')}", "clbk.clos")]])
     await cq.edit_message_text(text="**Processing...**", reply_markup=kb)
     loop = asyncio.get_running_loop()
     download, upload, info = await loop.run_in_executor(None, cb_tespeed)
