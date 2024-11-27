@@ -60,8 +60,7 @@ async def clbk_start(c, cq):
     await cq.edit_message_text(text=ts_1, reply_markup=ikb(
         [
             [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
-            [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_3"), "clbk.bhsa")],
-            [(cgr("asst_10"), "clbk.bantuan")],
+            [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_10"), "clbk.bantuan")],
         ]
     )) 
 
