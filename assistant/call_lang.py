@@ -56,6 +56,8 @@ async def _(c, cq):
         await clbk_start(c, cq)
     elif cmd == "bantuan":
         await cq.edit_message_text(cgr("asst_11"))
+    elif cmd == "clos":
+        await close_button_handler(c, cq)
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
 async def clbk_start(c, cq):
@@ -73,7 +75,10 @@ async def clbk_start(c, cq):
             [(cgr("asst_10"), "clbk.bantuan")],
         ]
     )) 
-    
+
+async def close_button_handler(c, cq):
+    await cq.message.delete()
+    return
 
 @ky.callback("clbk.status")
 async def _(c, cq):
