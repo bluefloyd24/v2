@@ -3,8 +3,8 @@ from gpytranslate import Translator
 
 from Mix import *
 
-__modles__ = "Joke"
-__help__ = get_cgr("help_joko")
+#__modles__ = "Joke"
+#__help__ = get_cgr("help_joko")
 
 
 async def kitatr(c, txt):
