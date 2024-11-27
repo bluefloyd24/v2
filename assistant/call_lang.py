@@ -65,8 +65,14 @@ async def clbk_start(c, cq):
     )) 
 
 async def close_button_handler(c, cq):
-    await cq.message.delete()
-    return
+    if cq.message:  # Pastikan pesan masih ada
+        try:
+            await cq.message.delete()  # Hapus pesan
+        except Exception as e:
+            await cq.answer(f"Gagal menghapus pesan: {str(e)}", show_alert=True)
+    else:
+        await cq.answer("Pesan sudah tidak ditemukan.", show_alert=True)
+
 
 async def clbk_fitur(c, cq):
     user_id = cq.from_user.id
