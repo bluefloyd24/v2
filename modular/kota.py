@@ -12,8 +12,8 @@ import requests
 
 from Mix import *
 
-__modles__ = "Country"
-__help__ = get_cgr("help_negara")
+#__modles__ = "Country"
+#__help__ = get_cgr("help_negara")
 
 
 """
