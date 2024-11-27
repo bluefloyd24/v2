@@ -61,6 +61,11 @@ async def _(c, cq):
         await close_button_handler(c, cq)
     elif cmd == "fitur":
         await clbk_fitur(c, cq)
+    elif cmd == "status":
+        if cq.from_user.id != nlx.me.id:
+            await cq.edit_message_text(cgr("asst_12"))
+            return
+         await cq.edit_message_text(cgr("asst_13"))
      
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
