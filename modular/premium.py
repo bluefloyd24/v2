@@ -1,21 +1,23 @@
-from pyrogram import *
-from pyrogram.errors import *
-from pyrogram.enums import *
-from pyrogram.types import *
-from Mix import *
+from datetime import datetime, timedelta
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+# Handler untuk perintah .premium
+@ky.ubot("premium|prem", human.dev)
+async def premium(c, m):
+    if m.from_user.id != nlx.me.id:  # Pastikan hanya developer yang bisa menggunakannya
+        return await m.reply("Anda tidak memiliki akses untuk perintah ini.")
 
-@ky.ubot("premium")
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    if m.from_user.id == nlx.me.id:  # Pastikan hanya admin yang bisa mengatur premium
-        try:
-            duration = int(m.text.split()[1])  # Ambil durasi premium
-            db.set_premium(m.from_user.id, duration)
-            await m.reply(cgr("prem1").format(em.sukses, m.from_user.first_name, duration))
+    args = m.text.split()
+    if len(args) != 2:
+        return await m.reply("Format salah! Gunakan: `.premium <durasi> day`")
 
-        except Exception as e:
-            await m.reply(f"Terjadi kesalahan: {e}")
-    else:
-        await m.reply("Anda tidak memiliki izin untuk menggunakan perintah ini.")
+    try:
+        duration = int(args[1])
+    except ValueError:
+        return await m.reply("Durasi harus berupa angka.")
+
+    # Mengatur status premium di database
+    udB.set_premium(m.from_user.id, duration)
+
+    await m.reply(f"Berhasil menambahkan {m.from_user.first_name} ke premium selama {duration} hari.")
