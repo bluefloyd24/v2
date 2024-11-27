@@ -30,7 +30,7 @@ from Mix import *
 #__help__ = get_cgr("help_dev")
 
 
-@ky.cegers("aktif")
+@ky.ubot("aktif", human.dev)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
@@ -44,7 +44,7 @@ async def _(c: nlx, m):
     return
 
 
-@ky.cegers("cek")
+@ky.ubot("cek", human.dev)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
@@ -60,7 +60,7 @@ async def _(c: nlx, m):
         return
 
 
-@ky.cegers("nonaktif")
+@ky.ubot("nonaktif", human.dev)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
