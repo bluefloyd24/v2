@@ -83,129 +83,32 @@ async def close_button_handler(c, cq):
     await cq.message.delete()
     return
 
-async def clbk_fitur(c, cq):
-    mod_match = re.match(r"help_module\((.+?)\)", cq.data)
-    prev_match = re.match(r"help_prev\((.+?)\)", cq.data)
-    next_match = re.match(r"help_next\((.+?)\)", cq.data)
-    back_match = re.match(r"help_back", cq.data)
-    user_id = cq.from_user.id
-    prefix = await nlx.get_prefix(user_id)
+async def clbk_fitur(c, iq):
+    user_id = iq.from_user.id
+    emut = await nlx.get_prefix(user_id)
+    msg = (
+        "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
+            " ".join(emut), len(CMD_HELP)
+        )
+    )
+    await c.answer_inline_query(
+        iq.id,
+        cache_time=0,
+        results=[
+            (
+                InlineQueryResultArticle(
+                    title="Help Menu!",
+                    description=f"Menu Bantuan",
+                    thumb_url="https://telegra.ph//file/57376cf2486052ffae0ad.jpg",
+                    reply_markup=InlineKeyboardMarkup(
+                        paginate_modules(0, CMD_HELP, "help")
+                    ),
+                    input_message_content=InputTextMessageContent(msg),
+                )
+            )
+        ],
+    )
 
-    if mod_match:
-        module = (mod_match.group(1)).replace(" ", "_")
-        text = f"<b>{CMD_HELP[module].__help__}</b>\n".format(next((p) for p in prefix))
-        button = ikb([[("≪", "help_back")]])
-        if "Animasi" in text:
-            text1 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
-                " ".join(prefix), len(CMD_HELP)
-            )
-            button = ikb(
-                [
-                    [
-                        ("Animasi 1", "anim.anm1"),
-                        ("Animasi 2", "anim.anm2"),
-                    ],
-                    [
-                        ("Animasi 3", "anim.anm3"),
-                        ("Animasi 4", "anim.anm4"),
-                    ],
-                    [
-                        ("≪", "help_back"),
-                    ],
-                ]
-            )
-            try:
-                await cq.edit_message_text(
-                    text=text1, reply_markup=button, disable_web_page_preview=True
-                )
-            except FloodWait as e:
-                await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-                return
-        elif "Toxic" in text:
-            text1 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
-                " ".join(prefix), len(CMD_HELP)
-            )
-            button = ikb(
-                [
-                    [
-                        ("Toxic 1", "to.tox1"),
-                        ("Toxic 2", "to.tox2"),
-                    ],
-                    [
-                        ("Toxic 3", "to.tox3"),
-                        ("Toxic 4", "to.tox4"),
-                    ],
-                    [
-                        ("≪", "help_back"),
-                        ("⪼", "to.next"),
-                    ],
-                ]
-            )
-            try:
-                await cq.edit_message_text(
-                    text=text1, reply_markup=button, disable_web_page_preview=True
-                )
-            except FloodWait as e:
-                await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-                return
-        else:
-            try:
-                await cq.edit_message_text(
-                    text=text + f"\n<b>© 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
-                    reply_markup=button,
-                    disable_web_page_preview=True,
-                )
-            except FloodWait as e:
-                await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-                return
-
-    if prev_match:
-        t1 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
-            " ".join(prefix), len(CMD_HELP)
-        )
-        curr_page = int(prev_match.group(1))
-        try:
-            await cq.edit_message_text(
-                text=t1,
-                reply_markup=InlineKeyboardMarkup(
-                    paginate_modules(curr_page - 1, CMD_HELP, "help")
-                ),
-                disable_web_page_preview=True,
-            )
-        except FloodWait as e:
-            await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-            return
-    if next_match:
-        t2 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
-            " ".join(prefix), len(CMD_HELP)
-        )
-        next_page = int(next_match.group(1))
-        try:
-            await cq.edit_message_text(
-                text=t2,
-                reply_markup=InlineKeyboardMarkup(
-                    paginate_modules(next_page + 1, CMD_HELP, "help")
-                ),
-                disable_web_page_preview=True,
-            )
-        except FloodWait as e:
-            await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-            return
-    if back_match:
-        t3 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
-            " ".join(prefix), len(CMD_HELP)
-        )
-        try:
-            await cq.edit_message_text(
-                text=t3,
-                reply_markup=InlineKeyboardMarkup(
-                    paginate_modules(0, CMD_HELP, "help")
-                ),
-                disable_web_page_preview=True,
-            )
-        except FloodWait as e:
-            await cq.answer(f"FloodWait {e}, Please Waiting!!", True)
-            return
 
 @ky.callback("clbk.status")
 async def _(c, cq):
