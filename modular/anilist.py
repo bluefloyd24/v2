@@ -1,7 +1,7 @@
 from Mix import *
 
-__modles__ = "AniList"
-__help__ = get_cgr("help_animstream")
+#__modles__ = "AniList"
+#__help__ = get_cgr("help_animstream")
 
 
 ANIME_LIST = {
