@@ -13,8 +13,8 @@ from pyrogram import *
 
 from Mix import *
 
-__modles__ = "Pantun"
-__help__ = get_cgr("help_cakep")
+#__modles__ = "Pantun"
+#__help__ = get_cgr("help_cakep")
 
 
 @ky.ubot("sepat")
