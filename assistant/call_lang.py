@@ -92,6 +92,14 @@ async def clbk_fitur(c, cq):
         )
     )
 
+    # Mengedit pesan yang ada dan menampilkan daftar perintah serta tombol navigasi
+    await cq.edit_message_text(
+        text=msg,
+        reply_markup=InlineKeyboardMarkup(
+            paginate_modules(0, CMD_HELP, "help")  # Tombol navigasi modul
+        ),
+    )
+
 
 @ky.callback("clbk.status")
 async def _(c, cq):
