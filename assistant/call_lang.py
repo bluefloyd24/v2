@@ -47,7 +47,7 @@ async def _(c, cq):
     elif cmd == "rebot":
         # Hanya pemilik bot yang dapat melakukan reboot
         if cq.from_user.id != nlx.me.id:
-            await cq.answer("who are you?", True)
+            await cq.edit_message_text(cgr("asst_12"))
             return
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
@@ -125,14 +125,3 @@ async def _(c, cq):
         )
     else:
         LOGGER.error(f"Language with code '{lang_code}' not found.")
-
-@ky.callback("^clbk.balek$")
-async def kembali_handler(c, cq):
-    # Panggil kembali handler `/start` untuk menampilkan menu awal
-    await start_handler(c, cq.message)
-
-
-@ky.callback("^clbk.clos$")
-async def close_handler(c, cq):
-    # Menghapus pesan ketika tombol "Close" ditekan
-    await cq.message.delete()
