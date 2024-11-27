@@ -38,8 +38,8 @@ from . import import_modular
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-__modles__ = "Heroku"
-__help__ = get_cgr("help_heroku")
+#__modles__ = "Heroku"
+#__help__ = get_cgr("help_heroku")
 
 
 @ky.ubot("getlog")
