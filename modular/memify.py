@@ -10,8 +10,8 @@
 from Mix import *
 from Mix.core.tools_media import *
 
-__modles__ = "Memify"
-__help__ = "help_memify"
+#__modles__ = "Memify"
+#__help__ = "help_memify"
 
 
 @ky.ubot("mmf|memify")
