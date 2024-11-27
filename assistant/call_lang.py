@@ -18,22 +18,6 @@ from pyrogram.types import *
 from Mix import *
 
 
-def st_lang():
-    languages = get_bahasa_()
-    keyboard = ikb(
-        [[(f"{lang['natively']}", f"set_{lang['code']}") for lang in languages]]
-    )
-    keb = ikb([[("Kembali", "clbk.bek"), ("Tutup", "clbk.clos")]])
-    for row in keb.inline_keyboard:
-        keyboard.inline_keyboard.append(row)
-    return keyboard
-
-
-@ky.callback("close_asst")
-async def _(c, cq):
-    await cq.edit_message_text(cgr("asstcls"))
-
-
 @ky.callback("clbk.")
 async def _(c, cq):
     cmd = cq.data.split(".")[1]
@@ -41,11 +25,7 @@ async def _(c, cq):
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
 
     if cmd == "bhsa":
-            await cq.edit_message_text(cgr("asst_12"))
-            return
-        meki = f"{op[0]['natively']}"
-        teks = cgr("asst_4").format(meki)
-        await cq.edit_message_text(text=teks, reply_markup=st_lang())
+        await cq.edit_message_text("who r u")
     elif cmd == "rebot":
         if cq.from_user.id != nlx.me.id:
             await cq.edit_message_text(cgr("asst_12"))
