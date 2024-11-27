@@ -20,7 +20,7 @@ async def _(c: nlx, m):
         ):
             asupannya.append(asupan)
         video = random.choice(asupannya)
-        await c.send_video(
+        await video.copy(
             m.chat.id,
             video=video,
             caption="Nih Bokepnya jink!",
