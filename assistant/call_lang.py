@@ -52,12 +52,27 @@ async def _(c, cq):
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
     elif cmd == "bek":
-        ts_1 = cgr("asst_2").format(user_name)
-        await cq.edit_message_text(text=ts_1, reply_markup=clbk_strt())
+        # Memanggil fungsi clbk_start untuk kembali ke menu utama
+        await clbk_start(c, cq)
     elif cmd == "bantuan":
         await cq.edit_message_text(cgr("asst_11"))
 
-     
+# Fungsi clbk_start yang digunakan untuk kembali ke menu utama
+async def clbk_start(c, cq):
+    # Ambil data pengguna (opsional, jika diperlukan)
+    user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
+
+    # Pesan untuk menu utama
+    ts_1 = cgr("asst_2").format(user_name)  # Format pesan dengan nama pengguna
+
+    # Kembali ke menu utama
+    await cq.edit_message_text(text=ts_1, reply_markup=ikb(
+        [
+            [(cgr("asst_9"), "clbk.buat"), (cgr("asst_6"), "clbk.rebot")],
+            [(cgr("asst_7"), "clbk.status"), (cgr("asst_8"), "clbk.fitur"), (cgr("asst_3"), "clbk.bhsa")],
+            [(cgr("asst_10"), "clbk.bantuan")],
+        ]
+    )) 
     
 
 @ky.callback("clbk.status")
