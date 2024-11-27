@@ -26,8 +26,8 @@ from pytz import timezone
 
 from Mix import *
 
-#__modles__ = "Devs"
-#__help__ = get_cgr("help_dev")
+__modles__ = "Devs"
+__help__ = get_cgr("help_dev")
 
 
 @ky.cegers("aktif")
