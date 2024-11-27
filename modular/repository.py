@@ -10,8 +10,8 @@
 from Mix import *
 from Mix.core.http import get
 
-__modles__ = "Repository"
-__help__ = get_cgr("help_repo")
+#__modles__ = "Repository"
+#__help__ = get_cgr("help_repo")
 
 
 @ky.ubot("repo|repository")
