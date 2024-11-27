@@ -83,30 +83,13 @@ async def close_button_handler(c, cq):
     await cq.message.delete()
     return
 
-async def clbk_fitur(c, iq):
-    user_id = iq.from_user.id
+async def clbk_fitur(c, cq):
+    user_id = cq.from_user.id
     emut = await nlx.get_prefix(user_id)
     msg = (
         "<b>Commands\n      Prefixes: `{}`\n      Modules: <code>{}</code></b>".format(
             " ".join(emut), len(CMD_HELP)
         )
-    )
-    await c.answer_inline_query(
-        iq.id,
-        cache_time=0,
-        results=[
-            (
-                InlineQueryResultArticle(
-                    title="Help Menu!",
-                    description=f"Menu Bantuan",
-                    thumb_url="https://telegra.ph//file/57376cf2486052ffae0ad.jpg",
-                    reply_markup=InlineKeyboardMarkup(
-                        paginate_modules(0, CMD_HELP, "help")
-                    ),
-                    input_message_content=InputTextMessageContent(msg),
-                )
-            )
-        ],
     )
 
 
