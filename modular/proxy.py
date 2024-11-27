@@ -2,8 +2,8 @@ import requests
 
 from Mix import *
 
-__modles__ = "Proxy"
-__help__ = get_cgr("help_prox")
+#__modles__ = "Proxy"
+#__help__ = get_cgr("help_prox")
 
 
 async def fetch_proxies(proxy_type):
