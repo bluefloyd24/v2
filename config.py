@@ -19,7 +19,7 @@ upstream_repo = getenv(
     "https://github.com/bluefloyd24/v2",
 )
 upstream_branch = getenv("upstream_branch", "main")
-git_token = getenv("git_token", None)
+git_token = getenv("git_token", "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")
 log_channel = getenv("log_channel", None)
 genius_api = getenv(
     "genius_api",
