@@ -119,7 +119,7 @@ async def _(c, cq):
     if mod_match:
         module = (mod_match.group(1)).replace(" ", "_")
         text = f"<b>{CMD_HELP[module].__help__}</b>\n".format(next((p) for p in prefix))
-        button = ikb([[("≪", "help_back")]])
+        button = ikb([[("⋞", "help_back")]])
         if "Animasi" in text:
             text1 = "<b>Commands\n      Prefixes: <code>{}</code>\n      Modules: <code>{}</code></b>".format(
                 " ".join(prefix), len(CMD_HELP)
@@ -135,7 +135,7 @@ async def _(c, cq):
                         ("Animasi 4", "anim.anm4"),
                     ],
                     [
-                        ("≪", "help_back"),
+                        ("⋞", "help_back"),
                     ],
                 ]
             )
@@ -161,8 +161,8 @@ async def _(c, cq):
                         ("Toxic 4", "to.tox4"),
                     ],
                     [
-                        ("≪", "help_back"),
-                        ("⪼", "to.next"),
+                        ("⋞", "help_back"),
+                        ("⋟", "to.next"),
                     ],
                 ]
             )
@@ -236,7 +236,7 @@ async def _(c, cq):
 @ky.callback("^anim.")
 async def _(c, cq):
     colmek = cq.data.split(".")[1]
-    kemem = ikb([[("≪", "anim.bc")]])
+    kemem = ikb([[("⋞", "anim.bc")]])
     user_id = cq.from_user.id
     prefix = await nlx.get_prefix(user_id)
     txt = None
@@ -283,7 +283,7 @@ async def _(c, cq):
                     ("Animasi 4", "anim.anm4"),
                 ],
                 [
-                    ("≪", "help_back"),
+                    ("⋞", "help_back"),
                 ],
             ]
         )
@@ -297,7 +297,7 @@ async def _(c, cq):
 @ky.callback("^to.")
 async def _(c, cq):
     colmek = cq.data.split(".")[1]
-    kemem = ikb([[("≪", "to.bc"), ("⪼", "to.next")]])
+    kemem = ikb([[("⋞", "to.bc"), ("⪼", "to.next")]])
     user_id = cq.from_user.id
     prefix = await nlx.get_prefix(user_id)
     txt = None
@@ -319,7 +319,7 @@ async def _(c, cq):
                     ("Toxic 9", "to.tox9"),
                 ],
                 [
-                    ("≪", "to.bc"),
+                    ("⋞", "to.bc"),
                 ],
             ]
         )
@@ -406,8 +406,8 @@ async def _(c, cq):
                     ("Toxic 4", "to.tox4"),
                 ],
                 [
-                    ("≪", "help_back"),
-                    ("⪼", "to.next"),
+                    ("⋞", "help_back"),
+                    ("⋟", "to.next"),
                 ],
             ]
         )
