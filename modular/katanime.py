@@ -15,8 +15,8 @@ import requests
 
 from Mix import *
 
-__modles__ = "Katanime"
-__help__ = get_cgr("help_katnim")
+#__modles__ = "Katanime"
+#__help__ = get_cgr("help_katnim")
 
 
 def carikatanime(katanya):
