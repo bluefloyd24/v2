@@ -11,14 +11,7 @@ from Mix import *
 from Mix.core.tools_media import *
 
 __modles__ = "Memify"
-__help__ = """
- Memify
-• Perintah: `{0}mmf` text [balas stiker]
-• Penjelasan: Untuk menambahkan teks ke stiker.
-
-• Optional:
-`{0}mmf teks atas; teks bawah`
-"""
+__help__ = "help_memify"
 
 
 @ky.ubot("mmf|memify")
