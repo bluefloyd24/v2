@@ -41,18 +41,18 @@ async def _(c, cq):
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
 
     if cmd == "bhsa":
+            await cq.edit_message_text(cgr("asst_12"))
+            return
         meki = f"{op[0]['natively']}"
         teks = cgr("asst_4").format(meki)
         await cq.edit_message_text(text=teks, reply_markup=st_lang())
     elif cmd == "rebot":
-        # Hanya pemilik bot yang dapat melakukan reboot
         if cq.from_user.id != nlx.me.id:
             await cq.edit_message_text(cgr("asst_12"))
             return
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
     elif cmd == "bek":
-        # Memanggil fungsi clbk_start untuk kembali ke menu utama
         await clbk_start(c, cq)
     elif cmd == "bantuan":
         button = ikb([[(cgr("balik"), "clbk.bek")]])
