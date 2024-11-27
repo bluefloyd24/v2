@@ -297,7 +297,7 @@ async def _(c, cq):
 @ky.callback("^to.")
 async def _(c, cq):
     colmek = cq.data.split(".")[1]
-    kemem = ikb([[("⋞", "to.bc"), ("⪼", "to.next")]])
+    kemem = ikb([[("⋞", "to.bc"), ("⋟", "to.next")]])
     user_id = cq.from_user.id
     prefix = await nlx.get_prefix(user_id)
     txt = None
