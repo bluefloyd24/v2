@@ -662,6 +662,7 @@ negar_15: "📌 **Zona waktu:-** `{}`\n"
 negar_16: "📌 **Top Level Domain:-** `{}`\n"
 
 # help_for
+help_payme: "**Payment**\n\n<blockquote>• Perintah: `{0}payment`\n• Penjelasan: Fitur ini hanya khusus untuk Developer!.</blockquote>"
 help_negara: " **Negara**\n\n<blockquote>• Perintah: `{0}negara` [nama negara]\n• Penjelasan: Untuk mencari info tentang Negara.</blockquote>"
 help_mail: " **Mail**\n\n<blockquote>• Perintah: `{0}genmail`\n• Penjelasan: Untuk mendapatkan Google Email Sementara.\n\n• Perintah: `{0}getmail [email] [token]`\n• Penjelasan: Untuk mendapatkan pesan yang masuk di Temp Gmail.\n\n• Perintah: `{0}tempmail`\n• Penjelasan: Untuk mendapatkan Email Random Sementara.\n\n• Perintah: `{0}gettemp` [email]\n• Penjelasan: Untuk mendapatkan pesan yang ada di dalam Email Random Sementara.</blockquote>"
 help_katnim: " **Kata Anime**\n\n<blockquote>• Perintah: `{0}katanimelist`\n• Penjelasan: Melihat daftar dan total kata-kata anime.\n\n• Perintah: `{0}katanime`\n• Penjelasan: Memilih kata dan karakter anime secara acak\n\n• Perintah: `{0}kata` [anime]\n• Penjelasan: Mengambil kata dari anime.\n\n• Perintah: `{0}katanime` [kata]\n• Penjelasan: Menelusuri kata anime berdasarkan argumen yang diberikan.</blockquote>"
