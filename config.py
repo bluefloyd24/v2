@@ -12,7 +12,7 @@ db_name = getenv("db_name", "KntDB")
 mongo_uri = getenv("mongo_uri", "mongodb+srv://satumailseribuakuntele:dimarb24@cluster0.o10mi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 def_bahasa = getenv("def_bahasa", "id")
 log_pic = getenv("log_pic", "https://telegra.ph/file/78fbd9d73e1f456857222.jpg")
-heroku_api = getenv("HRKU-cf37cdb1-c2c5-4028-a7b6-5f78374ac156")
+heroku_api = getenv("heroku_api")
 heroku_app_name = getenv("heroku_app_name")
 upstream_repo = getenv(
     "upstream_repo",
