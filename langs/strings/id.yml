@@ -662,6 +662,7 @@ negar_15: "📌 **Zona waktu:-** `{}`\n"
 negar_16: "📌 **Top Level Domain:-** `{}`\n"
 
 # help_for
+help_memify: "**Memify**\n\n<blockquote>• Perintah: `{0}mmf` text [balas stiker]\n• Penjelasan: Untuk menambahkan teks ke stiker.\n\n• Optional:`{0}mmf teks atas; teks bawah`</blockquote>"
 help_payme: "**Payment**\n\n<blockquote>• Perintah: `{0}payment`\n• Penjelasan: Fitur ini hanya khusus untuk Developer!.</blockquote>"
 help_negara: " **Negara**\n\n<blockquote>• Perintah: `{0}negara` [nama negara]\n• Penjelasan: Untuk mencari info tentang Negara.</blockquote>"
 help_mail: " **Mail**\n\n<blockquote>• Perintah: `{0}genmail`\n• Penjelasan: Untuk mendapatkan Google Email Sementara.\n\n• Perintah: `{0}getmail [email] [token]`\n• Penjelasan: Untuk mendapatkan pesan yang masuk di Temp Gmail.\n\n• Perintah: `{0}tempmail`\n• Penjelasan: Untuk mendapatkan Email Random Sementara.\n\n• Perintah: `{0}gettemp` [email]\n• Penjelasan: Untuk mendapatkan pesan yang ada di dalam Email Random Sementara.</blockquote>"
