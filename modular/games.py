@@ -3,8 +3,8 @@ from pyrogram.types import *
 
 from Mix import *
 
-__modles__ = "Games"
-__help__ = get_cgr("help_games")
+#__modles__ = "Games"
+#__help__ = get_cgr("help_games")
 
 
 @ky.ubot("catur")
