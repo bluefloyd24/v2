@@ -55,7 +55,8 @@ async def _(c, cq):
         # Memanggil fungsi clbk_start untuk kembali ke menu utama
         await clbk_start(c, cq)
     elif cmd == "bantuan":
-        await cq.edit_message_text(cgr("asst_11"))
+        button = ikb([[(cgr("Kembali"), "clbk.bek")]])
+        await cq.edit_message_text(cgr("asst_11"), reply_markup=button)
     elif cmd == "clos":
         await close_button_handler(c, cq)
     elif cmd == "fitur":
