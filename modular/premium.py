@@ -8,18 +8,25 @@ from Mix import *
 async def premium(c, m):
     em = Emojik()
     em.initialize()
+    
+    # Periksa apakah pengguna adalah developer
     if m.from_user.id not in DEVS:
         return await m.reply(cgr("prem_1").format(em.gagal))
-
-    args = m.text.split()
-    if len(args) != 2:
+    
+    # Pisahkan teks dan validasi argumen
+    args = m.text.split(maxsplit=2)  # Ambil hingga maksimal 3 bagian
+    
+    if len(args) < 2:
         return await m.reply(cgr("prem_2").format(em.gagal))
-
+    
     try:
+        # Ambil hanya angka durasi
         duration = int(args[1])
     except ValueError:
         return await m.reply(cgr("prem_3").format(em.gagal))
-
-    udB.set_premium(m.from_user.id, duration)
+    
+    # Set premium untuk pengguna
+    udB.set_premium(m.reply_to_message.from_user.id, duration)
 
     await m.reply(cgr("prem_4").format(m.from_user.first_name, duration))
+
