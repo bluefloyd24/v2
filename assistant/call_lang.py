@@ -39,7 +39,7 @@ async def _(c, cq):
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
 
-        if not ubot_status["is_ubot"]:
+        if not ubot_status:
 
             await cq.edit_message_text(cgr("reboot_2"), reply_markup=bwat)
             return
