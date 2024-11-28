@@ -5,7 +5,7 @@ authors:
   - blque
   
 
-
+devs: "𝗗𝗲𝘃𝗲𝗹𝗼𝗽𝗲𝗿.\n<blockquote>Kamu adalah seorang developer bot ini.</blockquote>
 cmds: "**Bantuan Perintah**"
 err: "{} **Error:** {} \n\n**Silahkan laporkan ke @blque**"
 err_1: "**Error:** {}"
