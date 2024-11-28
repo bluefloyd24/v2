@@ -50,11 +50,18 @@ async def _(c, cq):
         await clbk_fitur(c, cq)
 
     elif cmd == "status":
-        button = ikb([[(cgr("balik"), "clbk.bek")]])
-        if not premium_status["is_premium"]:
-            await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
-            return
-        await cq.edit_message_text(cgr("asst_13"))
+    button = ikb([[(cgr("balik"), "clbk.bek")]])
+  
+    if cq.from_user.id in DEVS:
+        await cq.edit_message_text(cgr("devs"))
+        return
+
+    if not premium_status["is_premium"]:
+        await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
+        return
+
+    # Jika pengguna premium
+    await cq.edit_message_text(cgr("asst_13"), reply_markup=button)
 
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
