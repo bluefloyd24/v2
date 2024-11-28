@@ -23,38 +23,44 @@ async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
     user_id = cq.from_user.id
-    remaining_days = premium_status["remaining_days"]
-    user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
     premium_status = udB.check_premium(user_id)
- 
+    user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
+
     if cmd == "bhsa":
         await cq.edit_message_text("who r u")
+
     elif cmd == "rebot":
         if cq.from_user.id != nlx.me.id:
             await cq.edit_message_text(cgr("asst_12"))
             return
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
+
     elif cmd == "bek":
         await clbk_start(c, cq)
+
     elif cmd == "bantuan":
         button = ikb([[(cgr("balik"), "clbk.bek")]])
         await cq.edit_message_text(cgr("asst_11"), reply_markup=button)
+
     elif cmd == "clos":
         await close_button_handler(c, cq)
+
     elif cmd == "fitur":
         await clbk_fitur(c, cq)
+
     elif cmd == "status":
-       if not premium_status["is_premium"]:
+        if not premium_status["is_premium"]:
             await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
             return
         await cq.edit_message_text(cgr("asst_13"))
+
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
         if not premium_status["is_premium"]:
             await cq.answer("❌ Kamu bukan pengguna premium.", show_alert=True)
             return
-        
+
         # Jika sudah memiliki userbot, beri tahu pengguna
         if udB.has_userbot(user_id):
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
@@ -81,7 +87,7 @@ async def _(c, cq):
                                 twofa_code = message_2fa.text
                                 if twofa_code == "-":
                                     twofa_code = None
-                                
+
                                 await message_2fa.reply("🔄 Memulai login session...")
 
                                 # Backend: Generate session string
@@ -114,6 +120,7 @@ async def _(c, cq):
                                         "Pastikan data yang dimasukkan sudah benar."
                                     )
                                     return
+
 
 async def install_userbot(user_id, session_string):
     try:
