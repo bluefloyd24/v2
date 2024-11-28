@@ -81,46 +81,57 @@ async def _(c, cq):
         await cq.edit_message_text(cgr("asst_13").format(user_name, remaining_days), reply_markup=button)
 
     elif cmd == "buat":
-        lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
-        lnjtkn = ikb([[(cgr("lnjt"), "clbk.lanjut")]])
+        lnjtkn = ikb(
+            [
+                [(cgr("lnjt"), "clbk.lanjut")],
+                [(cgr("balik"), "clbk.bek")],
+            ]
+        )
+
         if cq.from_user.id in DEVS:
             await cq.edit_message_text(cgr("devs"))
             return
-         await cq.edit_message_text(
-             f"""
-             𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.
-⋟ Ketentuan:
-• id telegram dengan awal 1/2/5 atau id lama dibawah 2022
-• untuk id 6/7 pastikan akun tersebut aktif digunakan selama 3-4 bulan
-• tidak dipergunakan untuk hal-hal negatif
-• tidak melanggar ToS dari telegram
 
-⋟ Penyebab terjadinya banned di akun telegram yang menggunakan userbot diantaranya:
-• melanggar ketentuan dari Telegram
-• adanya pemakaian tidak wajar dari fitur yang ada di userbot
-• terdeteksi adanya aktivitas yang mencurigakan
-• laporan atau pengaduan dari pihak lain
+        await cq.edit_message_text(
+            """
+𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.
+<blockquote>⋟ **Ketentuan:**
+• ID Telegram dengan awal 1/2/5 atau ID lama di bawah 2022.
+• Untuk ID 6/7 pastikan akun tersebut aktif digunakan selama 3-4 bulan.
+• Tidak dipergunakan untuk hal-hal negatif.
+• Tidak melanggar ToS dari Telegram.
 
-⋟ Note:
-jika menggunakan fitur Dspam/Delayspam, pastikan mengatur delay diatas 5 menit atau diatas 300 detik guna mengurangi resiko akun terbanned!.
+⋟ **Penyebab terjadinya banned di akun Telegram yang menggunakan userbot di antaranya:**
+• Melanggar ketentuan dari Telegram.
+• Adanya pemakaian tidak wajar dari fitur yang ada di userbot.
+• Terdeteksi adanya aktivitas yang mencurigakan.
+• Laporan atau pengaduan dari pihak lain.
 
-⋟ Garansi:
-untuk akun yang terbanned/deactive bisa klaim garansi. dan akun yang sudah membuat userbot tidak bisa membuatnya lagi. (1x pembuatan per user)
+⋟ **Note:**
+Jika menggunakan fitur Dspam/Delayspam, pastikan mengatur delay di atas 5 menit atau di atas 300 detik guna mengurangi risiko akun terbanned!.
 
-⋟ Buy with your own risk!.
-⋟ Silahkan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berkalu.
+⋟ **Garansi:**
+Untuk akun yang terbanned/deactive bisa klaim garansi. Akun yang sudah membuat userbot tidak bisa membuatnya lagi (1x pembuatan per user).
+
+⋟ **Buy with your own risk!**
+Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</blockquote>
 """,
-         reply_markup=lnjtkn,
-        )
+        reply_markup=lnjtkn,
+    )
+     
+    elif cmd == "lanjut":
+        lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
          
         if not premium_status["is_premium"]:
             
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
 
-        if udB.has_userbot(user_id):
+        if in ubot_status:
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
             return
+
+     await cq.message_reply("sabar lg ujicoba")
 
 
         @ky.bots(filters.private & filters.text & filters.reply)
