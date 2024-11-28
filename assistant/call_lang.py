@@ -25,6 +25,7 @@ async def _(c, cq):
     op = get_bahasa_()
     user_id = cq.from_user.id
     premium_status = udB.check_premium(user_id)
+    ubot_status = udB.has_userbot(user_id)
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
 
     if cmd == "bhsa":
@@ -32,10 +33,17 @@ async def _(c, cq):
 
     elif cmd == "rebot":
         lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
-        if cq.from_user.id != nlx.me.id:
+        bwat = ikb([[(cgr("asst_9"), "clbk.buat")]])
+        if not premium_status["is_premium"]:
             
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
+
+        if not ubot_status["is_ubot"]:
+
+            await cq.edit_message_text(cgr("reboot_2"), reply_markup=bwat)
+            return
+                     
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
 
