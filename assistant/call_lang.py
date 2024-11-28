@@ -127,7 +127,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
 
-        if cq.from_user.id in ubot_status:
+        if ubot_status:
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
             return
 
