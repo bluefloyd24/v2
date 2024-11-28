@@ -15,6 +15,7 @@ upload: "{} **Menunggah...**"
 klk_1: "Klik Disini"
 balik: "Kembali"
 ttup: "Tutup"
+lgnn: "Berlangganan"
 reboot: "{} **Reboot telah berhasil dimulai! Tunggu 1 - 2 menit hingga bot dimulai ulang.**"
 reboot_1: "𝗥𝗲𝗯𝗼𝗼𝘁.\n<blockquote>Reboot berhasil. Silahkan tunggu 1 menit untuk bot memulai kembali.</blockquote>"
 supot: "**Jika anda butuhkan bantuan silahkan datang ke Grup Support Dibawah!!**\n\n**Atau kamu bisa melihat update di Channel Kami..**"
@@ -164,7 +165,6 @@ asst_11: "𝗕𝗮𝗻𝘁𝘂𝗮𝗻.\n<blockquote>Untuk pertanyaan mengenai �
 asst_12: "𝗚𝗮𝗴𝗮𝗹.\n<blockquote>Kamu belum berlangganan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
 asst_13: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: **Premium**\nMasa aktif: **{}** hari.</blockquote>"
 asst_14: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: `NULL`\nMasa aktif: `NULL`</blockquote>"
-asst_15: "Berlangganan"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
