@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from thegokil import DEVS
 from Mix import *
 
 # Handler untuk perintah .premium
-@ky.ubot("premium|prem", human.dev)
+@ky.ubot("premium|prem")
 async def premium(c, m):
-    if m.from_user.id != nlx.me.id:  # Pastikan hanya developer yang bisa menggunakannya
+    if m.from_user.id not in DEVS  # Pastikan hanya developer yang bisa menggunakannya
         return await m.reply("Anda tidak memiliki akses untuk perintah ini.")
 
     args = m.text.split()
