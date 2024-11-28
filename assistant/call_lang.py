@@ -71,7 +71,7 @@ async def _(c, cq):
         lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
         if not premium_status["is_premium"]:
             
-            await cq.edit_message_text(cgr("asst_12", reply_markup=lggn)
+            await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
 
         if udB.has_userbot(user_id):
