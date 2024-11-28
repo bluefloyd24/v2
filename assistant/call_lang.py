@@ -44,10 +44,12 @@ async def _(c, cq):
     elif cmd == "fitur":
         await clbk_fitur(c, cq)
     elif cmd == "status":
-       if cq.from_user.id != nlx.me.id:
-          await cq.edit_message_text(cgr("asst_12"))
-          return
-       await cq.edit_message_text(cgr("asst_13"))
+       if not premium_status["is_premium"]:
+            await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
+            return
+
+        remaining_days = premium_status["remaining_days"]
+        await cq.edit_message_text(cgr("asst_3"))
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
         if not premium_status["is_premium"]:
@@ -113,13 +115,6 @@ async def _(c, cq):
                                         "Pastikan data yang dimasukkan sudah benar."
                                     )
                                     return
-    elif cmd == "status":
-        if not premium_status["is_premium"]:
-            await cq.answer("❌ Kamu bukan pengguna premium.", show_alert=True)
-            return
-
-        remaining_days = premium_status["remaining_days"]
-        await cq.answer(f"✅ Kamu adalah pengguna premium.\n\nMasa aktif: {remaining_days} hari lagi.", show_alert=True)
 
 async def install_userbot(user_id, session_string):
     try:
@@ -184,18 +179,6 @@ async def clbk_fitur(c, cq):
             paginate_modules(0, CMD_HELP, "help")  # Tombol navigasi modul
         ),
     )
-
-
-@ky.callback("clbk.status")
-async def _(c, cq):
-    if db.check_premium(cq.from_user.id):
-        premium_data = db.get_premium_info(cq.from_user.id)
-        end_time = premium_data["premium_end"]
-        time_left = end_time - datetime.utcnow()
-        await cq.edit_message_text(f"Status: Premium\nDurasi: {time_left.days} hari lagi")
-    else:
-        await cq.edit_message_text("Anda bukan pengguna premium.")
-
 
 @ky.callback("^set_(.*?)")
 async def _(c, cq):
