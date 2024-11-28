@@ -23,6 +23,7 @@ async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
     user_id = cq.from_user.id
+    remaining_days = premium_status["remaining_days"]
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
     premium_status = udB.check_premium(user_id)
  
@@ -47,9 +48,7 @@ async def _(c, cq):
        if not premium_status["is_premium"]:
             await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
             return
-
-        remaining_days = premium_status["remaining_days"]
-        await cq.edit_message_text(cgr("asst_3"))
+        await cq.edit_message_text(cgr("asst_13"))
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
         if not premium_status["is_premium"]:
