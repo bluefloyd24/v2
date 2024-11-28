@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from Mix import *
 
 # Handler untuk perintah .premium
 @ky.ubot("premium|prem", human.dev)
