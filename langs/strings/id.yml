@@ -157,7 +157,7 @@ asst_9: "Buat Userbot"
 asst_10: "Bantuan"
 asst_11: "𝗕𝗮𝗻𝘁𝘂𝗮𝗻.\n<blockquote>Untuk pertanyaan mengenai 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot bisa langsung menghubungi t.me/zAvril.</blockquote>"
 asst_12: "𝗚𝗮𝗴𝗮𝗹.\n<blockquote>Kamu bukan pengguna 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot, silahkan berlangganan terlebih dahulu.\nHubungi t.me/zAvril untuk berlangganan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
-asst_13: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>Kamu adalah pengguna premium 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
+asst_13: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>Kamu adalah pengguna premium 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot, durasi sisa {} hari lagi.</blockquote>"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
