@@ -23,7 +23,8 @@ async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
-
+    premium_status = udB.check_premium(user_id)
+ 
     if cmd == "bhsa":
         await cq.edit_message_text("who r u")
     elif cmd == "rebot":
@@ -46,6 +47,98 @@ async def _(c, cq):
           await cq.edit_message_text(cgr("asst_12"))
           return
        await cq.edit_message_text(cgr("asst_13"))
+    elif cmd == "buat":
+        # Jika bukan premium, tampilkan pesan
+        if not premium_status["is_premium"]:
+            await cq.answer("❌ Kamu bukan pengguna premium.", show_alert=True)
+            return
+        
+        # Jika sudah memiliki userbot, beri tahu pengguna
+        if udB.has_userbot(user_id):
+            await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
+            return
+
+        # Memulai proses pembuatan userbot
+        await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+
+        @ky.on_message(filters.private & filters.text & filters.reply)
+        async def get_phone(client, message):
+            if message.reply_to_message and "Masukkan nomor akun" in message.reply_to_message.text:
+                phone_number = message.text
+                await message.reply("📩 Masukkan kode login:")
+
+                @ky.on_message(filters.private & filters.text & filters.reply)
+                async def get_login_code(client, message_code):
+                    if message_code.reply_to_message and "Masukkan kode login" in message_code.reply_to_message.text:
+                        login_code = message_code.text
+                        await message_code.reply("🔒 Masukkan kode 2FA (jika ada). Jika tidak, kirim '-'.")
+
+                        @ky.on_message(filters.private & filters.text & filters.reply)
+                        async def get_2fa_code(client, message_2fa):
+                            if message_2fa.reply_to_message and "Masukkan kode 2FA" in message_2fa.reply_to_message.text:
+                                twofa_code = message_2fa.text
+                                if twofa_code == "-":
+                                    twofa_code = None
+                                
+                                await message_2fa.reply("🔄 Memulai login session...")
+
+                                # Backend: Generate session string
+                                try:
+                                    from pyrogram import Client
+
+                                    async with Client(
+                                        phone_number,  # Nomor telepon dari pengguna
+                                        api_id=API_ID,  # API ID bot atau default
+                                        api_hash=API_HASH,  # API Hash bot atau default
+                                        phone_code=login_code,  # Kode login yang diberikan
+                                        password=twofa_code  # 2FA jika ada
+                                    ) as app:
+                                        session_string = await app.export_session_string()
+
+                                        # Simpan data ke database
+                                        udB.add_ubot(user_id, API_ID, API_HASH, session_string)
+
+                                        await message_2fa.reply(
+                                            "✅ Login session berhasil.\n\n"
+                                            "⏳ Tunggu 1-2 menit untuk menginstall userbot..."
+                                        )
+
+                                        # Proses instalasi userbot
+                                        await install_userbot(user_id, session_string)
+                                        await message_2fa.reply("🚀 Userbot berhasil diinstall!")
+                                except Exception as e:
+                                    await message_2fa.reply(
+                                        f"❌ Terjadi kesalahan saat login: {e}\n\n"
+                                        "Pastikan data yang dimasukkan sudah benar."
+                                    )
+                                    return
+    elif cmd == "status":
+        if not premium_status["is_premium"]:
+            await cq.answer("❌ Kamu bukan pengguna premium.", show_alert=True)
+            return
+
+        remaining_days = premium_status["remaining_days"]
+        await cq.answer(f"✅ Kamu adalah pengguna premium.\n\nMasa aktif: {remaining_days} hari lagi.", show_alert=True)
+
+async def install_userbot(user_id, session_string):
+    try:
+        # Logika untuk instalasi userbot
+        # Misalnya, menjalankan subprocess untuk userbot
+        process = await asyncio.create_subprocess_exec(
+            "python3", "start_userbot.py",  # Script instalasi userbot
+            str(user_id),  # ID pengguna
+            session_string,  # String session Pyrogram v2
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        stdout, stderr = await process.communicate()
+
+        if process.returncode == 0:
+            print(f"Userbot berhasil diinstall untuk {user_id}: {stdout.decode()}")
+        else:
+            print(f"Error instalasi userbot untuk {user_id}: {stderr.decode()}")
+    except Exception as e:
+        print(f"Terjadi kesalahan saat instalasi userbot untuk {user_id}: {e}")
 
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
