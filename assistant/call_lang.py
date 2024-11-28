@@ -131,7 +131,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
             return
 
-     await cq.message_reply("sabar lg ujicoba")
+     await cq.answer("lg maintenance bro", show_alert=True)
 
 
         @ky.bots(filters.private & filters.text & filters.reply)
