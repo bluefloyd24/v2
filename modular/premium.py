@@ -31,4 +31,3 @@ async def premium(c, m):
     udB.set_premium(target_id, duration)
     
     await m.reply(cgr("prem_4").format(target_mention, duration)
-
