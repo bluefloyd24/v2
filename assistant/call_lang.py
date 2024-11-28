@@ -31,8 +31,10 @@ async def _(c, cq):
         await cq.edit_message_text("who r u")
 
     elif cmd == "rebot":
+        lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
         if cq.from_user.id != nlx.me.id:
-            await cq.edit_message_text(cgr("asst_12"))
+            
+            await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
             return
         await cq.edit_message_text(cgr("reboot_1"))
         os.execl(sys.executable, sys.executable, "-m", "Mix")
@@ -66,12 +68,12 @@ async def _(c, cq):
         await cq.edit_message_text(cgr("asst_13").format(user_name, remaining_days), reply_markup=button)
 
     elif cmd == "buat":
-        # Jika bukan premium, tampilkan pesan
+        lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
         if not premium_status["is_premium"]:
-            await cq.answer("❌ Kamu bukan pengguna premium.", show_alert=True)
+            
+            await cq.edit_message_text(cgr("asst_12", reply_markup=lggn)
             return
 
-        # Jika sudah memiliki userbot, beri tahu pengguna
         if udB.has_userbot(user_id):
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
             return
