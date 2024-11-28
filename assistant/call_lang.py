@@ -61,8 +61,8 @@ async def _(c, cq):
             await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
             return
 
-    # Jika pengguna premium
-        await cq.edit_message_text(cgr("asst_13"), reply_markup=button)
+        remaining_days = premium_status["remaining_days"]
+        await cq.edit_message_text(cgr("asst_13").format(remaining_days), reply_markup=button)
 
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
