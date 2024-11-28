@@ -13,7 +13,7 @@ async def premium(c, m):
 
     args = m.text.split()
     if len(args) != 2:
-        return await m.reply(cgr("prem_2").forma(em.gagal))
+        return await m.reply(cgr("prem_2").format(em.gagal))
 
     try:
         duration = int(args[1])
