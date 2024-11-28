@@ -60,9 +60,10 @@ async def _(c, cq):
         if not premium_status["is_premium"]:
             await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
             return
-
+         
+        user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
         remaining_days = premium_status["remaining_days"]
-        await cq.edit_message_text(cgr("asst_13").format(remaining_days), reply_markup=button)
+        await cq.edit_message_text(cgr("asst_13").format(user_name, remaining_days), reply_markup=button)
 
     elif cmd == "buat":
         # Jika bukan premium, tampilkan pesan
