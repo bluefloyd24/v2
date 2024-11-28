@@ -82,6 +82,10 @@ async def _(c, cq):
 
     elif cmd == "buat":
         lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
+        if cq.from_user.id in DEVS:
+            await cq.edit_message_text(cgr("devs"))
+            return
+         
         if not premium_status["is_premium"]:
             
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
@@ -94,7 +98,7 @@ async def _(c, cq):
         # Memulai proses pembuatan userbot
         await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
 
-        @ky.on_message(filters.private & filters.text & filters.reply)
+        @ky.bots(filters.private & filters.text & filters.reply)
         async def get_phone(client, message):
             if message.reply_to_message and "Masukkan nomor akun" in message.reply_to_message.text:
                 phone_number = message.text
