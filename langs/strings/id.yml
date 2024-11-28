@@ -37,7 +37,7 @@ payme_3: "ㅤ   ㅤ           「 ⓘ | 𝗣𝗔𝗬𝗠𝗘𝗡𝗧
 prem_1: "{} **Akses ini hanya untuk developer!**"
 prem_2: "{} **Format salah! Gunakan:** `.premium <durasi> day`"
 prem_3: "{} **Gunakan format hari, contoh: 30 day**"
-prem_4: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>{} Telah menjadi user premium dengan durasi {} day.\nSilahkan buat userbot di @bluefloyduserbot lalu kembali ke roomchat ini dan ketik .alive!"
+prem_4: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>{} Telah menjadi user premium dengan durasi {} day.\nSilahkan buat userbot di @bluefloyduserbot lalu kembali ke roomchat ini dan ketik .alive!</blockquote>"
 
 # tod
 tod_1: "{} **Tantangan :**\n\n `{}`"
