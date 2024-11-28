@@ -34,6 +34,11 @@ async def _(c, cq):
     elif cmd == "rebot":
         lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
         bwat = ikb([[(cgr("asst_9"), "clbk.buat")]])
+        if cq.from_user.id in DEVS:
+
+            await cq.edit_message_text(cgr("reboot_1"))
+            os.execl(sys.executable, sys.executable, "-m", "Mix")
+         
         if not premium_status["is_premium"]:
             
             await cq.edit_message_text(cgr("asst_12"), reply_markup=lggn)
