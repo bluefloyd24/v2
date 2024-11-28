@@ -28,7 +28,7 @@ async def _(c: nlx, m):
             prefix = await c.get_prefix(c.me.id)
             await m.reply(
                 CMD_HELP[c.get_arg(m)].__help__.format(next((p) for p in prefix))
-                + f"\n\n<b>🤖 𝐁𝘭𝘶𝘦𝘧𝘭𝘰𝘺𝘥-Userbot v2 - @blque</b>",
+                + f"\n\n<blockquote><b>𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot 10K/Bln</b></blockquote>",
                 quote=True,
             )
         else:
