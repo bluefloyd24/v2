@@ -7,7 +7,7 @@ from Mix import *
 @ky.ubot("premium|prem")
 async def premium(c, m):
     em = Emojik()
-    em.Initialize()
+    em.initialize()
     if m.from_user.id not in DEVS 
         return await m.reply(cgr("prem_1").format(em.gagal))
 
@@ -22,4 +22,4 @@ async def premium(c, m):
 
     udB.set_premium(m.from_user.id, duration)
 
-    await m.reply(cgr("prem_4").format(m.from_user.first_name), (duration))
+    await m.reply(cgr("prem_4").format(m.from_user.first_name, duration))
