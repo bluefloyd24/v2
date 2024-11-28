@@ -151,7 +151,7 @@ webs_2: "{} **Gagal mendapatkan gambar!**"
 
 # assisten
 asst_1: " {} !! Saya adalah asisten bot Anda.\n\nPengaturan apa yang ingin kamu ubah ?"
-asst_2: "**残酷 ──I.** 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.\n\nHalo **{}.**\nBluefloyd Userbot adalah bot yang dapat memudahkan klean untuk menggunakan Telegram.\nBerbasis Pyrogram, yang pasti bot ini worot buat anuan di Telegram!."
+asst_2: "**残酷 ──I.** 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.\n\nHalo **{}**.\nBluefloyd Userbot adalah bot yang dapat memudahkan klean untuk menggunakan Telegram.\nBerbasis Pyrogram, yang pasti bot ini worot buat anuan di Telegram!."
 asst_3: "Bahasa"
 asst_4: "Bahasa yang kamu gunakan saat ini adalah : **{}**\nSilahkan pilih jika ingin mengganti bahasa."
 asst_5: "Bahasa kamu berhasil diubah menjadi : **{}**\n\nKamu membutuhkan Restart Userbot untuk menerapkan perubahan."
@@ -161,8 +161,10 @@ asst_8: "Fitur"
 asst_9: "Buat Userbot"
 asst_10: "Bantuan"
 asst_11: "𝗕𝗮𝗻𝘁𝘂𝗮𝗻.\n<blockquote>Untuk pertanyaan mengenai 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot bisa langsung menghubungi t.me/zAvril.</blockquote>"
-asst_12: "𝗚𝗮𝗴𝗮𝗹.\n<blockquote>Kamu bukan pengguna 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot, silahkan berlangganan terlebih dahulu.\nHubungi t.me/zAvril untuk berlangganan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
-asst_13: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>User: **{}**\nStatus: **Premium**\nMasa aktif: **{}** hari.</blockquote>"
+asst_12: "𝗚𝗮𝗴𝗮𝗹.\n<blockquote>Kamu belum berlangganan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
+asst_13: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: **Premium**\nMasa aktif: **{}** hari.</blockquote>"
+asst_14: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: `NULL`\nMasa aktif: `NULL`</blockquote>"
+asst_15: "Berlangganan"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
