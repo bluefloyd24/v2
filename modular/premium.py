@@ -8,7 +8,7 @@ from Mix import *
 async def premium(c, m):
     em = Emojik()
     em.initialize()
-    if m.from_user.id not in DEVS 
+    if m.from_user.id not in DEVS:
         return await m.reply(cgr("prem_1").format(em.gagal))
 
     args = m.text.split()
