@@ -44,5 +44,5 @@ async def _(c, m):
     served_users = udB.get_served_users()
     users = len(served_users)  
 
-    await m.reply_text(f"𝗕𝗢𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦\n"
-                       f"<blockquote>👤 Total: {users} Users</blockquote>")
+    await m.reply_text(f"𝗕𝗢𝗧 𝗦𝗧𝗔𝗧𝗜𝗦𝗧𝗜𝗖𝗦.\n"
+                       f"<blockquote>Total: **{users}** Users of 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot</blockquote>")
