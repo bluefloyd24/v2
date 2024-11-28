@@ -22,6 +22,7 @@ from Mix import *
 async def _(c, cq):
     cmd = cq.data.split(".")[1]
     op = get_bahasa_()
+    user_id = cq.from_user.id
     user_name = f"<a href='tg://user?id={cq.from_user.id}'>{cq.from_user.first_name} {cq.from_user.last_name or ''}</a>"
     premium_status = udB.check_premium(user_id)
  
