@@ -82,9 +82,36 @@ async def _(c, cq):
 
     elif cmd == "buat":
         lggn = ikb([[(cgr("lgnn"), "https://t.me/zavril", "url")]])
+        lnjtkn = ikb([[(cgr("lnjt"), "clbk.lanjut")]])
         if cq.from_user.id in DEVS:
             await cq.edit_message_text(cgr("devs"))
             return
+         await cq.edit_message_text(
+             f"""
+             𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.
+⋟ Ketentuan:
+• id telegram dengan awal 1/2/5 atau id lama dibawah 2022
+• untuk id 6/7 pastikan akun tersebut aktif digunakan selama 3-4 bulan
+• tidak dipergunakan untuk hal-hal negatif
+• tidak melanggar ToS dari telegram
+
+⋟ Penyebab terjadinya banned di akun telegram yang menggunakan userbot diantaranya:
+• melanggar ketentuan dari Telegram
+• adanya pemakaian tidak wajar dari fitur yang ada di userbot
+• terdeteksi adanya aktivitas yang mencurigakan
+• laporan atau pengaduan dari pihak lain
+
+⋟ Note:
+jika menggunakan fitur Dspam/Delayspam, pastikan mengatur delay diatas 5 menit atau diatas 300 detik guna mengurangi resiko akun terbanned!.
+
+⋟ Garansi:
+untuk akun yang terbanned/deactive bisa klaim garansi. dan akun yang sudah membuat userbot tidak bisa membuatnya lagi. (1x pembuatan per user)
+
+⋟ Buy with your own risk!.
+⋟ Silahkan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berkalu.
+""",
+         reply_markup=lnjtkn,
+        )
          
         if not premium_status["is_premium"]:
             
@@ -95,8 +122,6 @@ async def _(c, cq):
             await cq.answer("✅ Userbot sudah aktif untuk akun ini.", show_alert=True)
             return
 
-        # Memulai proses pembuatan userbot
-        await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
 
         @ky.bots(filters.private & filters.text & filters.reply)
         async def get_phone(client, message):
