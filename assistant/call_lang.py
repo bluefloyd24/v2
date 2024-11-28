@@ -50,6 +50,7 @@ async def _(c, cq):
         await clbk_fitur(c, cq)
 
     elif cmd == "status":
+        button = ikb([[(cgr("balik"), "clbk.bek")]])
         if not premium_status["is_premium"]:
             await cq.edit_message_text(cgr("asst_12"), reply_markup=button)
             return
