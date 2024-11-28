@@ -14,6 +14,7 @@ from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.helpers import ikb
 from pyrogram.types import *
+from thegokil import DEVS
 
 from Mix import *
 
@@ -50,7 +51,7 @@ async def _(c, cq):
         await clbk_fitur(c, cq)
 
     elif cmd == "status":
-    button = ikb([[(cgr("balik"), "clbk.bek")]])
+        button = ikb([[(cgr("balik"), "clbk.bek")]])
   
     if cq.from_user.id in DEVS:
         await cq.edit_message_text(cgr("devs"))
