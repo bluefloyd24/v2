@@ -94,6 +94,16 @@ class Userbot(Client):
     async def get_prefix(self, user_id):
         return self._prefix.get(user_id, ["."])
 
+    async def sign_in(self, phone_number, login_code, twofa_code=None):
+        try:
+            await self.send_code_request(phone_number)
+            await self.sign_in(phone_number, login_code, password=twofa_code)
+            LOGGER.info(f"Userbot {phone_number} berhasil login.")
+            return True
+        except Exception as e:
+            LOGGER.error(f"Login gagal untuk {phone_number}: {e}")
+            return False
+
     async def dln(self, download):
         path = await self.download_media(download)
         with open(path, "rb") as f:
