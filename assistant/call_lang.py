@@ -148,41 +148,41 @@ async def login_user(c, cq, user_id):
     chat_id = cq.message.chat.id
     try:
         # Step 1: Meminta nomor telepon
-        await bot.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        phone_message: Message = await bot.listen(chat_id, timeout=300)
+        await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+        phone_message = await c.listen(chat_id, filters=filters.text, timeout=300)
         phone_number = phone_message.text
 
-        # Step 2: Memulai client sementara untuk login
+        # Step 2: Mulai client sementara untuk login
         temp_client = Client(
             name="temp_login",
-            api_id="25048157",   # Masukkan API ID dari konfigurasi Anda
-            api_hash="f7af78e020826638ce203742b75acb1b",  # Masukkan API Hash dari konfigurasi Anda
+            api_id="25048157",
+            api_hash="f7af78e020826638ce203742b75acb1b",
             in_memory=True
         )
         await temp_client.start()
         await temp_client.send_code(phone_number)
 
         # Step 3: Meminta kode login
-        await bot.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        code_message: Message = await bot.listen(chat_id, timeout=300)
+        await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+        code_message = await c.listen(chat_id, filters=filters.text, timeout=300)
         login_code = code_message.text
 
         # Step 4: Verifikasi kode login
         try:
             await temp_client.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
-            await bot.send_message(chat_id, "❌ Kode login salah. Silakan coba lagi.")
+            await c.send_message(chat_id, "❌ Kode login salah. Silakan coba lagi.")
             return
         except PhoneCodeExpired:
-            await bot.send_message(chat_id, "❌ Kode login kedaluwarsa. Silakan coba lagi.")
+            await c.send_message(chat_id, "❌ Kode login kedaluwarsa. Silakan coba lagi.")
             return
 
         # Step 5: Menangani 2FA jika diperlukan
         try:
             await temp_client.check_password("")  # Cek apakah butuh password
         except SessionPasswordNeeded:
-            await bot.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            password_message: Message = await bot.listen(chat_id, timeout=300)
+            await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
+            password_message = await c.listen(chat_id, filters=filters.text, timeout=300)
             password = password_message.text
             await temp_client.check_password(password)
 
@@ -193,21 +193,19 @@ async def login_user(c, cq, user_id):
         # Step 7: Simpan session string ke database
         udB.add_ubot(
             user_id=user_id,
-            api_id="YOUR_API_ID",
-            api_hash="YOUR_API_HASH",
+            api_id="25048157",
+            api_hash="f7af78e020826638ce203742b75acb1b",
             session_string=session_string
         )
 
         # Step 8: Instal userbot
-        await bot.send_message(chat_id, "🚀 Userbot berhasil dibuat, menginstal...")
+        await c.send_message(chat_id, "🚀 Userbot berhasil dibuat, menginstal...")
         await install_userbot(user_id, session_string)
 
         # Selesai
-        await bot.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
+        await c.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
     except Exception as e:
-        await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
-
-
+        await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
 
 async def install_userbot(user_id, session_string):
     """
