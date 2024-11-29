@@ -9,6 +9,8 @@
 
 import os
 import sys
+import asyncio
+import logging
 
 from pyrogram import *
 from pyrogram.enums import *
@@ -18,6 +20,7 @@ from thegokil import DEVS
 
 from Mix import *
 
+LOGGER = logging.getLogger("install_userbot")
 
 @ky.callback("clbk.")
 async def _(c, cq):
@@ -197,27 +200,25 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Jalankan proses login
         await get_login_data()
 
-
-
 async def install_userbot(user_id, session_string):
     try:
-        # Logika untuk instalasi userbot
-        # Misalnya, menjalankan subprocess untuk userbot
+        # Jalankan subprocess untuk menginstall userbot
         process = await asyncio.create_subprocess_exec(
-            "python3", "start_userbot.py",  # Script instalasi userbot
-            str(user_id),  # ID pengguna
-            session_string,  # String session Pyrogram v2
+            sys.executable,
+            "start_userbot.py",  # File userbot yang dijalankan
+            str(user_id),
+            session_string,
             stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
+            stderr=asyncio.subprocess.PIPE,
         )
         stdout, stderr = await process.communicate()
 
         if process.returncode == 0:
-            print(f"Userbot berhasil diinstall untuk {user_id}: {stdout.decode()}")
+            LOGGER.info(f"Userbot berhasil diinstall untuk {user_id}: {stdout.decode()}")
         else:
-            print(f"Error instalasi userbot untuk {user_id}: {stderr.decode()}")
+            LOGGER.error(f"Error instalasi userbot untuk {user_id}: {stderr.decode()}")
     except Exception as e:
-        print(f"Terjadi kesalahan saat instalasi userbot untuk {user_id}: {e}")
+        LOGGER.error(f"Terjadi kesalahan saat instalasi userbot untuk {user_id}: {e}")
 
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
