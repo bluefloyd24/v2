@@ -413,4 +413,4 @@ def append_or_update(load, func, name, arggs):
         return load.update({name: [(func, arggs)]})
 
 
-Gdb = Bot()
+bot = Bot()
