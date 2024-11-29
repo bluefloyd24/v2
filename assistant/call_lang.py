@@ -143,28 +143,28 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
-        phone_message = await bot.ask(
+        phone_message = await nlx.ask(
             chat_id=cq.from_user.id,
             text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
-            timeout=300,
+            timeout=120,
         )
         phone_number = phone_message.text
 
         # 2. Kirim kode login ke nomor telepon
-        await bot.send_code_request(phone_number)
+        await nlx.send_code_request(phone_number)
 
         # 3. Minta kode login
         login_message = await bot.ask(
             chat_id=cq.from_user.id,
             text="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
-            timeout=300,
+            timeout=120,
         )
         login_code = login_message.text
 
         # 4. Lakukan verifikasi kode login
         try:
             # Jika kode login valid, lanjutkan ke verifikasi password atau login
-            await bot.sign_in(phone_number, login_code)
+            await nlx.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
             # Tangani jika kode login salah
             await login_message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
@@ -176,18 +176,18 @@ async def login_procedure(c, cq):
 
         # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
         try:
-            await bot.check_password(password="")
+            await nlx.check_password(password="")
         except SessionPasswordNeeded:
-            password_message = await bot.ask(
+            password_message = await nlx.ask(
                 chat_id=cq.from_user.id,
                 text="🔒 Masukkan password untuk verifikasi 2 langkah:",
-                timeout=300,
+                timeout=120,
             )
             password = password_message.text
-            await bot.check_password(password)
+            await nlx.check_password(password)
 
         # 6. Dapatkan session string setelah login berhasil
-        session_string = await bot.export_session_string()
+        session_string = await nlx.export_session_string()
 
         # Simpan session string ke database
         udB.add_ubot(
