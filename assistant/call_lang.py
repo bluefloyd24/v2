@@ -20,7 +20,7 @@ from pyrogram.types import *
 from thegokil import DEVS
 
 from Mix import *
-from Mix.mix_client import Gdb
+from Mix import mix_client
 
 LOGGER = logging.getLogger("install_userbot")
 
