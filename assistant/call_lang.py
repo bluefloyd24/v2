@@ -139,6 +139,8 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await login_procedure(c, cq)
+
+Gdb = Bot(api_id=API_ID, api_hash=API_HASH, bot_token=Token_Bot)
      
 async def login_procedure(c, cq):
     try:
