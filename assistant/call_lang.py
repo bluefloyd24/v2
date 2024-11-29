@@ -209,11 +209,11 @@ async def login_procedure(c, cq):
 
     except Exception as e:
     # Menangani kesalahan login
-    if 'password_message' in locals():
-        await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-    else:
+        if 'password_message' in locals():
+            await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
+        else:
         # Jika password_message belum didefinisikan, kirim pesan ke pengguna
-        await cq.message.reply(f"❌ Terjadi kesalahan {e}")
+            await cq.message.reply(f"❌ Terjadi kesalahan {e}")
   
 
 
