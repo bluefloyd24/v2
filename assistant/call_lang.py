@@ -140,7 +140,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await login_procedure(c, cq)
      
-async def login_procedure(cq):
+async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
         phone_message = await Gdb.ask(
