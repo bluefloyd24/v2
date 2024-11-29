@@ -241,16 +241,6 @@ async def login_procedure(c, cq):
         # Menangani kesalahan login
         await c.send_message(cq.from_user.id, f"❌ Terjadi kesalahan saat login: {e}")
 
-
-# Inisialisasi bot dan userbot
-bot = Client("bot_session", bot_token=BOT_TOKEN)
-nlx = Userbot()
-
-# Pastikan untuk menjalankan bot dan userbot
-bot.run()
-nlx.start()
-
-
 async def install_userbot(user_id, session_string):
     """
     Fungsi untuk menginstal userbot setelah mendapatkan session string.
