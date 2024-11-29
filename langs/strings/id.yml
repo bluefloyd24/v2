@@ -167,6 +167,7 @@ asst_11: "𝗕𝗮𝗻𝘁𝘂𝗮𝗻.\n<blockquote>Untuk pertanyaan mengenai �
 asst_12: "𝗚𝗮𝗴𝗮𝗹.\n<blockquote>Kamu belum berlangganan 𝗕𝗟𝗨𝗘𝗙𝗟𝗢𝗬𝗗-Userbot.</blockquote>"
 asst_13: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: **Premium**\nMasa aktif: **{}** hari.</blockquote>"
 asst_14: "𝗦𝘁𝗮𝘁𝘂𝘀.\n<blockquote>User: **{}**\nStatus: `NULL`\nMasa aktif: `NULL`</blockquote>"
+asst_15: "𝗔𝗸𝘁𝗶𝗳.\n<blockquote>Kamu sudah membuat userbot, silahkan kirim `.alive` untuk melihat status userbot!</blockquote>"
 
 # autoread 
 autoread_1: "{} **Gunakan Format : `autoread` [query] [on/off].**"
