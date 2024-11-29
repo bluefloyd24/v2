@@ -139,48 +139,56 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await login_procedure(c, cq)
+     
+# Fungsi alternatif untuk menunggu input pesan dari pengguna
+async def wait_for_message(client, chat_id, timeout=120):
+    """
+    Menunggu pesan dari pengguna di chat tertentu.
+    """
+    from asyncio import TimeoutError
+    try:
+        response = await client.listen(chat_id, timeout=timeout)
+        return response.text
+    except TimeoutError:
+        raise Exception("Waktu habis, pengguna tidak memberikan respons.")
+    except Exception as e:
+        raise Exception(f"Kesalahan saat menunggu input: {e}")
 
+
+# Fungsi login prosedur
 async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
         await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        phone_message = await nlx.listen(cq.message.chat.id, timeout=120)
-        phone_number = phone_message.text
+        phone_number = await wait_for_message(nlx, cq.from_user.id, timeout=120)
 
         # 2. Kirim kode login ke nomor telepon
-        await cq.message.reply(f"📨 Mengirimkan kode login ke {phone_number}...")
         await nlx.send_code(phone_number)
 
         # 3. Meminta kode login
-        await cq.message.reply("📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        login_message = await nlx.listen(cq.message.chat.id, timeout=120)
-        login_code = login_message.text
+        await c.send_message(cq.from_user.id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+        login_code = await wait_for_message(nlx, cq.from_user.id, timeout=120)
 
-        # 4. Lakukan verifikasi kode login
+        # 4. Verifikasi kode login
         try:
-            # Jika kode login valid, lanjutkan ke verifikasi password atau login
             await nlx.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
-            # Tangani jika kode login salah
-            await cq.message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
+            await c.send_message(cq.from_user.id, "❌ Kode login yang Anda masukkan salah. Coba lagi.")
             return
         except PhoneCodeExpired:
-            # Tangani jika kode login kedaluwarsa
-            await cq.message.reply("❌ Kode login telah kedaluwarsa. Silakan coba kirim ulang kode.")
+            await c.send_message(cq.from_user.id, "❌ Kode login telah kedaluwarsa. Silakan coba kirim ulang kode.")
             return
 
-        # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
+        # 5. Meminta password 2FA jika diperlukan
         try:
             await nlx.check_password(password="")
         except SessionPasswordNeeded:
-            await cq.message.reply("🔒 Akun Anda memiliki verifikasi dua langkah.\nMasukkan password Anda:")
-            password_message = await nlx.listen(cq.message.chat.id, timeout=120)
-            password = password_message.text
-
+            await c.send_message(cq.from_user.id, "🔒 Masukkan password untuk verifikasi dua langkah:")
+            password = await wait_for_message(nlx, cq.from_user.id, timeout=120)
             try:
                 await nlx.check_password(password)
             except Exception as e:
-                await cq.message.reply(f"❌ Password salah. Gagal login: {e}")
+                await c.send_message(cq.from_user.id, f"❌ Password salah: {e}")
                 return
 
         # 6. Dapatkan session string setelah login berhasil
@@ -191,25 +199,22 @@ async def login_procedure(c, cq):
             user_id=cq.from_user.id,
             api_id=API_ID,
             api_hash=API_HASH,
-            session_string=session_string
+            session_string=session_string,
         )
 
         # 7. Berikan respons kepada pengguna
-        await cq.message.reply(
-            "✅ Login session berhasil.\n\n"
-            "⏳ Tunggu sebentar untuk menginstall userbot..."
+        await c.send_message(
+            cq.from_user.id,
+            "✅ Login berhasil! Tunggu sebentar untuk menginstall userbot...",
         )
 
         # 8. Install userbot
         await install_userbot(cq.from_user.id, session_string)
-        await cq.message.reply("🚀 Userbot berhasil diinstall!")
+        await c.send_message(cq.from_user.id, "🚀 Userbot berhasil diinstall!")
 
     except Exception as e:
         # Menangani kesalahan login
-        await cq.message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-
-  
-
+        await c.send_message(cq.from_user.id, f"❌ Terjadi kesalahan saat login: {e}")
 
 async def install_userbot(user_id, session_string):
     """
