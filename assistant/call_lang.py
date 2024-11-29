@@ -136,79 +136,82 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             return
 
     # Minta input nomor akun
-        await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+        await get_login_data(c, cq)
 
-        async def get_login_data(cq, ky):
-            try:
+async def get_login_data(client, callback_query):
+    try:
+        user_id = callback_query.from_user.id  # ID pengguna untuk mengirim dan menerima pesan
+        
         # 1. Meminta nomor telepon
-                phone_message = await ky.ask(
-                    chat_id=cq.from_user.id,
-                    text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
-                    timeout=300,
-                )
-                phone_number = phone_message.text
-                print(f"📞 Nomor diterima: {phone_number}")  # Debug
-
+        phone_message = await client.ask(
+            chat_id=user_id,
+            text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
+            timeout=300,
+        )
+        phone_number = phone_message.text
+        print(f"📞 Nomor diterima: {phone_number}")  # Debug
+        
         # 2. Kirim kode login ke nomor telepon
-                app = Userbot(phone_number=phone_number)
-                await app.start()
-                await app.send_code(phone_number)
-
+        app = Userbot(phone_number=phone_number)
+        await app.start()
+        await app.send_code(phone_number)
+        
         # 3. Meminta kode login
-                login_message = await ky.ask(
-                    chat_id=cq.from_user.id,
-                    text="📩 Masukkan kode login:",
-                    timeout=300,
-                )
-                login_code = login_message.text
-                print(f"🔑 Kode login diterima: {login_code}")  # Debug
-
+        login_message = await client.ask(
+            chat_id=user_id,
+            text="📩 Masukkan kode login:",
+            timeout=300,
+        )
+        login_code = login_message.text
+        print(f"🔑 Kode login diterima: {login_code}")  # Debug
+        
         # 4. Melakukan login menggunakan kode
-                try:
-                    await app.sign_in(phone_number, login_code)
-                except errors.SessionPasswordNeeded:
+        try:
+            await app.sign_in(phone_number, login_code)
+        except errors.SessionPasswordNeeded:
             # 5. Meminta password 2FA jika diperlukan
-                    twofa_message = await ky.ask(
-                        chat_id=cq.from_user.id,
-                        text="🔒 Masukkan password 2FA Anda:",
-                        timeout=300,
-                    )
-                    twofa_code = twofa_message.text
-                    await app.check_password(twofa_code)
-                    print(f"🔒 Password 2FA diterima.")  # Debug
-
+            twofa_message = await client.ask(
+                chat_id=user_id,
+                text="🔒 Masukkan password 2FA Anda:",
+                timeout=300,
+            )
+            twofa_code = twofa_message.text
+            await app.check_password(twofa_code)
+            print(f"🔒 Password 2FA diterima.")  # Debug
+        
         # 6. Ekspor session string
-                session_string = await app.export_session_string()
-                print(f"✅ Session string berhasil diekspor: {session_string}")  # Debug
-
+        session_string = await app.export_session_string()
+        print(f"✅ Session string berhasil diekspor: {session_string}")  # Debug
+        
         # 7. Simpan session string ke database dan mulai instalasi userbot
-                udB.add_ubot(
-                    user_id=cq.from_user.id,
-                    api_id=API_ID,
-                    api_hash=API_HASH,
-                    session_string=session_string,
-                )
+        udB.add_ubot(
+            user_id=user_id,
+            api_id=API_ID,
+            api_hash=API_HASH,
+            session_string=session_string,
+        )
+        
+        await client.send_message(
+            chat_id=user_id,
+            text="✅ Login session berhasil.\n\n⏳ Tunggu sebentar untuk menginstall userbot..."
+        )
+        
+        await install_userbot(user_id, session_string)
+        await client.send_message(chat_id=user_id, text="🚀 Userbot berhasil diinstall!")
+    
+    except TimeoutError:
+        await client.send_message(chat_id=user_id, text="❌ Waktu habis! Silakan ulangi proses dari awal.")
+        return
+    except errors.FloodWait as e:
+        await client.send_message(chat_id=user_id, text=f"❌ Terkena FloodWait: {e}")
+        return
+    except Exception as e:
+        await client.send_message(
+            chat_id=user_id,
+            text=f"❌ Terjadi kesalahan saat login: {e}\n\nPastikan data yang dimasukkan sudah benar."
+        )
+        return
 
-                await ky.send_message(
-                    chat_id=cq.from_user.id,
-                    text="✅ Login session berhasil.\n\n⏳ Tunggu sebentar untuk menginstall userbot..."
-                )
-
-                await install_userbot(cq.from_user.id, session_string)
-                await ky.send_message(chat_id=cq.from_user.id, text="🚀 Userbot berhasil diinstall!")
-
-            except TimeoutError:
-                await ky.send_message(chat_id=cq.from_user.id, text="❌ Waktu habis! Silakan ulangi proses dari awal.")
-                return
-            except errors.FloodWait as e:
-                await ky.send_message(chat_id=cq.from_user.id, text=f"❌ Terkena FloodWait: {e}")
-                return
-            except Exception as e:
-                await ky.send_message(
-                    chat_id=cq.from_user.id,
-                    text=f"❌ Terjadi kesalahan saat login: {e}\n\nPastikan data yang dimasukkan sudah benar."
-                )
-                return
 
 
 async def install_userbot(user_id, session_string):
