@@ -142,7 +142,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             return
 
     # Minta input nomor akun
-        await login_user(c, cq)
+        await login_user(c, cq, user_id)
 
 async def login_user(bot, chat_id, user_id):
     try:
