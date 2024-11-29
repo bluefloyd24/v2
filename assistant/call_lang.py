@@ -138,19 +138,21 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
 
-        async def get_login_data():
+        async def get_login_data(cq, ky):
             try:
-            # Input nomor telepon
+        # Input nomor telepon
                 phone_message = await ky.listen(cq.from_user.id, timeout=300)
                 phone_number = phone_message.text
 
                 await phone_message.reply("📩 Masukkan kode login:")
-            # Input kode login
+
+        # Input kode login
                 login_message = await ky.listen(cq.from_user.id, timeout=300)
                 login_code = login_message.text
 
                 await login_message.reply("🔒 Masukkan kode 2FA (jika ada). Jika tidak, kirim '-':")
-            # Input kode 2FA
+
+        # Input kode 2FA
                 twofa_message = await ky.listen(cq.from_user.id, timeout=300)
                 twofa_code = twofa_message.text
                 if twofa_code == "-":
@@ -158,35 +160,43 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
                 await twofa_message.reply("🔄 Memulai login session...")
 
-            # Generate session string dengan Pyrogram
                 try:
-                    from pyrogram import Client
+            # Mengimpor Userbot dari mix_client.py
+                    app = Userbot(phone_number=phone_number)
+                    await app.start()
 
-                    async with Client(
-                        phone_number,
+            # Mengirim kode login
+                    await app.send_code_request(phone_number)
+
+            # Lakukan login
+                    if twofa_code:
+                        await app.sign_in(phone_number, login_code, password=twofa_code)
+                    else:
+                        await app.sign_in(phone_number, login_code)
+
+            # Dapatkan session string
+                    session_string = await app.export_session_string()
+
+            # Simpan session string ke database
+                    udB.add_ubot(
+                        user_id=cq.from_user.id,
                         api_id=API_ID,
                         api_hash=API_HASH,
-                        phone_code=login_code,
-                        password=twofa_code,
-                    ) as app:
-                        session_string = await app.export_session_string()
+                        session_string=session_string
+                    )
 
-                    # Simpan ke database
-                        udB.add_ubot(
-                            user_id=cq.from_user.id, 
-                            api_id=API_ID, 
-                            api_hash=API_HASH, 
-                            session_string=session_string
-                        )
+                    await twofa_message.reply(
+                        "✅ Login session berhasil.\n\n"
+                        "⏳ Tunggu sebentar untuk menginstall userbot..."
+                    )
 
-                        await twofa_message.reply(
-                            "✅ Login session berhasil.\n\n"
-                            "⏳ Tunggu sebentar untuk menginstall userbot..."
-                        )
+            # Install userbot
+                    await install_userbot(cq.from_user.id, session_string)
+                    await twofa_message.reply("🚀 Userbot berhasil diinstall!")
 
-                    # Install userbot
-                        await install_userbot(cq.from_user.id, session_string)
-                        await twofa_message.reply("🚀 Userbot berhasil diinstall!")
+                except errors.FloodWait as e:
+                    await twofa_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
+                    return
                 except Exception as e:
                     await twofa_message.reply(
                         f"❌ Terjadi kesalahan saat login: {e}\n\n"
@@ -196,9 +206,6 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             except TimeoutError:
                 await cq.message.reply("❌ Waktu habis! Silakan ulangi proses dari awal.")
                 return
-
-    # Jalankan proses login
-        await get_login_data()
 
 async def install_userbot(user_id, session_string):
     try:
