@@ -139,13 +139,11 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await login_procedure(c, cq)
-
-Gdb = Bot(api_id=API_ID, api_hash=API_HASH, bot_token=Token_Bot)
      
 async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
-        phone_message = await Gdb.ask(
+        phone_message = await bot.ask(
             chat_id=cq.from_user.id,
             text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
             timeout=300,
@@ -153,10 +151,10 @@ async def login_procedure(c, cq):
         phone_number = phone_message.text
 
         # 2. Kirim kode login ke nomor telepon
-        await Gdb.send_code_request(phone_number)
+        await bot.send_code_request(phone_number)
 
         # 3. Minta kode login
-        login_message = await Gdb.ask(
+        login_message = await bot.ask(
             chat_id=cq.from_user.id,
             text="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
             timeout=300,
@@ -166,7 +164,7 @@ async def login_procedure(c, cq):
         # 4. Lakukan verifikasi kode login
         try:
             # Jika kode login valid, lanjutkan ke verifikasi password atau login
-            await Gdb.sign_in(phone_number, login_code)
+            await bot.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
             # Tangani jika kode login salah
             await login_message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
@@ -178,18 +176,18 @@ async def login_procedure(c, cq):
 
         # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
         try:
-            await Gdb.check_password(password="")
+            await bot.check_password(password="")
         except SessionPasswordNeeded:
-            password_message = await Gdb.ask(
+            password_message = await bot.ask(
                 chat_id=cq.from_user.id,
                 text="🔒 Masukkan password untuk verifikasi 2 langkah:",
                 timeout=300,
             )
             password = password_message.text
-            await Gdb.check_password(password)
+            await bot.check_password(password)
 
         # 6. Dapatkan session string setelah login berhasil
-        session_string = await Gdb.export_session_string()
+        session_string = await bot.export_session_string()
 
         # Simpan session string ke database
         udB.add_ubot(
