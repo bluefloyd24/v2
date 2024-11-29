@@ -11,7 +11,8 @@ import os
 import sys
 import asyncio
 import logging
-
+from pyrogram.errors import FloodWait, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded
+from pyrogram import Client
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.helpers import ikb
@@ -19,6 +20,7 @@ from pyrogram.types import *
 from thegokil import DEVS
 
 from Mix import *
+form Mix.mix_client import Gdb
 
 LOGGER = logging.getLogger("install_userbot")
 
@@ -137,81 +139,81 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await get_login_data(c, cq)
-
-async def get_login_data(client, callback_query):
+     
+async def login_procedure(cq):
     try:
-        user_id = callback_query.from_user.id  # ID pengguna untuk mengirim dan menerima pesan
-        
         # 1. Meminta nomor telepon
-        phone_message = await client.ask(
-            chat_id=user_id,
+        phone_message = await Gdb.ask(
+            chat_id=cq.from_user.id,
             text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
             timeout=300,
         )
         phone_number = phone_message.text
-        print(f"📞 Nomor diterima: {phone_number}")  # Debug
-        
+
         # 2. Kirim kode login ke nomor telepon
-        app = Userbot(phone_number=phone_number)
-        await app.start()
-        await app.send_code(phone_number)
-        
-        # 3. Meminta kode login
-        login_message = await client.ask(
-            chat_id=user_id,
-            text="📩 Masukkan kode login:",
+        await Gdb.send_code_request(phone_number)
+
+        # 3. Minta kode login
+        login_message = await Gdb.ask(
+            chat_id=cq.from_user.id,
+            text="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
             timeout=300,
         )
         login_code = login_message.text
-        print(f"🔑 Kode login diterima: {login_code}")  # Debug
-        
-        # 4. Melakukan login menggunakan kode
+
+        # 4. Lakukan verifikasi kode login
         try:
-            await app.sign_in(phone_number, login_code)
-        except errors.SessionPasswordNeeded:
-            # 5. Meminta password 2FA jika diperlukan
-            twofa_message = await client.ask(
-                chat_id=user_id,
-                text="🔒 Masukkan password 2FA Anda:",
+            # Jika kode login valid, lanjutkan ke verifikasi password atau login
+            await Gdb.sign_in(phone_number, login_code)
+        except PhoneCodeInvalid:
+            # Tangani jika kode login salah
+            await login_message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
+            return
+        except PhoneCodeExpired:
+            # Tangani jika kode login kedaluwarsa
+            await login_message.reply("❌ Kode login telah kedaluwarsa. Silakan coba kirim ulang kode.")
+            return
+
+        # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
+        try:
+            await Gdb.check_password(password="")
+        except SessionPasswordNeeded:
+            password_message = await Gdb.ask(
+                chat_id=cq.from_user.id,
+                text="🔒 Masukkan password untuk verifikasi 2 langkah:",
                 timeout=300,
             )
-            twofa_code = twofa_message.text
-            await app.check_password(twofa_code)
-            print(f"🔒 Password 2FA diterima.")  # Debug
-        
-        # 6. Ekspor session string
-        session_string = await app.export_session_string()
-        print(f"✅ Session string berhasil diekspor: {session_string}")  # Debug
-        
-        # 7. Simpan session string ke database dan mulai instalasi userbot
+            password = password_message.text
+            await Gdb.check_password(password)
+
+        # 6. Dapatkan session string setelah login berhasil
+        session_string = await Gdb.export_session_string()
+
+        # Simpan session string ke database
         udB.add_ubot(
-            user_id=user_id,
+            user_id=cq.from_user.id,
             api_id=API_ID,
             api_hash=API_HASH,
-            session_string=session_string,
+            session_string=session_string
         )
-        
-        await client.send_message(
-            chat_id=user_id,
-            text="✅ Login session berhasil.\n\n⏳ Tunggu sebentar untuk menginstall userbot..."
+
+        # 7. Berikan respons kepada pengguna
+        await password_message.reply(
+            "✅ Login session berhasil.\n\n"
+            "⏳ Tunggu sebentar untuk menginstall userbot..."
         )
-        
-        await install_userbot(user_id, session_string)
-        await client.send_message(chat_id=user_id, text="🚀 Userbot berhasil diinstall!")
-    
-    except TimeoutError:
-        await client.send_message(chat_id=user_id, text="❌ Waktu habis! Silakan ulangi proses dari awal.")
-        return
-    except errors.FloodWait as e:
-        await client.send_message(chat_id=user_id, text=f"❌ Terkena FloodWait: {e}")
+
+        # 8. Install userbot
+        await install_userbot(cq.from_user.id, session_string)
+        await password_message.reply("🚀 Userbot berhasil diinstall!")
+
+    except FloodWait as e:
+        await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
         return
     except Exception as e:
-        await client.send_message(
-            chat_id=user_id,
-            text=f"❌ Terjadi kesalahan saat login: {e}\n\nPastikan data yang dimasukkan sudah benar."
-        )
+        await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
         return
-
+  
 
 
 async def install_userbot(user_id, session_string):
