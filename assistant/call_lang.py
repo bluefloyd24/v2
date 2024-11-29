@@ -219,7 +219,7 @@ async def login_procedure(m, user_id):
             await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
         else:
         # Jika password_message belum didefinisikan, kirim pesan ke pengguna
-            await cq.message.reply(f"❌ Terjadi kesalahan saat login: {e}")
+            await bot.send_message(user_id, "❌ Terjadi kesalahan saat login: {e}")
 
 
 
