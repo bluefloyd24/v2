@@ -149,7 +149,12 @@ async def login_user(c, cq, user_id):
     try:
         # Step 1: Meminta nomor telepon
         await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        phone_message = await c.listen(chat_id, filters=filters.text, timeout=300)
+
+        # Menunggu pesan nomor telepon
+        phone_message: Message = await c.wait_for(
+            filters.text & filters.chat(chat_id),
+            timeout=300
+        )
         phone_number = phone_message.text
 
         # Step 2: Mulai client sementara untuk login
@@ -164,7 +169,12 @@ async def login_user(c, cq, user_id):
 
         # Step 3: Meminta kode login
         await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        code_message = await c.listen(chat_id, filters=filters.text, timeout=300)
+
+        # Menunggu pesan kode login
+        code_message: Message = await c.wait_for(
+            filters.text & filters.chat(chat_id),
+            timeout=300
+        )
         login_code = code_message.text
 
         # Step 4: Verifikasi kode login
@@ -182,7 +192,10 @@ async def login_user(c, cq, user_id):
             await temp_client.check_password("")  # Cek apakah butuh password
         except SessionPasswordNeeded:
             await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            password_message = await c.listen(chat_id, filters=filters.text, timeout=300)
+            password_message: Message = await c.wait_for(
+                filters.text & filters.chat(chat_id),
+                timeout=300
+            )
             password = password_message.text
             await temp_client.check_password(password)
 
@@ -206,6 +219,7 @@ async def login_user(c, cq, user_id):
         await c.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+
 
 async def install_userbot(user_id, session_string):
     """
