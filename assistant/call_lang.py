@@ -140,11 +140,11 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await login_procedure(c, cq)
 
-async def login_procedure(cq):
+async def login_procedure(m, user_id):
     try:
         # 1. Meminta nomor telepon
         phone_message = await bot.ask(
-            chat_id=cq.from_user.id,
+            identifier=(message.chat.id, user_id, None),
             text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
             timeout=300,
         )
@@ -157,7 +157,7 @@ async def login_procedure(cq):
 
         # 3. Minta kode login
         login_message = await bot.ask(
-            chat_id=cq.from_user.id,
+            identifier=(message.chat.id, user_id, None),
             text="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
             timeout=300,
         )
@@ -181,7 +181,7 @@ async def login_procedure(cq):
             await bot.check_password(password="")
         except SessionPasswordNeeded:
             password_message = await bot.ask(
-                chat_id=cq.from_user.id,
+                identifier=(message.chat.id, user_id, None),
                 text="🔒 Masukkan password untuk verifikasi 2 langkah:",
                 timeout=300,
             )
