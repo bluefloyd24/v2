@@ -139,26 +139,21 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await login_procedure(c, cq)
-     
+
 async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
-        phone_message = await nlx.ask(
-            chat_id=cq.from_user.id,
-            text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
-            timeout=120,
-        )
+        await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+        phone_message = await nlx.listen(cq.message.chat.id, timeout=120)
         phone_number = phone_message.text
 
         # 2. Kirim kode login ke nomor telepon
-        await nlx.send_code_request(phone_number)
+        await cq.message.reply(f"📨 Mengirimkan kode login ke {phone_number}...")
+        await nlx.send_code(phone_number)
 
-        # 3. Minta kode login
-        login_message = await bot.ask(
-            chat_id=cq.from_user.id,
-            text="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
-            timeout=120,
-        )
+        # 3. Meminta kode login
+        await cq.message.reply("📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+        login_message = await nlx.listen(cq.message.chat.id, timeout=120)
         login_code = login_message.text
 
         # 4. Lakukan verifikasi kode login
@@ -167,24 +162,26 @@ async def login_procedure(c, cq):
             await nlx.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
             # Tangani jika kode login salah
-            await login_message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
+            await cq.message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
             return
         except PhoneCodeExpired:
             # Tangani jika kode login kedaluwarsa
-            await login_message.reply("❌ Kode login telah kedaluwarsa. Silakan coba kirim ulang kode.")
+            await cq.message.reply("❌ Kode login telah kedaluwarsa. Silakan coba kirim ulang kode.")
             return
 
         # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
         try:
             await nlx.check_password(password="")
         except SessionPasswordNeeded:
-            password_message = await nlx.ask(
-                chat_id=cq.from_user.id,
-                text="🔒 Masukkan password untuk verifikasi 2 langkah:",
-                timeout=120,
-            )
+            await cq.message.reply("🔒 Akun Anda memiliki verifikasi dua langkah.\nMasukkan password Anda:")
+            password_message = await nlx.listen(cq.message.chat.id, timeout=120)
             password = password_message.text
-            await nlx.check_password(password)
+
+            try:
+                await nlx.check_password(password)
+            except Exception as e:
+                await cq.message.reply(f"❌ Password salah. Gagal login: {e}")
+                return
 
         # 6. Dapatkan session string setelah login berhasil
         session_string = await nlx.export_session_string()
@@ -198,22 +195,19 @@ async def login_procedure(c, cq):
         )
 
         # 7. Berikan respons kepada pengguna
-        await password_message.reply(
+        await cq.message.reply(
             "✅ Login session berhasil.\n\n"
             "⏳ Tunggu sebentar untuk menginstall userbot..."
         )
 
         # 8. Install userbot
         await install_userbot(cq.from_user.id, session_string)
-        await password_message.reply("🚀 Userbot berhasil diinstall!")
+        await cq.message.reply("🚀 Userbot berhasil diinstall!")
 
     except Exception as e:
-    # Menangani kesalahan login
-        if 'password_message' in locals():
-            await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-        else:
-        # Jika password_message belum didefinisikan, kirim pesan ke pengguna
-            await cq.message.reply(f"❌ Terjadi kesalahan {e}")
+        # Menangani kesalahan login
+        await cq.message.reply(f"❌ Terjadi kesalahan saat login: {e}")
+
   
 
 
