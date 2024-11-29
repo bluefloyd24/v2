@@ -147,7 +147,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 async def login_user(bot, chat_id, user_id):
     try:
         # Step 1: Meminta nomor telepon
-        await bot.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+        await bot.send_message("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
         phone_message: Message = await bot.listen(chat_id, timeout=300)
         phone_number = phone_message.text
 
@@ -162,7 +162,7 @@ async def login_user(bot, chat_id, user_id):
         await temp_client.send_code(phone_number)
 
         # Step 3: Meminta kode login
-        await bot.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+        await bot.send_message("📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
         code_message: Message = await bot.listen(chat_id, timeout=300)
         login_code = code_message.text
 
@@ -170,17 +170,17 @@ async def login_user(bot, chat_id, user_id):
         try:
             await temp_client.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
-            await bot.send_message(chat_id, "❌ Kode login salah. Silakan coba lagi.")
+            await bot.send_message("❌ Kode login salah. Silakan coba lagi.")
             return
         except PhoneCodeExpired:
-            await bot.send_message(chat_id, "❌ Kode login kedaluwarsa. Silakan coba lagi.")
+            await bot.send_message("❌ Kode login kedaluwarsa. Silakan coba lagi.")
             return
 
         # Step 5: Menangani 2FA jika diperlukan
         try:
             await temp_client.check_password("")  # Cek apakah butuh password
         except SessionPasswordNeeded:
-            await bot.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
+            await bot.send_message("🔒 Masukkan password untuk verifikasi 2 langkah:")
             password_message: Message = await bot.listen(chat_id, timeout=300)
             password = password_message.text
             await temp_client.check_password(password)
@@ -198,13 +198,13 @@ async def login_user(bot, chat_id, user_id):
         )
 
         # Step 8: Instal userbot
-        await bot.send_message(chat_id, "🚀 Userbot berhasil dibuat, menginstal...")
+        await bot.send_message("🚀 Userbot berhasil dibuat, menginstal...")
         await install_userbot(user_id, session_string)
 
         # Selesai
-        await bot.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
+        await bot.send_message("✅ Userbot berhasil diinstal dan siap digunakan.")
     except Exception as e:
-        await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+        await bot.send_message(f"❌ Terjadi kesalahan: {e}")
 
 
 
