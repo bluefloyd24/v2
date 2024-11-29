@@ -197,13 +197,13 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
                 await install_userbot(cq.from_user.id, session_string)
                 await ky.send_message(chat_id=cq.from_user.id, text="🚀 Userbot berhasil diinstall!")
 
-          except TimeoutError:
+            except TimeoutError:
                 await ky.send_message(chat_id=cq.from_user.id, text="❌ Waktu habis! Silakan ulangi proses dari awal.")
                 return
-          except errors.FloodWait as e:
+            except errors.FloodWait as e:
                 await ky.send_message(chat_id=cq.from_user.id, text=f"❌ Terkena FloodWait: {e}")
                 return
-          except Exception as e:
+            except Exception as e:
                 await ky.send_message(
                     chat_id=cq.from_user.id,
                     text=f"❌ Terjadi kesalahan saat login: {e}\n\nPastikan data yang dimasukkan sudah benar."
