@@ -144,24 +144,26 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await login_user(c, cq, user_id)
 
-async def login_user(c, cq, user_id):
+async def login_user(c: Client, cq: CallbackQuery, user_id: int):
     chat_id = cq.message.chat.id
+
+    # Filter untuk hanya menerima pesan dari user yang sama
+    def user_filter(_, __, message: Message):
+        return message.from_user.id == user_id and message.chat.id == chat_id
+
     try:
         # Step 1: Meminta nomor telepon
         await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
 
-        # Menunggu pesan nomor telepon
-        phone_message: Message = await c.wait_for(
-            filters.text & filters.chat(chat_id),
-            timeout=300
-        )
-        phone_number = phone_message.text
+        # Mendengarkan masukan nomor telepon
+        phone_message = await c.listen(filters.create(user_filter))
+        phone_number = phone_message.text.strip()
 
-        # Step 2: Mulai client sementara untuk login
+        # Step 2: Memulai client sementara untuk login
         temp_client = Client(
             name="temp_login",
-            api_id="25048157",
-            api_hash="f7af78e020826638ce203742b75acb1b",
+            api_id="25048157",   # Masukkan API ID dari konfigurasi Anda
+            api_hash="f7af78e020826638ce203742b75acb1b",  # Masukkan API Hash dari konfigurasi Anda
             in_memory=True
         )
         await temp_client.start()
@@ -169,13 +171,8 @@ async def login_user(c, cq, user_id):
 
         # Step 3: Meminta kode login
         await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-
-        # Menunggu pesan kode login
-        code_message: Message = await c.wait_for(
-            filters.text & filters.chat(chat_id),
-            timeout=300
-        )
-        login_code = code_message.text
+        code_message = await c.listen(filters.create(user_filter))
+        login_code = code_message.text.strip()
 
         # Step 4: Verifikasi kode login
         try:
@@ -192,11 +189,8 @@ async def login_user(c, cq, user_id):
             await temp_client.check_password("")  # Cek apakah butuh password
         except SessionPasswordNeeded:
             await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            password_message: Message = await c.wait_for(
-                filters.text & filters.chat(chat_id),
-                timeout=300
-            )
-            password = password_message.text
+            password_message = await c.listen(filters.create(user_filter))
+            password = password_message.text.strip()
             await temp_client.check_password(password)
 
         # Step 6: Mengambil session string
