@@ -138,7 +138,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             return
 
     # Minta input nomor akun
-        await get_login_data(c, cq)
+        await login_procedure(c, cq)
      
 async def login_procedure(cq):
     try:
