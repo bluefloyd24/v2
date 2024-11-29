@@ -10,6 +10,7 @@
 import os
 import sys
 import asyncio
+from asyncio import Event, TimeoutError
 import logging
 from pyrogram.errors import FloodWait, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded
 from pyrogram import Client
