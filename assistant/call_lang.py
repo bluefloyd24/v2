@@ -207,12 +207,13 @@ async def login_procedure(c, cq):
         await install_userbot(cq.from_user.id, session_string)
         await password_message.reply("🚀 Userbot berhasil diinstall!")
 
-    except FloodWait as e:
-        await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-        return
     except Exception as e:
+    # Menangani kesalahan login
+    if 'password_message' in locals():
         await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-        return
+    else:
+        # Jika password_message belum didefinisikan, kirim pesan ke pengguna
+        await cq.message.reply(f"❌ Terjadi kesalahan {e}")
   
 
 
