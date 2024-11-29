@@ -140,75 +140,76 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         async def get_login_data(cq, ky):
             try:
-        # Input nomor telepon
-                phone_message = await ky.listen(cq.from_user.id, timeout=300)
+        # 1. Meminta nomor telepon
+                phone_message = await ky.ask(
+                    chat_id=cq.from_user.id,
+                    text="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
+                    timeout=300,
+                )
                 phone_number = phone_message.text
-            except Exception as e:
-                print(f"error saat menerima nomer telfon: {e}")
-                return
+                print(f"📞 Nomor diterima: {phone_number}")  # Debug
 
-                await phone_message.reply("📩 Masukkan kode login:")
+        # 2. Kirim kode login ke nomor telepon
+                app = Userbot(phone_number=phone_number)
+                await app.start()
+                await app.send_code(phone_number)
 
-        # Input kode login
-                login_message = await ky.listen(cq.from_user.id, timeout=300)
+        # 3. Meminta kode login
+                login_message = await ky.ask(
+                    chat_id=cq.from_user.id,
+                    text="📩 Masukkan kode login:",
+                    timeout=300,
+                )
                 login_code = login_message.text
+                print(f"🔑 Kode login diterima: {login_code}")  # Debug
 
-                await login_message.reply("🔒 Masukkan kode 2FA (jika ada). Jika tidak, kirim '-':")
-
-        # Input kode 2FA
-                twofa_message = await ky.listen(cq.from_user.id, timeout=300)
-                twofa_code = twofa_message.text
-                if twofa_code == "-":
-                    twofa_code = None
-
-                await twofa_message.reply("🔄 Memulai login session...")
-
+        # 4. Melakukan login menggunakan kode
                 try:
-            # Mengimpor Userbot dari mix_client.py
-                    app = Userbot(phone_number=phone_number)
-                    await app.start()
-
-            # Mengirim kode login
-                    await app.send_code_request(phone_number)
-
-            # Lakukan login
-                    if twofa_code:
-                        await app.sign_in(phone_number, login_code, password=twofa_code)
-                    else:
-                        await app.sign_in(phone_number, login_code)
-
-            # Dapatkan session string
-                    session_string = await app.export_session_string()
-
-            # Simpan session string ke database
-                    udB.add_ubot(
-                        user_id=cq.from_user.id,
-                        api_id=API_ID,
-                        api_hash=API_HASH,
-                        session_string=session_string
+                    await app.sign_in(phone_number, login_code)
+                except errors.SessionPasswordNeeded:
+            # 5. Meminta password 2FA jika diperlukan
+                    twofa_message = await ky.ask(
+                        chat_id=cq.from_user.id,
+                        text="🔒 Masukkan password 2FA Anda:",
+                        timeout=300,
                     )
+                    twofa_code = twofa_message.text
+                    await app.check_password(twofa_code)
+                    print(f"🔒 Password 2FA diterima.")  # Debug
 
-                    await twofa_message.reply(
-                        "✅ Login session berhasil.\n\n"
-                        "⏳ Tunggu sebentar untuk menginstall userbot..."
-                    )
+        # 6. Ekspor session string
+                session_string = await app.export_session_string()
+                print(f"✅ Session string berhasil diekspor: {session_string}")  # Debug
 
-            # Install userbot
-                    await install_userbot(cq.from_user.id, session_string)
-                    await twofa_message.reply("🚀 Userbot berhasil diinstall!")
+        # 7. Simpan session string ke database dan mulai instalasi userbot
+                udB.add_ubot(
+                    user_id=cq.from_user.id,
+                    api_id=API_ID,
+                    api_hash=API_HASH,
+                    session_string=session_string,
+                )
 
-                except errors.FloodWait as e:
-                    await twofa_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
-                    return
-                except Exception as e:
-                    await twofa_message.reply(
-                        f"❌ Terjadi kesalahan saat login: {e}\n\n"
-                        "Pastikan data yang dimasukkan sudah benar."
-                    )
-                    return
-            except TimeoutError:
-                await cq.message.reply("❌ Waktu habis! Silakan ulangi proses dari awal.")
+                await ky.send_message(
+                    chat_id=cq.from_user.id,
+                    text="✅ Login session berhasil.\n\n⏳ Tunggu sebentar untuk menginstall userbot..."
+                )
+
+                await install_userbot(cq.from_user.id, session_string)
+                await ky.send_message(chat_id=cq.from_user.id, text="🚀 Userbot berhasil diinstall!")
+
+          except TimeoutError:
+                await ky.send_message(chat_id=cq.from_user.id, text="❌ Waktu habis! Silakan ulangi proses dari awal.")
                 return
+          except errors.FloodWait as e:
+                await ky.send_message(chat_id=cq.from_user.id, text=f"❌ Terkena FloodWait: {e}")
+                return
+          except Exception as e:
+                await ky.send_message(
+                    chat_id=cq.from_user.id,
+                    text=f"❌ Terjadi kesalahan saat login: {e}\n\nPastikan data yang dimasukkan sudah benar."
+                )
+                return
+
 
 async def install_userbot(user_id, session_string):
     """
