@@ -208,25 +208,33 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
                 return
 
 async def install_userbot(user_id, session_string):
+    """
+    Fungsi untuk menginstal userbot setelah mendapatkan session string.
+    """
     try:
-        # Jalankan subprocess untuk menginstall userbot
-        process = await asyncio.create_subprocess_exec(
-            sys.executable,
-            "start_userbot.py",  # File userbot yang dijalankan
-            str(user_id),
-            session_string,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        stdout, stderr = await process.communicate()
+        userbot_dir = "userbots"
+        session_name = f"userbot_{user_id}.session"
+        userbot_session_path = os.path.join(userbot_dir, session_name)
 
-        if process.returncode == 0:
-            LOGGER.info(f"Userbot berhasil diinstall untuk {user_id}: {stdout.decode()}")
-        else:
-            LOGGER.error(f"Error instalasi userbot untuk {user_id}: {stderr.decode()}")
+        # Membuat direktori untuk userbot jika belum ada
+        if not os.path.exists(userbot_dir):
+            os.makedirs(userbot_dir)
+
+        # Mengecek apakah session sudah ada
+        if os.path.exists(userbot_session_path):
+            LOGGER.warning(f"Userbot untuk {user_id} sudah terinstal.")
+            return "Userbot sudah terinstal."
+
+        # Membuat session dan memulai aplikasi Pyrogram
+        async with Client(userbot_session_path, api_id=API_ID, api_hash=API_HASH, session_string=session_string) as app:
+            LOGGER.info(f"Memulai userbot untuk {user_id}...")
+            await app.start()
+            await app.send_message(user_id, "💻 Userbot telah diinstall dan siap digunakan!")
+            LOGGER.info(f"Userbot untuk {user_id} berhasil diinstal!")
+            return "Userbot berhasil diinstall!"
     except Exception as e:
-        LOGGER.error(f"Terjadi kesalahan saat instalasi userbot untuk {user_id}: {e}")
-
+        LOGGER.error(f"Error saat menginstall userbot untuk {user_id}: {e}")
+        return f"❌ Gagal menginstall userbot: {e}"
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
 async def clbk_start(c, cq):
