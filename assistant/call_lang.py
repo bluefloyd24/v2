@@ -139,35 +139,56 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
     # Minta input nomor akun
         await login_procedure(c, cq)
-     
-# Fungsi alternatif untuk menunggu input pesan dari pengguna
-async def wait_for_message(client, chat_id, timeout=120):
+
+# Fungsi untuk menangkap input pengguna secara manual
+async def wait_for_user_input(client, user_id, prompt, timeout=120):
     """
-    Menunggu pesan dari pengguna di chat tertentu.
+    Menunggu input dari pengguna dengan Pyrogram handler.
     """
-    from asyncio import TimeoutError
+    user_input_event = Event()
+
+    async def capture_message(client, message):
+        if message.from_user.id == user_id:
+            user_input_event.data = message.text
+            user_input_event.set()
+
+    # Menambahkan handler sementara
+    client.add_handler(filters.text & filters.private, capture_message)
+
     try:
-        response = await client.listen(chat_id, timeout=timeout)
-        return response.text
+        # Kirim prompt ke pengguna
+        await client.send_message(user_id, prompt)
+        # Tunggu input pengguna atau timeout
+        await user_input_event.wait(timeout=timeout)
+        return user_input_event.data
     except TimeoutError:
         raise Exception("Waktu habis, pengguna tidak memberikan respons.")
-    except Exception as e:
-        raise Exception(f"Kesalahan saat menunggu input: {e}")
+    finally:
+        # Pastikan handler dihapus setelah selesai
+        client.remove_handler(capture_message)
 
 
 # Fungsi login prosedur
 async def login_procedure(c, cq):
     try:
         # 1. Meminta nomor telepon
-        await cq.message.reply("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        phone_number = await wait_for_message(nlx, cq.from_user.id, timeout=120)
+        phone_number = await wait_for_user_input(
+            client=nlx,
+            user_id=cq.from_user.id,
+            prompt="💬 Masukkan nomor akun Anda (contoh: +62813xxxx):",
+            timeout=120,
+        )
 
         # 2. Kirim kode login ke nomor telepon
         await nlx.send_code(phone_number)
 
         # 3. Meminta kode login
-        await c.send_message(cq.from_user.id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        login_code = await wait_for_message(nlx, cq.from_user.id, timeout=120)
+        login_code = await wait_for_user_input(
+            client=nlx,
+            user_id=cq.from_user.id,
+            prompt="📩 Masukkan kode login yang dikirimkan ke nomor Anda:",
+            timeout=120,
+        )
 
         # 4. Verifikasi kode login
         try:
@@ -183,8 +204,12 @@ async def login_procedure(c, cq):
         try:
             await nlx.check_password(password="")
         except SessionPasswordNeeded:
-            await c.send_message(cq.from_user.id, "🔒 Masukkan password untuk verifikasi dua langkah:")
-            password = await wait_for_message(nlx, cq.from_user.id, timeout=120)
+            password = await wait_for_user_input(
+                client=nlx,
+                user_id=cq.from_user.id,
+                prompt="🔒 Masukkan password untuk verifikasi dua langkah:",
+                timeout=120,
+            )
             try:
                 await nlx.check_password(password)
             except Exception as e:
@@ -215,6 +240,16 @@ async def login_procedure(c, cq):
     except Exception as e:
         # Menangani kesalahan login
         await c.send_message(cq.from_user.id, f"❌ Terjadi kesalahan saat login: {e}")
+
+
+# Inisialisasi bot dan userbot
+bot = Client("bot_session", bot_token=BOT_TOKEN)
+nlx = Userbot()
+
+# Pastikan untuk menjalankan bot dan userbot
+bot.run()
+nlx.start()
+
 
 async def install_userbot(user_id, session_string):
     """
