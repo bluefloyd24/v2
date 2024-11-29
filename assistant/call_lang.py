@@ -153,11 +153,15 @@ async def login_procedure(m, user_id):
             timeout=300,
         )
         phone_number = phone_message.text
+        
+        # Buat client untuk login
         client = Client(name="bot", api_id=api_id, api_hash=api_hash, in_memory=True)
+        
+        # Pastikan klien terhubung terlebih dahulu
         await client.connect()
 
         # 2. Kirim kode login ke nomor telepon
-        await bot.send_code_request(phone_number)
+        await client.send_code_request(phone_number)
 
         # 3. Minta kode login
         login_message = await bot.ask(
@@ -170,7 +174,7 @@ async def login_procedure(m, user_id):
         # 4. Lakukan verifikasi kode login
         try:
             # Jika kode login valid, lanjutkan ke verifikasi password atau login
-            await bot.sign_in(phone_number, login_code)
+            await client.sign_in(phone_number, login_code)
         except PhoneCodeInvalid:
             # Tangani jika kode login salah
             await login_message.reply("❌ Kode login yang Anda masukkan salah. Coba lagi.")
@@ -182,7 +186,7 @@ async def login_procedure(m, user_id):
 
         # 5. Minta kode 2FA jika diperlukan (password verifikasi dua langkah)
         try:
-            await bot.check_password(password="")
+            await client.check_password(password="")
         except SessionPasswordNeeded:
             password_message = await bot.ask(
                 identifier=(message.chat.id, user_id, None),
@@ -190,10 +194,10 @@ async def login_procedure(m, user_id):
                 timeout=300,
             )
             password = password_message.text
-            await bot.check_password(password)
+            await client.check_password(password)
 
         # 6. Dapatkan session string setelah login berhasil
-        session_string = await bot.export_session_string()
+        session_string = await client.export_session_string()
 
         # Simpan session string ke database
         udB.add_ubot(
@@ -212,15 +216,15 @@ async def login_procedure(m, user_id):
         # 8. Install userbot
         await install_userbot(cq.from_user.id, session_string)
         await password_message.reply("🚀 Userbot berhasil diinstall!")
+
     # proses login
     except Exception as e:
-    # Menangani kesalahan login
+        # Menangani kesalahan login
         if 'password_message' in locals():
             await password_message.reply(f"❌ Terjadi kesalahan saat login: {e}")
         else:
-        # Jika password_message belum didefinisikan, kirim pesan ke pengguna
-            await bot.send_message(user_id, "❌ Terjadi kesalahan saat login: {e}")
-
+            # Jika password_message belum didefinisikan, kirim pesan ke pengguna
+            await bot.send_message(user_id, f"❌ Terjadi kesalahan saat login: {e}")
 
 
 async def install_userbot(user_id, session_string):
