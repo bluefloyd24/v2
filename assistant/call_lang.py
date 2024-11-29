@@ -143,6 +143,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
         # Input nomor telepon
                 phone_message = await ky.listen(cq.from_user.id, timeout=300)
                 phone_number = phone_message.text
+                print(f"Nomer telfon|{phone_number}")
 
                 await phone_message.reply("📩 Masukkan kode login:")
 
