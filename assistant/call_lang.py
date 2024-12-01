@@ -144,19 +144,31 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await login_user(c, cq, user_id)
 
+async def wait_for_user_message(client: Client, chat_id: int, user_id: int):
+    loop = asyncio.get_event_loop()
+    future = loop.create_future()
+
+    # Event handler untuk menangkap pesan
+    @client.on_message(filters.chat(chat_id) & filters.user(user_id))
+    async def handler(_, message: Message):
+        if not future.done():  # Jika Future belum selesai, isi nilainya
+            future.set_result(message)
+
+    # Tunggu hingga pengguna mengirim pesan
+    message = await future
+    client.remove_handler(handler)  # Bersihkan handler setelah selesai
+    return message
+
+
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
     chat_id = cq.message.chat.id
-
-    # Filter untuk hanya menerima pesan dari user yang sama
-    def user_filter(_, __, message: Message):
-        return message.from_user.id == user_id and message.chat.id == chat_id
 
     try:
         # Step 1: Meminta nomor telepon
         await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
 
-        # Mendengarkan masukan nomor telepon
-        phone_message = await c.listen(filters.create(user_filter))
+        # Menunggu masukan nomor telepon
+        phone_message = await wait_for_user_message(c, chat_id, user_id)
         phone_number = phone_message.text.strip()
 
         # Step 2: Memulai client sementara untuk login
@@ -171,7 +183,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
         # Step 3: Meminta kode login
         await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        code_message = await c.listen(filters.create(user_filter))
+        code_message = await wait_for_user_message(c, chat_id, user_id)
         login_code = code_message.text.strip()
 
         # Step 4: Verifikasi kode login
@@ -189,7 +201,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
             await temp_client.check_password("")  # Cek apakah butuh password
         except SessionPasswordNeeded:
             await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            password_message = await c.listen(filters.create(user_filter))
+            password_message = await wait_for_user_message(c, chat_id, user_id)
             password = password_message.text.strip()
             await temp_client.check_password(password)
 
@@ -213,6 +225,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
         await c.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+
 
 
 async def install_userbot(user_id, session_string):
