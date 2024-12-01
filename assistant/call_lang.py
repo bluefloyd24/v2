@@ -144,32 +144,40 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
     # Minta input nomor akun
         await login_user(c, cq, user_id)
 
-async def wait_for_user_message(client: Client, chat_id: int, user_id: int):
+from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery, Message
+import asyncio
+
+# Fungsi untuk menunggu pesan pengguna
+async def wait_for_user_message(c: Client, chat_id: int, user_id: int):
     loop = asyncio.get_event_loop()
     future = loop.create_future()
 
-    # Event handler untuk menangkap pesan
-    @client.on_message(filters.chat(chat_id) & filters.user(user_id))
+    @c.on_message(filters.chat(chat_id) & filters.user(user_id))
     async def handler(_, message: Message):
-        if not future.done():  # Jika Future belum selesai, isi nilainya
+        if not future.done():
             future.set_result(message)
 
-    # Tunggu hingga pengguna mengirim pesan
-    message = await future
-    client.remove_handler(handler)  # Bersihkan handler setelah selesai
+    try:
+        # Timeout 60 detik
+        message = await asyncio.wait_for(future, timeout=60)
+    except asyncio.TimeoutError:
+        raise Exception("Waktu habis, pengguna tidak merespons.")
+    finally:
+        c.remove_handler(handler)  # Pastikan handler selalu dihapus
+
     return message
 
-
+# Fungsi utama untuk login user
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
     chat_id = cq.message.chat.id
 
     try:
         # Step 1: Meminta nomor telepon
         await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-
-        # Menunggu masukan nomor telepon
         phone_message = await wait_for_user_message(c, chat_id, user_id)
         phone_number = phone_message.text.strip()
+        print(f"Nomor telepon diterima: {phone_number}")
 
         # Step 2: Memulai client sementara untuk login
         temp_client = Client(
@@ -180,26 +188,25 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
         )
         await temp_client.start()
         await temp_client.send_code(phone_number)
+        print("Kode verifikasi dikirimkan.")
 
         # Step 3: Meminta kode login
         await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
         code_message = await wait_for_user_message(c, chat_id, user_id)
         login_code = code_message.text.strip()
+        print(f"Kode login diterima: {login_code}")
 
         # Step 4: Verifikasi kode login
         try:
             await temp_client.sign_in(phone_number, login_code)
-        except PhoneCodeInvalid:
-            await c.send_message(chat_id, "❌ Kode login salah. Silakan coba lagi.")
-            return
-        except PhoneCodeExpired:
-            await c.send_message(chat_id, "❌ Kode login kedaluwarsa. Silakan coba lagi.")
+        except Exception as e:
+            await c.send_message(chat_id, f"❌ Terjadi kesalahan saat login: {str(e)}")
             return
 
         # Step 5: Menangani 2FA jika diperlukan
         try:
             await temp_client.check_password("")  # Cek apakah butuh password
-        except SessionPasswordNeeded:
+        except temp_client.SessionPasswordNeeded:
             await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
             password_message = await wait_for_user_message(c, chat_id, user_id)
             password = password_message.text.strip()
@@ -208,6 +215,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
         # Step 6: Mengambil session string
         session_string = await temp_client.export_session_string()
         await temp_client.stop()
+        print("Session string berhasil diambil.")
 
         # Step 7: Simpan session string ke database
         udB.add_ubot(
@@ -223,8 +231,10 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
         # Selesai
         await c.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
+
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+
 
 
 
