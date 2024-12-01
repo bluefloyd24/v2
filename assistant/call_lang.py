@@ -22,10 +22,6 @@ from thegokil import DEVS
 from Mix import *
 from Mix.mix_client import *
 
-bot = Bot()
-nlx = Userbot()
-
-
 LOGGER = logging.getLogger("install_userbot")
 
 @ky.callback("clbk.")
@@ -235,7 +231,6 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
-
 
 async def install_userbot(user_id, session_string):
     """
