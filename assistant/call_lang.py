@@ -148,18 +148,23 @@ async def wait_for_user_message(c: Client, chat_id: int, user_id: int):
     loop = asyncio.get_event_loop()
     future = loop.create_future()
 
-    @c.on_message(filters.chat(chat_id) & filters.user(user_id))
-    async def handler(_, message: Message):
-        if not future.done():
-            future.set_result(message)
+    # Filter untuk menangkap pesan hanya dari pengguna tertentu
+    def handler_filter(_, __, message: Message):
+        return message.chat.id == chat_id and message.from_user.id == user_id
+
+    handler = c.add_handler(filters.create(handler_filter), group=-1)
 
     try:
-        # Timeout 60 detik
+        # Menunggu pesan dengan timeout
         message = await asyncio.wait_for(future, timeout=60)
     except asyncio.TimeoutError:
         raise Exception("Waktu habis, pengguna tidak merespons.")
     finally:
-        c.remove_handler(handler)  # Pastikan handler selalu dihapus
+        try:
+            # Pastikan handler hanya dihapus jika masih terdaftar
+            c.remove_handler(handler)
+        except ValueError:
+            pass
 
     return message
 
@@ -229,6 +234,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+
 
 
 
