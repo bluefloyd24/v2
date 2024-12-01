@@ -143,56 +143,58 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-# Fungsi untuk menunggu pesan pengguna
-async def wait_for_user_message(c: Client, chat_id: int, user_id: int):
+# Fungsi untuk menangkap input pengguna
+async def ask_user_input(c: Client, chat_id: int, user_id: int, prompt: str, timeout: int = 60):
+    await c.send_message(chat_id, prompt)
+    
+    # Future untuk menangkap pesan
     loop = asyncio.get_event_loop()
     future = loop.create_future()
 
-    # Filter untuk menangkap pesan hanya dari pengguna tertentu
-    def handler_filter(_, __, message: Message):
-        return message.chat.id == chat_id and message.from_user.id == user_id
+    # Filter untuk membatasi pesan hanya dari pengguna dan chat yang sesuai
+    def user_filter(_, __, message: Message):
+        return message.from_user.id == user_id and message.chat.id == chat_id
 
-    handler = c.add_handler(filters.create(handler_filter), group=-1)
+    # Callback handler
+    async def handler(_, message: Message):
+        if not future.done():
+            future.set_result(message)
+
+    # Menambahkan handler sementara
+    handler_id = c.add_handler(filters.create(user_filter), handler)
 
     try:
-        # Menunggu pesan dengan timeout
-        message = await asyncio.wait_for(future, timeout=60)
+        # Menunggu input pengguna dengan timeout
+        return await asyncio.wait_for(future, timeout=timeout)
     except asyncio.TimeoutError:
-        raise Exception("Waktu habis, pengguna tidak merespons.")
+        raise Exception("Waktu habis. Pengguna tidak merespons.")
     finally:
-        try:
-            # Pastikan handler hanya dihapus jika masih terdaftar
-            c.remove_handler(handler)
-        except ValueError:
-            pass
+        # Menghapus handler untuk membersihkan
+        c.remove_handler(handler_id)
 
-    return message
 
-# Fungsi utama untuk login user
+# Fungsi utama login
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
     chat_id = cq.message.chat.id
 
     try:
         # Step 1: Meminta nomor telepon
-        await c.send_message(chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        phone_message = await wait_for_user_message(c, chat_id, user_id)
+        phone_message = await ask_user_input(c, chat_id, user_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
         phone_number = phone_message.text.strip()
         print(f"Nomor telepon diterima: {phone_number}")
 
         # Step 2: Memulai client sementara untuk login
         temp_client = Client(
             name="temp_login",
-            api_id="25048157",   # Masukkan API ID dari konfigurasi Anda
-            api_hash="f7af78e020826638ce203742b75acb1b",  # Masukkan API Hash dari konfigurasi Anda
+            api_id="25048157",  # Masukkan API ID Anda
+            api_hash="f7af78e020826638ce203742b75acb1b",  # Masukkan API Hash Anda
             in_memory=True
         )
         await temp_client.start()
         await temp_client.send_code(phone_number)
-        print("Kode verifikasi dikirimkan.")
 
         # Step 3: Meminta kode login
-        await c.send_message(chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        code_message = await wait_for_user_message(c, chat_id, user_id)
+        code_message = await ask_user_input(c, chat_id, user_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
         login_code = code_message.text.strip()
         print(f"Kode login diterima: {login_code}")
 
@@ -200,15 +202,14 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
         try:
             await temp_client.sign_in(phone_number, login_code)
         except Exception as e:
-            await c.send_message(chat_id, f"❌ Terjadi kesalahan saat login: {str(e)}")
+            await c.send_message(chat_id, f"❌ Terjadi kesalahan saat login: {e}")
             return
 
         # Step 5: Menangani 2FA jika diperlukan
         try:
             await temp_client.check_password("")  # Cek apakah butuh password
         except temp_client.SessionPasswordNeeded:
-            await c.send_message(chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            password_message = await wait_for_user_message(c, chat_id, user_id)
+            password_message = await ask_user_input(c, chat_id, user_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
             password = password_message.text.strip()
             await temp_client.check_password(password)
 
@@ -234,9 +235,6 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
     except Exception as e:
         await c.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
-
-
-
 
 
 async def install_userbot(user_id, session_string):
