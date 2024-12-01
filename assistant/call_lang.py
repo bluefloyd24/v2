@@ -141,12 +141,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
             await cq.edit_message_text(cgr("asst_15"))
             return
 
-    # Minta input nomor akun
         await login_user(c, cq, user_id)
-
-from pyrogram import Client, filters
-from pyrogram.types import CallbackQuery, Message
-import asyncio
 
 # Fungsi untuk menunggu pesan pengguna
 async def wait_for_user_message(c: Client, chat_id: int, user_id: int):
