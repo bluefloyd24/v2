@@ -139,39 +139,22 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-async def ask_user_input(c: Client, chat_id: int, user_id: int, prompt: str, timeout: int = 60):
+async def ask_user_input(c: Client, chat_id: int, prompt: str, timeout: int = 60):
     # Kirim prompt ke pengguna
     await c.send_message(chat_id, prompt)
 
-    # Future untuk menangkap input
-    loop = asyncio.get_event_loop()
-    future = loop.create_future()
-
-    # Filter untuk pesan spesifik
-    def user_filter(_, __, message: Message):
-        return message.from_user.id == user_id and message.chat.id == chat_id
-
-    # Callback untuk menangkap pesan
-    async def handler_callback(_, message: Message):
-        if not future.done():
-            future.set_result(message)
-
-    # Tambahkan handler dengan argument yang benar
-    handler = MessageHandler(handler_callback, filters.create(user_filter))
-    c.add_handler(handler, group=0)
-
-    try:
-        # Tunggu input dengan timeout
-        return await asyncio.wait_for(future, timeout=timeout)
-    except asyncio.TimeoutError:
-        raise Exception("Waktu habis. Pengguna tidak merespons.")
-    finally:
-        # Bersihkan handler
+    # Gunakan Client.listen() untuk mendengarkan pesan dari pengguna tertentu
+    async with c.listen(chat_id, timeout=timeout) as listener:
         try:
-            c.remove_handler(handler, group=0)
-        except ValueError:
-            print("Handler sudah dihapus atau tidak ditemukan.")
-
+            while True:
+                # Tunggu pesan yang diterima
+                message = await listener.get()
+                
+                # Pastikan hanya menangkap pesan dari pengguna yang sesuai
+                if message.from_user and message.from_user.id == chat_id:
+                    return message
+        except asyncio.TimeoutError:
+            raise Exception("Waktu habis. Pengguna tidak merespons.")
 
 # Fungsi utama untuk login userbot
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
