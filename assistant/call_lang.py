@@ -205,7 +205,7 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
 
 
 # Handler untuk memulai proses login
-@app.on_callback_query(filters.regex("^login_user$"))
+@bot.on_callback_query(filters.regex("^login_user$"))
 async def handle_login_user(bot: Client, callback_query: CallbackQuery):
     user_id = callback_query.from_user.id
     userbot = Client(  # Membuat instance userbot
