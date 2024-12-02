@@ -135,7 +135,7 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
         if ubot_status:
             await cq.edit_message_text(cgr("asst_15"))
             return
-
+        user_id = cq.from_user.id
         await login_user(c, cq, user_id)
 
 from pyrogram import Client, filters
