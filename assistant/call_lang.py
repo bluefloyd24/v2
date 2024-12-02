@@ -154,10 +154,10 @@ async def ask_user_input(bot: Client, chat_id: int, message_text: str) -> str:
 
     return response.text.strip()
 
+async def login_user(bot: Client, cq: CallbackQuery, user_id: int = None):
+    if user_id is None:
+        user_id = cq.from_user.id  # Ambil user_id dari CallbackQuery jika tidak diberikan
 
-# Fungsi utama untuk login userbot
-# Fungsi utama untuk login userbot
-async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: int):
     chat_id = cq.message.chat.id
 
     try:
