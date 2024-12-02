@@ -139,26 +139,25 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-# Fungsi untuk meminta input pengguna
 async def ask_user_input(c: Client, chat_id: int, user_id: int, prompt: str, timeout: int = 60):
-    # Kirim pesan prompt ke pengguna
+    # Kirim prompt ke pengguna
     await c.send_message(chat_id, prompt)
     
     # Future untuk menangkap input
     loop = asyncio.get_event_loop()
     future = loop.create_future()
 
-    # Filter untuk memastikan hanya pesan dari pengguna tertentu
+    # Filter untuk pesan spesifik
     def user_filter(_, __, message: Message):
         return message.from_user.id == user_id and message.chat.id == chat_id
 
-    # Callback handler untuk menangkap pesan
-    async def handler(_, message: Message):
+    # Callback untuk menangkap pesan
+    async def handler_callback(_, message: Message):
         if not future.done():
             future.set_result(message)
 
-    # Tambahkan handler sementara
-    handler_id = c.add_handler(filters.create(user_filter), handler)
+    # Tambahkan handler dengan group eksplisit
+    handler = c.add_handler(filters.create(user_filter), handler_callback, group=0)
 
     try:
         # Tunggu input dengan timeout
@@ -166,8 +165,12 @@ async def ask_user_input(c: Client, chat_id: int, user_id: int, prompt: str, tim
     except asyncio.TimeoutError:
         raise Exception("Waktu habis. Pengguna tidak merespons.")
     finally:
-        # Bersihkan handler setelah selesai
-        c.remove_handler(handler_id)
+        # Bersihkan handler
+        try:
+            c.remove_handler(handler, group=0)
+        except ValueError:
+            print(f"Handler tidak ditemukan atau sudah dihapus.")
+
 
 # Fungsi utama untuk login userbot
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
