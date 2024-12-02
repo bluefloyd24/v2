@@ -138,25 +138,29 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
+import asyncio
+from pyrogram import Client
+from pyrogram.handlers import MessageHandler
+
 async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int = 60):
     # Kirim prompt ke pengguna
     await client.send_message(chat_id, prompt)
 
-    # Event untuk menangani respon pengguna
+    # Asynchronous event loop to wait for user input
     event = asyncio.Event()
     response = None
 
-    # Handler untuk pesan yang diterima
+    # Fungsi handler untuk menangani respon pengguna
     def message_handler(client, message):
+        print("message: {message.text}")
         nonlocal response
         if message.chat.id == chat_id:
             response = message.text.strip()  # Simpan pesan yang diterima
             event.set()  # Tandai bahwa pesan diterima
 
     # Menambahkan handler untuk menangani pesan
-    print("adding handler...")
     client.add_handler(MessageHandler(message_handler))
-    print("handler added")
+
     try:
         # Tunggu hingga event terpenuhi (pesan diterima)
         await asyncio.wait_for(event.wait(), timeout)
@@ -168,13 +172,7 @@ async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int
         raise Exception("Waktu habis. Pengguna tidak merespons dalam waktu yang ditentukan.")
     finally:
         # Hapus handler setelah selesai
-        try:
-            print("removing handler")
-            client.remove_handler(message_handler)
-            print("handler removed")
-        except ValueError:
-            print("handler not in list")
-            pass  # Handle case where the handler wasn't added yet
+        client.remove_handler(message_handler)
 
 
 # Fungsi utama untuk login userbot
