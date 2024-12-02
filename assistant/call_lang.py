@@ -138,43 +138,21 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-import asyncio
-from pyrogram import Client
-from pyrogram.handlers import MessageHandler
+from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery
 
-async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int = 60):
-    # Kirim prompt ke pengguna
-    await client.send_message(chat_id, prompt)
+# Fungsi untuk meminta input pengguna
+async def ask_user_input(bot: Client, chat_id: int, message_text: str) -> str:
+    # Kirim pesan untuk meminta input
+    sent_message = await bot.send_message(chat_id, message_text)
 
-    # Asynchronous event loop to wait for user input
-    event = asyncio.Event()
-    response = None
+    # Tunggu pesan balasan dari pengguna
+    response = await bot.listen(chat_id, timeout=60)
 
-    # Fungsi handler untuk menangani respon pengguna
-    def message_handler(client, message):
-        nonlocal response
-        if message.chat.id == chat_id:
-            response = message.text.strip()  # Simpan pesan yang diterima
-            event.set()  # Tandai bahwa pesan diterima
+    # Hapus pesan permintaan setelah balasan diterima
+    await sent_message.delete()
 
-    # Menambahkan handler untuk menangani pesan
-    client.add_handler(MessageHandler(message_handler))
-
-    try:
-        # Tunggu hingga event terpenuhi (pesan diterima)
-        await asyncio.wait_for(event.wait(), timeout)
-        if response:
-            return response
-        else:
-            raise Exception("Tidak ada respons dari pengguna.")
-    except asyncio.TimeoutError:
-        raise Exception("Waktu habis. Pengguna tidak merespons dalam waktu yang ditentukan.")
-    finally:
-        # Hapus handler setelah selesai, pastikan hanya satu kali
-        try:
-            client.remove_handler(message_handler)
-        except ValueError:
-            pass  # If handler is already removed, no need to worry
+    return response.text.strip()
 
 
 # Fungsi utama untuk login userbot
@@ -182,22 +160,23 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
     chat_id = cq.message.chat.id
 
     try:
-        # Step 1: Meminta nomor telepon
+        # Step 1: Meminta nomor telepon pengguna
         phone_number = await ask_user_input(bot, chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
         print(f"Nomor telepon diterima: {phone_number}")
 
-        # Step 2: Kirim kode login
+        # Step 2: Membuat client sementara untuk login
+        await userbot.start()
         await userbot.send_code(phone_number)
 
-        # Step 3: Meminta kode login dari pengguna
+        # Step 3: Meminta kode login
         login_code = await ask_user_input(bot, chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
         print(f"Kode login diterima: {login_code}")
 
-        # Step 4: Masuk
+        # Step 4: Verifikasi login
         try:
             await userbot.sign_in(phone_number, login_code)
         except userbot.SessionPasswordNeeded:
-            # Jika 2FA aktif
+            # Jika 2FA aktif, minta password
             password = await ask_user_input(bot, chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
             await userbot.check_password(password)
 
@@ -205,11 +184,11 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
         session_string = await userbot.export_session_string()
         print("Session string berhasil diambil.")
 
-        # Step 6: Simpan session string
+        # Step 6: Simpan session string ke database
         udB.add_ubot(
             user_id=user_id,
-            api_id=userbot.api_id,
-            api_hash=userbot.api_hash,
+            api_id=25048157,
+            api_hash="f7af78e020826638ce203742b75acb1b",
             session_string=session_string
         )
 
@@ -221,7 +200,29 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
         await bot.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
 
     except Exception as e:
+        # Tangani semua error
         await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+
+
+# Handler untuk memulai proses login
+@app.on_callback_query(filters.regex("^login_user$"))
+async def handle_login_user(bot: Client, callback_query: CallbackQuery):
+    user_id = callback_query.from_user.id
+    userbot = Client(  # Membuat instance userbot
+        name=f"userbot_{user_id}",
+        api_id=25048157,
+        api_hash="f7af78e020826638ce203742b75acb1b",
+        in_memory=True
+    )
+
+    # Memanggil fungsi login_user
+    await login_user(
+        bot=bot,
+        cq=callback_query,
+        userbot=userbot,
+        user_id=user_id
+    )
+
 
 async def install_userbot(user_id, session_string):
     """
