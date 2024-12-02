@@ -139,23 +139,15 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-async def ask_user_input(c: Client, chat_id: int, prompt: str, timeout: int = 60):
-    # Kirim prompt ke pengguna
-    await c.send_message(chat_id, prompt)
+async def ask_user_input(client, chat_id, prompt):
+    @client.on_message()
+    async def handler(client, message):
+        if message.chat.id == chat_id:
+            client.remove_event_handler(handler)
+            return message.text.strip()
 
-    # Gunakan Client.listen() untuk mendengarkan pesan dari pengguna tertentu
-    async with c.listen(chat_id, timeout=timeout) as listener:
-        try:
-            while True:
-                # Tunggu pesan yang diterima
-                message = await listener.get()
-
-                # Pastikan hanya menangkap pesan dari pengguna yang sesuai
-                if message.from_user and message.from_user.id == chat_id:
-                    return message.text.strip()  # Mengambil pesan teks dari pengguna
-        except asyncio.TimeoutError:
-            raise Exception("Waktu habis. Pengguna tidak merespons.")
-
+    await client.send_message(chat_id, prompt)
+    return await asyncio.get_event_loop().run_until_complete(handler)
 
 # Fungsi utama untuk login userbot
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
