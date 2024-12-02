@@ -139,14 +139,14 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-async def ask_user_input(client, chat_id, prompt):
+async def ask_user_input(client, chat_id, user_id):
     @client.on_message()
     async def handler(client, message):
         if message.chat.id == chat_id:
             client.remove_event_handler(handler)
             return message.text.strip()
 
-    await client.send_message(chat_id, prompt)
+    await client.send_message(chat_id, user_id)
     return await asyncio.get_event_loop().run_until_complete(handler)
 
 # Fungsi utama untuk login userbot
