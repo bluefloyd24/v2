@@ -156,6 +156,7 @@ async def ask_user_input(bot: Client, chat_id: int, message_text: str) -> str:
 
 
 # Fungsi utama untuk login userbot
+# Fungsi utama untuk login userbot
 async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: int):
     chat_id = cq.message.chat.id
 
@@ -207,7 +208,7 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
 # Handler untuk memulai proses login
 @bot.on_callback_query(filters.regex("^login_user$"))
 async def handle_login_user(bot: Client, callback_query: CallbackQuery):
-    user_id = callback_query.from_user.id
+    user_id = callback_query.from_user.id  # Pastikan mengambil user_id dari callback query
     userbot = Client(  # Membuat instance userbot
         name=f"userbot_{user_id}",
         api_id=25048157,
@@ -215,14 +216,13 @@ async def handle_login_user(bot: Client, callback_query: CallbackQuery):
         in_memory=True
     )
 
-    # Memanggil fungsi login_user
+    # Pastikan memanggil login_user dengan benar, memberikan user_id sebagai argumen
     await login_user(
         bot=bot,
         cq=callback_query,
         userbot=userbot,
-        user_id=user_id
+        user_id=user_id  # Memberikan user_id yang benar
     )
-
 
 async def install_userbot(user_id, session_string):
     """
