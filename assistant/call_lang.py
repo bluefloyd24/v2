@@ -152,11 +152,12 @@ async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int
 
     # Fungsi handler untuk menangani respon pengguna
     def message_handler(client, message):
-        print("message: {message.text}")
+        print("handle triggered: {message.text}")
         nonlocal response
         if message.chat.id == chat_id:
             response = message.text.strip()  # Simpan pesan yang diterima
             event.set()  # Tandai bahwa pesan diterima
+            print("response captured: {response}")
 
     # Menambahkan handler untuk menangani pesan
     client.add_handler(MessageHandler(message_handler))
@@ -171,8 +172,11 @@ async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int
     except asyncio.TimeoutError:
         raise Exception("Waktu habis. Pengguna tidak merespons dalam waktu yang ditentukan.")
     finally:
-        # Hapus handler setelah selesai
-        client.remove_handler(message_handler)
+        # Hapus handler setelah selesai, pastikan hanya satu kali
+        try:
+            client.remove_handler(message_handler)
+        except ValueError:
+            pass  # If handler is already removed, no need to worry
 
 
 # Fungsi utama untuk login userbot
