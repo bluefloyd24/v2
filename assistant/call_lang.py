@@ -205,24 +205,27 @@ async def login_user(bot: Client, cq: CallbackQuery, userbot: Client, user_id: i
         await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
 
 
-# Handler untuk memulai proses login
 @bot.on_callback_query(filters.regex("^login_user$"))
 async def handle_login_user(bot: Client, callback_query: CallbackQuery):
     user_id = callback_query.from_user.id  # Pastikan mengambil user_id dari callback query
-    userbot = Client(  # Membuat instance userbot
+    await callback_query.answer("Memulai proses login...")  # Memberikan feedback cepat ke user
+
+    # Membuat instance userbot untuk login
+    userbot = Client(
         name=f"userbot_{user_id}",
         api_id=25048157,
         api_hash="f7af78e020826638ce203742b75acb1b",
         in_memory=True
     )
 
-    # Pastikan memanggil login_user dengan benar, memberikan user_id sebagai argumen
+    # Panggil fungsi login_user
     await login_user(
         bot=bot,
         cq=callback_query,
         userbot=userbot,
-        user_id=user_id  # Memberikan user_id yang benar
+        user_id=user_id  # Pastikan user_id dikirimkan
     )
+
 
 async def install_userbot(user_id, session_string):
     """
