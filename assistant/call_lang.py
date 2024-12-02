@@ -6,7 +6,6 @@
 """
 ################################################################
 
-
 import os
 import sys
 import asyncio
@@ -139,36 +138,37 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
 
         await login_user(c, cq, user_id)
 
-import asyncio
-
-async def ask_user_input(client, chat_id, prompt, timeout=60):
+async def ask_user_input(client: Client, chat_id: int, prompt: str, timeout: int = 60):
     # Kirim prompt ke pengguna
     await client.send_message(chat_id, prompt)
 
-    # Event handler untuk menunggu pesan dari pengguna
-    response = None
+    # Event untuk menangani respon pengguna
     event = asyncio.Event()
+    response = None
 
-    # Fungsi untuk menangani pesan
+    # Handler untuk pesan yang diterima
     def message_handler(client, message):
         nonlocal response
         if message.chat.id == chat_id:
-            response = message.text.strip()
+            response = message.text.strip()  # Simpan pesan yang diterima
             event.set()  # Tandai bahwa pesan diterima
 
-    # Menambahkan event handler
+    # Menambahkan handler untuk menangani pesan
     client.add_handler(pyrogram.handlers.MessageHandler(message_handler))
 
     try:
-        # Tunggu hingga event terpenuhi atau timeout
+        # Tunggu hingga event terpenuhi (pesan diterima)
         await asyncio.wait_for(event.wait(), timeout)
+        if response:
+            return response
+        else:
+            raise Exception("Tidak ada respons dari pengguna.")
     except asyncio.TimeoutError:
-        raise Exception("Waktu habis. Pengguna tidak merespons.")
+        raise Exception("Waktu habis. Pengguna tidak merespons dalam waktu yang ditentukan.")
+    finally:
+        # Hapus handler setelah selesai
+        client.remove_handler(message_handler)
 
-    # Menghapus handler setelah mendapatkan input
-    client.remove_handler(message_handler)
-    
-    return response
 
 # Fungsi utama untuk login userbot
 async def login_user(c: Client, cq: CallbackQuery, user_id: int):
