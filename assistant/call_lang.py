@@ -155,7 +155,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
 
     try:
         # Step 1: Meminta nomor telepon pengguna
-        phone_message = await ask_user_input(c, chat_id, user_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+        phone_message = await ask_user_input(c, chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
         phone_number = phone_message.text.strip()
         print(f"Nomor telepon diterima: {phone_number}")
 
@@ -170,7 +170,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
         await temp_client.send_code(phone_number)
 
         # Step 3: Meminta kode login
-        code_message = await ask_user_input(c, chat_id, user_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+        code_message = await ask_user_input(c, chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
         login_code = code_message.text.strip()
         print(f"Kode login diterima: {login_code}")
 
@@ -179,7 +179,7 @@ async def login_user(c: Client, cq: CallbackQuery, user_id: int):
             await temp_client.sign_in(phone_number, login_code)
         except temp_client.SessionPasswordNeeded:
             # Jika 2FA aktif, minta password
-            password_message = await ask_user_input(c, chat_id, user_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
+            password_message = await ask_user_input(c, chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
             password = password_message.text.strip()
             await temp_client.check_password(password)
 
