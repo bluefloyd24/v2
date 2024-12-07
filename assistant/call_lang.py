@@ -138,93 +138,69 @@ Silakan pilih lanjutkan jika setuju dan paham dengan ketentuan yang berlaku.</bl
         user_id = cq.from_user.id
         await login_user(c, cq, user_id)
 
-from pyrogram import Client, filters
-from pyrogram.types import CallbackQuery
-
-# Fungsi untuk meminta input pengguna
-async def ask_user_input(bot: Client, chat_id: int, message_text: str) -> str:
-    # Kirim pesan untuk meminta input
-    sent_message = await bot.send_message(chat_id, message_text)
-
-    # Tunggu pesan balasan dari pengguna
-    response = await bot.listen(chat_id, timeout=60)
-
-    # Hapus pesan permintaan setelah balasan diterima
-    await sent_message.delete()
-
-    return response.text.strip()
-
-async def login_user(bot: Client, cq: CallbackQuery, user_id: int = None):
-    if user_id is None:
-        user_id = cq.from_user.id  # Ambil user_id dari CallbackQuery jika tidak diberikan
-
+async def login_user(bot: Client, cq: CallbackQuery, user_id: int):
     chat_id = cq.message.chat.id
 
-    try:
-        # Step 1: Meminta nomor telepon pengguna
-        phone_number = await ask_user_input(bot, chat_id, "💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
-        print(f"Nomor telepon diterima: {phone_number}")
-
-        # Step 2: Membuat client sementara untuk login
-        await userbot.start()
-        await userbot.send_code(phone_number)
-
-        # Step 3: Meminta kode login
-        login_code = await ask_user_input(bot, chat_id, "📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
-        print(f"Kode login diterima: {login_code}")
-
-        # Step 4: Verifikasi login
+    async with bot.conversation(chat_id) as conv:
         try:
-            await userbot.sign_in(phone_number, login_code)
-        except userbot.SessionPasswordNeeded:
-            # Jika 2FA aktif, minta password
-            password = await ask_user_input(bot, chat_id, "🔒 Masukkan password untuk verifikasi 2 langkah:")
-            await userbot.check_password(password)
+            # Step 1: Meminta nomor telepon pengguna
+            await conv.send_message("💬 Masukkan nomor akun Anda (contoh: +62813xxxx):")
+            phone_message = await conv.get_response(timeout=60)
+            phone_number = phone_message.text.strip()
+            print(f"Nomor telepon diterima: {phone_number}")
 
-        # Step 5: Ambil session string
-        session_string = await userbot.export_session_string()
-        print("Session string berhasil diambil.")
+            # Step 2: Membuat client sementara untuk login
+            temp_client = Client(
+                name="temp_login",
+                api_id=25048157,  # Ganti dengan API ID Anda
+                api_hash="f7af78e020826638ce203742b75acb1b",  # Ganti dengan API Hash Anda
+                in_memory=True
+            )
+            await temp_client.start()
+            await temp_client.send_code(phone_number)
 
-        # Step 6: Simpan session string ke database
-        udB.add_ubot(
-            user_id=user_id,
-            api_id=25048157,
-            api_hash="f7af78e020826638ce203742b75acb1b",
-            session_string=session_string
-        )
+            # Step 3: Meminta kode login
+            await conv.send_message("📩 Masukkan kode login yang dikirimkan ke nomor Anda:")
+            code_message = await conv.get_response(timeout=60)
+            login_code = code_message.text.strip()
+            print(f"Kode login diterima: {login_code}")
 
-        # Step 7: Instal userbot
-        await bot.send_message(chat_id, "🚀 Userbot berhasil dibuat, menginstal...")
-        await install_userbot(user_id, session_string)
+            # Step 4: Verifikasi login
+            try:
+                await temp_client.sign_in(phone_number, login_code)
+            except temp_client.SessionPasswordNeeded:
+                # Jika 2FA aktif, minta password
+                await conv.send_message("🔒 Masukkan password untuk verifikasi 2 langkah:")
+                password_message = await conv.get_response(timeout=60)
+                password = password_message.text.strip()
+                await temp_client.check_password(password)
 
-        # Selesai
-        await bot.send_message(chat_id, "✅ Userbot berhasil diinstal dan siap digunakan.")
+            # Step 5: Ambil session string
+            session_string = await temp_client.export_session_string()
+            await temp_client.stop()
+            print("Session string berhasil diambil.")
 
-    except Exception as e:
-        # Tangani semua error
-        await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
+            # Step 6: Simpan session string ke database
+            udB.add_ubot(
+                user_id=user_id,
+                api_id=25048157,
+                api_hash="f7af78e020826638ce203742b75acb1b",
+                session_string=session_string
+            )
 
+            # Step 7: Instal userbot
+            await conv.send_message("🚀 Userbot berhasil dibuat, menginstal...")
+            await install_userbot(user_id, session_string)
 
-@bot.on_callback_query(filters.regex("^login_user$"))
-async def handle_login_user(bot: Client, callback_query: CallbackQuery):
-    user_id = callback_query.from_user.id  # Pastikan mengambil user_id dari callback query
-    await callback_query.answer("Memulai proses login...")  # Memberikan feedback cepat ke user
+            # Selesai
+            await conv.send_message("✅ Userbot berhasil diinstal dan siap digunakan.")
 
-    # Membuat instance userbot untuk login
-    userbot = Client(
-        name=f"userbot_{user_id}",
-        api_id=25048157,
-        api_hash="f7af78e020826638ce203742b75acb1b",
-        in_memory=True
-    )
-
-    # Panggil fungsi login_user
-    await login_user(
-        bot=bot,
-        cq=callback_query,
-        userbot=userbot,
-        user_id=user_id  # Pastikan user_id dikirimkan
-    )
+        except asyncio.TimeoutError:
+            # Jika user tidak merespon
+            await conv.send_message("❌ Waktu habis. Silakan coba lagi.")
+        except Exception as e:
+            # Tangani semua error
+            await conv.send_message(f"❌ Terjadi kesalahan: {e}")
 
 
 async def install_userbot(user_id, session_string):
