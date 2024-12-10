@@ -33,6 +33,16 @@ async def userbot_activation(c, m):
     # Hitung tanggal berakhir
     end_date = (datetime.now() + timedelta(days=duration)).strftime("%d-%m-%Y")
     
-    await m.reply(cgr("ubot_1").format(target_mention, version, duration, end_date))
-
-  
+    # Teks pesan
+    message_text = cgr("ubot_1").format(target_mention, version, duration, end_date)
+    
+    # Path atau URL gambar
+    image_path = "Mix/core/ubotss.jpg"  # Ganti dengan path lokal atau URL gambar
+    
+    # Kirim pesan dengan gambar
+    await c.send_photo(
+        chat_id=m.chat.id,
+        photo=image_path,
+        caption=message_text,
+        parse_mode="HTML"
+    )
