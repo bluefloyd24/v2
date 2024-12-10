@@ -43,6 +43,5 @@ async def userbot_activation(c, m):
     await c.send_photo(
         chat_id=m.chat.id,
         photo=image_path,
-        caption=message_text,
-        parse_mode="HTML"
+        caption=message_text
     )
