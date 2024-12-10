@@ -45,3 +45,20 @@ async def userbot_activation(c, m):
         photo=image_path,
         caption=message_text
     )
+
+@ky.ubot("form")
+async def form_install_userbot(c, m):
+    """
+    Mengirimkan format form untuk install userbot
+    """
+    message = (
+        "`残酷 ━━━━━ × 𝗙𝗢𝗥𝗠 𝗜𝗡𝗦𝗧𝗔𝗟𝗟 𝗨𝗦𝗘𝗥𝗕𝗢𝗧!\n\n"
+        "ㅤ× ━━ Username :\n"
+        "ㅤ× ━━ Nomor :\n"
+        "ㅤ× ━━ 2FA :\n"
+        "ㅤ× ━━ Durasi :\n"
+        "ㅤ× ━━ Versi : 1/2\n\n"
+        "** jika tidak ada 2FA/pass kosongkan\n"
+        "** buy with your own risk!`"
+    )
+    await m.reply(message)
