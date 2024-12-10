@@ -43,7 +43,7 @@ prem_3: "{} **Gunakan format hari, contoh: 30 day**"
 prem_4: "𝗣𝗿𝗲𝗺𝗶𝘂𝗺.\n<blockquote>{} Telah menjadi user premium dengan durasi {} day.\nSilahkan buat userbot di @bluefloyduserbot lalu kembali ke roomchat ini dan ketik .alive!</blockquote>"
 
 # ubot
-ubot_1: "𝗨𝘀𝗲𝗿𝗯𝗼𝘁 𝗶𝘀 𝗔𝗰𝘁𝗶𝘃𝗲!.\n<blockquote>Buyer : {}\nUbot Version : {}\nDuration : {}\nEnds : {}\n Tutorial : https://t.me/+vqHbv3UkFNxjYWUx</blockquote>"
+ubot_1: "𝗨𝘀𝗲𝗿𝗯𝗼𝘁 𝗶𝘀 𝗔𝗰𝘁𝗶𝘃𝗲!.\n<blockquote>Buyer : {}\nUbot Version : {}\nDuration : {}\nEnds : {}\n Tutorial : <spoiler>https://t.me/+vqHbv3UkFNxjYWUx</spoiler></blockquote>"
 ubot_2: "{} **Akses ini hanya untuk developer!**"
 ubot_3: "{} **Format salah! Gunakan:** `.ubotv1 <durasi>`"
 ubot_4: "{} **Gunakan format hari, contoh: 30 day**"
