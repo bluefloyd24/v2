@@ -32,6 +32,6 @@ async def userbot_activation(c, m):
     # Hitung tanggal berakhir
     end_date = (datetime.now() + timedelta(days=duration)).strftime("%d-%m-%Y")
     
-    await m.reply(cgr("ubot_1").format(target_mention, duration, end_date))
+    await m.reply(cgr("ubot_1").format(target_mention, version, duration, end_date))
 
   
