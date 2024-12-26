@@ -67,11 +67,35 @@ async def starter():
     LOGGER.info(f"Connecting to {ndB.name}...")
     if ndB.ping():
         LOGGER.info(f"Connected to {ndB.name} Successfully!")
+
+    # Mulai client utama
     await start_user()
     if nlx.is_connected:
         await start_bot()
         await check_logger()
 
+    # Mulai semua userbot dari database
+    await start_all_userbots()
+
+async def start_all_userbots():
+    """
+    Fungsi untuk memulai semua userbot yang sudah tersimpan di database.
+    """
+    userbot_collection = udB["ubotdb"]
+    userbots = userbot_collection.find()  # Ambil semua userbot dari database
+
+    tasks = []
+    for ubot in userbots:
+        session_string = ubot.get("session_string")
+        user_id = ubot.get("user_id")
+        if session_string and user_id:
+            tasks.append(install_userbot(user_id, session_string))
+
+    if tasks:
+        await asyncio.gather(*tasks)
+        print("✅ Semua userbot berhasil dijalankan.")
+    else:
+        print("⚠️ Tidak ada userbot yang ditemukan di database.")
 
 async def main():
     await starter()
