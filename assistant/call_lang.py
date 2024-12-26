@@ -230,34 +230,36 @@ async def login_user(bot: Client, cq: CallbackQuery, user_id: int):
         await bot.send_message(chat_id, f"❌ Terjadi kesalahan: {e}")
         login_data_collection.delete_one({"user_id": user_id})  # Hapus data sementara
 
-async def install_userbot(user_id, session_string):
+async def install_userbot(user_id: int, session_string: str):
     """
-    Fungsi untuk menginstal userbot setelah mendapatkan session string.
+    Fungsi untuk menginstal userbot menggunakan session string pengguna.
     """
     try:
-        userbot_dir = "userbots"
-        session_name = f"userbot_{user_id}.session"
-        userbot_session_path = os.path.join(userbot_dir, session_name)
+        # Membuat instance Pyrogram dengan session string
+        userbot_client = Client(
+            session_name=session_string,
+            api_id=25048157,  # Ganti dengan API ID Anda
+            api_hash="f7af78e020826638ce203742b75acb1b",  # Ganti dengan API Hash Anda
+        )
 
-        # Membuat direktori untuk userbot jika belum ada
-        if not os.path.exists(userbot_dir):
-            os.makedirs(userbot_dir)
+        # Mulai userbot
+        await userbot_client.start()
+        print(f"✅ Userbot untuk user_id {user_id} berhasil dijalankan.")
 
-        # Mengecek apakah session sudah ada
-        if os.path.exists(userbot_session_path):
-            LOGGER.warning(f"Userbot untuk {user_id} sudah terinstal.")
-            return "Userbot sudah terinstal."
+        # Simpan log atau status bahwa userbot berhasil diinstal
+        log_collection = udB["userbot_logs"]
+        log_collection.update_one(
+            {"user_id": user_id},
+            {"$set": {"status": "installed", "last_started": datetime.utcnow()}},
+            upsert=True
+        )
 
-        # Membuat session dan memulai aplikasi Pyrogram
-        async with Client(userbot_session_path, api_id=API_ID, api_hash=API_HASH, session_string=session_string) as app:
-            LOGGER.info(f"Memulai userbot untuk {user_id}...")
-            await app.start()
-            await app.send_message(user_id, "💻 Userbot telah diinstall dan siap digunakan!")
-            LOGGER.info(f"Userbot untuk {user_id} berhasil diinstal!")
-            return "Userbot berhasil diinstall!"
+        # Log ke konsol
+        print(f"Userbot berhasil diinstal untuk user_id {user_id}.")
+
     except Exception as e:
-        LOGGER.error(f"Error saat menginstall userbot untuk {user_id}: {e}")
-        return f"❌ Gagal menginstall userbot: {e}"
+        print(f"❌ Terjadi kesalahan saat menginstal userbot: {e}")
+        raise e
 
 # Fungsi clbk_start yang digunakan untuk kembali ke menu utama
 async def clbk_start(c, cq):
