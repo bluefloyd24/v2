@@ -75,29 +75,6 @@ async def starter():
         await check_logger()
 
     # Mulai semua userbot dari database
-    await start_all_userbots()
-
-async def start_all_userbots():
-    """
-    Fungsi untuk memulai semua userbot yang sudah tersimpan di database.
-    """
-    # Jika Anda perlu menyebutkan database tertentu
-    userbot_collection = udB["KntDB"].get_collection("ubotdb")  # Ganti 'KntDB' dengan nama database yang sesuai
-    # Ambil semua userbot dari koleksi
-    userbots = userbot_collection.find()  # Ambil semua userbot dari koleksi
-
-    tasks = []
-    for ubot in userbots:
-        session_string = ubot.get("session_string")
-        user_id = ubot.get("user_id")
-        if session_string and user_id:
-            tasks.append(install_userbot(user_id, session_string))
-
-    if tasks:
-        await asyncio.gather(*tasks)
-        print("✅ Semua userbot berhasil dijalankan.")
-    else:
-        print("⚠️ Tidak ada userbot yang ditemukan di database.")
       
 async def main():
     await starter()
