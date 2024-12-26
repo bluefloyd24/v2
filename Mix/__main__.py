@@ -81,8 +81,11 @@ async def start_all_userbots():
     """
     Fungsi untuk memulai semua userbot yang sudah tersimpan di database.
     """
-    userbot_collection = udB["ubotdb"]
-    userbots = userbot_collection.find()  # Ambil semua userbot dari database
+    # Mengakses koleksi ubotdb
+    userbot_collection = udB.ubotdb  # atau udB["KntDB"]["ubotdb"] jika database spesifik diperlukan
+
+    # Ambil semua userbot dari koleksi
+    userbots = userbot_collection.find()  # Ambil semua userbot dari koleksi
 
     tasks = []
     for ubot in userbots:
@@ -96,7 +99,7 @@ async def start_all_userbots():
         print("✅ Semua userbot berhasil dijalankan.")
     else:
         print("⚠️ Tidak ada userbot yang ditemukan di database.")
-
+      
 async def main():
     await starter()
     await asyncio.gather(refresh_cache(), getFinish())
