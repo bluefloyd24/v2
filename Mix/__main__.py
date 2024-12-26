@@ -81,9 +81,8 @@ async def start_all_userbots():
     """
     Fungsi untuk memulai semua userbot yang sudah tersimpan di database.
     """
-    # Mengakses koleksi ubotdb
-    userbot_collection = udB.ubotdb  # atau udB["KntDB"]["ubotdb"] jika database spesifik diperlukan
-
+    # Jika Anda perlu menyebutkan database tertentu
+    userbot_collection = udB["KntDB"].get_collection("ubotdb")  # Ganti 'KntDB' dengan nama database yang sesuai
     # Ambil semua userbot dari koleksi
     userbots = userbot_collection.find()  # Ambil semua userbot dari koleksi
 
