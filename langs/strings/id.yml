@@ -23,6 +23,9 @@ supot: "**Jika anda butuhkan bantuan silahkan datang ke Grup Support Dibawah!!**
 menten: "{} **Mohon maaf, fitur ini sedang dalam masa perbaikan.**"
 lnjt: "Lanjut"
 
+# rekber
+rekber_1: "{} Dana 081316588094 an Tu"
+
 # proxy
 prox_1: "**➣ `{}`**"
 prox_2: "{} <b>Tidak terdapat proxy yang tersedia.</b>"
@@ -227,6 +230,8 @@ em_2: "{} **Anda bukan pengguna Telegram Premium!**"
 em_3: "{} **Silahkan balas ke emoji premium!**"
 em_4: "{} **Emoji ID : `{}`.**"
 em_5: "{} **Gunakan format : `{}` [variabel] [emoji premium].**"
+emr_dana: "{} **Emoji Dana diatur ke : <emoji id={}>{}</emoji>**"
+emr_dana1: "{} **Emoji Dana diatur ke : {}**"
 em_6: "{} **Emoji Ping diatur ke : <emoji id={}>{}</emoji>**"
 em_7: "{} **Emoji Ping diatur ke : {}**"
 em_8: "{} **Emoji Pong diatur ke : <emoji id={}>{}</emoji>**"

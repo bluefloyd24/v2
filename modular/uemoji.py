@@ -104,6 +104,21 @@ async def _(c: nlx, m):
         return await jing.edit(cgr("em_5").format(em.gagal, m.command))
     command, variable, value = m.command[:3]
     emoji_id = None
+    if variable.lower() == "dana":
+        if gua == True:
+            if m.entities:
+                for entity in m.entities:
+                    if entity.custom_emoji_id:
+                        emoji_id = entity.custom_emoji_id
+                        break
+                if emoji_id:
+                    udB.set_var(c.me.id, "emo_dana", emoji_id)
+                    await jing.edit(cgr("emr_dana").format(em.sukses, emoji_id, value))
+                    return
+        elif gua == False:
+            udB.set_var(c.me.id, "emo_dana", value)
+            await jing.edit(cgr("emr_dana1").format(em.sukses, value))
+            return
     if variable.lower() == "ping":
         if gua == True:
             if m.entities:
@@ -261,5 +276,6 @@ async def _(c: nlx, m):
             em.alive,
             em.warn,
             em.block,
+            em.dana,
         )
     )
