@@ -113,13 +113,13 @@ async def _(c: nlx, m):
                         break
                 if emoji_id:
                     udB.set_var(c.me.id, "emo_dana", emoji_id)
-                    await jing.edit(cgr("emr_dana").format(em.sukses, emoji_id, value))
+                    await jing.edit(cgr("emr_dana").format(em.dana, emoji_id, value))
                     return
         elif gua == False:
             udB.set_var(c.me.id, "emo_dana", value)
             await jing.edit(cgr("emr_dana1").format(em.sukses, value))
             return
-    if variable.lower() == "ping":
+    elif variable.lower() == "ping":
         if gua == True:
             if m.entities:
                 for entity in m.entities:
