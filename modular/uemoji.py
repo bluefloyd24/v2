@@ -117,7 +117,7 @@ async def _(c: nlx, m):
                     return
         elif gua == False:
             udB.set_var(c.me.id, "emo_dana", value)
-            await jing.edit(cgr("emr_dana1").format(em.sukses, value))
+            await jing.edit(cgr("emr_dana1").format(em.dana, value))
             return
     elif variable.lower() == "ping":
         if gua == True:
@@ -133,6 +133,21 @@ async def _(c: nlx, m):
         elif gua == False:
             udB.set_var(c.me.id, "emo_ping", value)
             await jing.edit(cgr("em_7").format(em.sukses, value))
+            return
+    elif variable.lower() == "payment":
+        if gua == True:
+            if m.entities:
+                for entity in m.entities:
+                    if entity.custom_emoji_id:
+                        emoji_id = entity.custom_emoji_id
+                        break
+                if emoji_id:
+                    udB.set_var(c.me.id, "emo_pay", emoji_id)
+                    await jing.edit(cgr("em_pay1").format(em.sukses, emoji_id, value))
+                    return
+        elif gua == False:
+            udB.set_var(c.me.id, "emo_pay", value)
+            await jing.edit(cgr("em_pay2").format(em.sukses, value))
             return
     elif variable.lower() == "pong":
         if gua == True:
@@ -277,5 +292,6 @@ async def _(c: nlx, m):
             em.warn,
             em.block,
             em.dana,
+            em.payment,
         )
     )
