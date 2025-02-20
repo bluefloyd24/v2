@@ -11,16 +11,12 @@ async def _(c, cq):
     kb = ikb([[("Kembali", "bek.payme")]])
 
     if cmd == "butformat":
-        puki = cgr("payme_3").format(em.payment)
-        await cq.edit_message_text(
-            text=puki,
-            reply_markup=kb, 
-            parse_mode=ParseMode.HTML
-        )
+        puki = cgr("payme_3").format(str(em.payment))  # Format sekali saja
+        await cq.edit_message_text(puki, reply_markup=kb)  # Gunakan puki
 
 
 @ky.callback("bek")
 async def _(c, cq):
-    txt = cgr("payme_1").format(em.payment)
+    txt = cgr("payme_1").format(str(em.payment))
     ke = ikb([[("Payment", "payme.butformat")]])
     await cq.edit_message_text(text=txt, reply_markup=ke)
