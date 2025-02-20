@@ -13,7 +13,7 @@ async def _(c, cq):
     kb = ikb([[("Kembali", "bek.payme")]])
 
     if cmd == "butformat":
-        puki = cgr("payme_3").format(em.payment)
+        puki = cgr("payme_3")
         await cq.edit_message_text(puki, reply_markup=kb)
 
 
@@ -21,6 +21,6 @@ async def _(c, cq):
 async def _(c, cq):
     em = Emojik()
     em.initialize()
-    txt = cgr("payme_1").format(em.payment)
+    txt = cgr("payme_1")
     ke = ikb([[("Payment", "payme.butformat")]])
     await cq.edit_message_text(text=txt, reply_markup=ke)

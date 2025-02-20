@@ -35,9 +35,9 @@ prox_5: "{} <b>Perintah tidak valid. \nGunakan perintah {} [`http`|`socks4`|`soc
 prox_6: "{} <b>Perintah tidak valid.\nGunakan perintah `{}` [`http`|`socks4`|`socks5`]</b>"
 
 # payment
-payme_1: "{} **残酷 ──I.** 𝗕𝗹𝘂𝗲 𝗣𝗮𝘆𝗺𝗲𝗻𝘁!"
+payme_1: "**残酷 ──I.** 𝗕𝗹𝘂𝗲 𝗣𝗮𝘆𝗺𝗲𝗻𝘁!"
 payme_2: "{} **Maaf, command ini hanya untuk Developer Bluefloyd-Usebot.**"
-payme_3: "{} 𝗕lue, 𝑷𝒂𝒚𝒎𝒆𝒏𝒕.\n<blockquote>残酷 ──I. Channel Payment > t.me/bluepaymentt\n\nAfter making a payment, it is required to send proof of payment correctly to @zAvril so that the order is process immediately.</blockquote>"
+payme_3: "𝗕lue, 𝑷𝒂𝒚𝒎𝒆𝒏𝒕.\n<blockquote>残酷 ──I. Channel Payment > t.me/bluepaymentt\n\nAfter making a payment, it is required to send proof of payment correctly to @zAvril so that the order is process immediately.</blockquote>"
 
 # premium
 prem_1: "{} **Akses ini hanya untuk developer!**"
