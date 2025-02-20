@@ -7,16 +7,20 @@ from Mix import *
 
 @ky.callback("payme.")
 async def _(c, cq):
+    em = Emojik()
+    em.initialize()
     cmd = cq.data.split(".")[1]
     kb = ikb([[("Kembali", "bek.payme")]])
 
     if cmd == "butformat":
-        puki = cgr("payme_3").format(str(em.payment))  # Format sekali saja
-        await cq.edit_message_text(puki, reply_markup=kb)  # Gunakan puki
+        puki = cgr("payme_3").format(em.payment)
+        await cq.edit_message_text(puki, reply_markup=kb)
 
 
 @ky.callback("bek")
 async def _(c, cq):
-    txt = cgr("payme_1").format(str(em.payment))
+    em = Emojik()
+    em.initialize()
+    txt = cgr("payme_1").format(em.payment)
     ke = ikb([[("Payment", "payme.butformat")]])
     await cq.edit_message_text(text=txt, reply_markup=ke)
