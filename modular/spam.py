@@ -114,7 +114,11 @@ async def _(c: nlx, m):
             if not berenti:
                 break
             try:
-                await reply.copy(m.chat.id)  # Menyalin pesan yang di-reply ke chat
+                # Jika pesan yang di-reply mengandung custom emoji, gunakan send_message dengan entities
+                if reply.entities:
+                    await c.send_message(m.chat.id, reply.text, entities=reply.entities)
+                else:
+                    await reply.copy(m.chat.id)  # Salin biasa jika tidak ada custom emoji
                 await asyncio.sleep(count_delay)  # Delay antar-pesan
             except Exception as e:
                 await m.reply(f"Error: {e}")
@@ -141,6 +145,7 @@ async def _(c: nlx, m):
     await log_spam_result(count_message, count_delay, m.chat.title or m.chat.id)
 
     await m.delete()
+
 
 @ky.ubot("cspam")
 async def _(c: nlx, m):
